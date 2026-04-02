@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CodeBridge — AI로 아이디어를 앱으로</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:     #030712;
+      --bg2:    #060d1f;
+      --card:   #0b1220;
+      --border: rgba(255,255,255,0.07);
+      --neon:   #00d4ff;
+      --purple: #a78bfa;
+      --text:   #f1f5f9;
+      --dim:    #94a3b8;
+      --muted:  #4a5568;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', -apple-system, sans-serif;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: #1e3a5f; border-radius: 3px; }
+
+    /* ── UTILITIES ── */
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+    section { padding: 120px 0; }
+
+    .label {
+      font-size: 11px; font-weight: 700; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--neon); margin-bottom: 14px; display: block;
+    }
+    .section-title {
+      font-size: clamp(32px, 5vw, 56px);
+      font-weight: 800; line-height: 1.1; letter-spacing: -1.5px;
+    }
+    .grad {
+      background: linear-gradient(135deg, var(--neon), var(--purple));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+
+    /* fade-up */
+    .fu { opacity: 0; transform: translateY(36px); transition: opacity .8s ease, transform .8s ease; }
+    .fu.in { opacity: 1; transform: none; }
+    .d1 { transition-delay: .1s; } .d2 { transition-delay: .2s; }
+    .d3 { transition-delay: .3s; } .d4 { transition-delay: .4s; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      padding: 20px 0; transition: all .3s;
+    }
+    nav.scrolled {
+      background: rgba(3,7,18,.88); backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border); padding: 13px 0;
+    }
+    .nav-wrap { display: flex; align-items: center; justify-content: space-between; }
+    .logo {
+      font-size: 19px; font-weight: 800; text-decoration: none; color: var(--text);
+      display: flex; align-items: center; gap: 9px;
+    }
+    .logo-box {
+      width: 32px; height: 32px; border-radius: 8px;
+      background: linear-gradient(135deg, var(--neon), var(--purple));
+      display: flex; align-items: center; justify-content: center; font-size: 15px;
+    }
+    .nav-links { display: flex; align-items: center; gap: 34px; list-style: none; }
+    .nav-links a {
+      text-decoration: none; color: var(--muted); font-size: 14px;
+      font-weight: 500; transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-cta {
+      padding: 8px 20px !important;
+      background: linear-gradient(135deg, var(--neon), var(--purple));
+      color: #030712 !important; border-radius: 8px; font-weight: 700 !important;
+    }
+    .hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      cursor: pointer; z-index: 1001; padding: 4px;
+    }
+    .hamburger span {
+      display: block; width: 24px; height: 2px;
+      background: var(--text); border-radius: 2px; transition: all .3s;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* ── HERO ── */
+    #hero {
+      position: relative; min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      text-align: center; padding: 140px 24px 100px; overflow: hidden;
+    }
+    #hero-canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .hero-grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(0,212,255,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,212,255,.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+    .hero-glow {
+      position: absolute; width: 700px; height: 700px; pointer-events: none;
+      background: radial-gradient(circle, rgba(0,212,255,.1) 0%, transparent 68%);
+      top: 50%; left: 50%; transform: translate(-50%,-50%);
+    }
+    .hero-content { position: relative; z-index: 1; max-width: 840px; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 18px; margin-bottom: 32px;
+      background: rgba(0,212,255,.08); border: 1px solid rgba(0,212,255,.25);
+      border-radius: 100px; font-size: 13px; color: var(--neon); font-weight: 500;
+      animation: pulse-b 3s infinite;
+    }
+    @keyframes pulse-b {
+      0%,100% { border-color: rgba(0,212,255,.25); }
+      50%      { border-color: rgba(0,212,255,.6); }
+    }
+    .hero-title {
+      font-size: clamp(44px, 8.5vw, 92px);
+      font-weight: 900; line-height: 1.04; letter-spacing: -3px; margin-bottom: 24px;
+    }
+    .hero-sub {
+      font-size: clamp(15px, 1.8vw, 19px); color: var(--dim);
+      line-height: 1.75; margin: 0 auto 48px; max-width: 560px;
+    }
+    .hero-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+    .btn-p {
+      padding: 14px 32px; background: linear-gradient(135deg, var(--neon), var(--purple));
+      color: #030712; font-weight: 700; font-size: 15px; border-radius: 10px;
+      text-decoration: none; border: none; cursor: pointer;
+      display: inline-flex; align-items: center; gap: 8px; transition: all .3s;
+    }
+    .btn-p:hover {
+      box-shadow: 0 0 32px rgba(0,212,255,.5), 0 0 64px rgba(0,212,255,.18);
+      transform: translateY(-2px);
+    }
+    .btn-s {
+      padding: 14px 32px; background: transparent; color: var(--text); font-weight: 600;
+      font-size: 15px; border-radius: 10px; text-decoration: none;
+      border: 1px solid var(--border); cursor: pointer; transition: all .3s;
+    }
+    .btn-s:hover { border-color: rgba(0,212,255,.4); color: var(--neon); }
+    .scroll-ind {
+      position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      font-size: 11px; color: var(--muted); letter-spacing: 2px; text-transform: uppercase;
+      animation: bob 2.2s ease-in-out infinite;
+    }
+    .scroll-ind::after {
+      content: ''; width: 1px; height: 36px;
+      background: linear-gradient(to bottom, var(--muted), transparent);
+    }
+    @keyframes bob {
+      0%,100% { transform: translateX(-50%) translateY(0); }
+      50%      { transform: translateX(-50%) translateY(8px); }
+    }
+
+    /* ── TRUST MARQUEE ── */
+    #trust {
+      padding: 28px 0; overflow: hidden;
+      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+    }
+    .marquee { display: flex; width: max-content; animation: mq 28s linear infinite; }
+    .mq-group { display: flex; align-items: center; gap: 44px; padding-right: 44px; }
+    .mq-item {
+      color: var(--muted); font-size: 13px; font-weight: 600;
+      letter-spacing: .5px; white-space: nowrap;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .mq-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--neon); }
+    @keyframes mq { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    /* ── VISION ── */
+    #vision {
+      background: radial-gradient(ellipse at 0% 50%, rgba(0,212,255,.05) 0%, transparent 55%);
+    }
+    .vision-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+    .vision-text .section-title { margin-bottom: 20px; }
+    .vision-text p { color: var(--dim); font-size: 16px; line-height: 1.85; }
+    .stat-cards { display: flex; flex-direction: column; gap: 14px; }
+    .stat-card {
+      padding: 26px 30px; background: var(--card);
+      border: 1px solid var(--border); border-radius: 16px;
+      display: flex; align-items: center; gap: 22px;
+      position: relative; overflow: hidden; transition: all .3s;
+    }
+    .stat-card::before {
+      content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+      background: linear-gradient(to bottom, var(--neon), var(--purple));
+    }
+    .stat-card:hover {
+      border-color: rgba(0,212,255,.3);
+      box-shadow: 0 0 28px rgba(0,212,255,.07);
+      transform: translateX(5px);
+    }
+    .stat-num {
+      font-size: 38px; font-weight: 900; line-height: 1; min-width: 90px;
+      background: linear-gradient(135deg, var(--neon), var(--purple));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .stat-info h4 { font-size: 15px; font-weight: 700; margin-bottom: 3px; }
+    .stat-info p { font-size: 13px; color: var(--muted); line-height: 1.45; }
+
+    /* ── AI TECH ── */
+    #ai-tech {
+      background: radial-gradient(ellipse at 100% 50%, rgba(167,139,250,.06) 0%, transparent 55%);
+    }
+    .sec-head { text-align: center; margin-bottom: 64px; }
+    .sec-head p { color: var(--dim); font-size: 17px; margin-top: 16px; max-width: 540px; margin-left: auto; margin-right: auto; }
+    .tech-cards { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; margin-bottom: 48px; }
+    .tech-card {
+      padding: 34px 28px; background: var(--card);
+      border: 1px solid var(--border); border-radius: 20px;
+      transition: all .4s; position: relative; overflow: hidden;
+    }
+    .tech-card::after {
+      content: ''; position: absolute; inset: 0; border-radius: 20px;
+      background: linear-gradient(135deg, rgba(0,212,255,.05), rgba(167,139,250,.05));
+      opacity: 0; transition: opacity .4s;
+    }
+    .tech-card:hover {
+      border-color: rgba(0,212,255,.35);
+      box-shadow: 0 0 40px rgba(0,212,255,.1), 0 24px 60px rgba(0,0,0,.3);
+      transform: translateY(-6px);
+    }
+    .tech-card:hover::after { opacity: 1; }
+    .t-icon {
+      width: 54px; height: 54px; border-radius: 14px; font-size: 26px; margin-bottom: 22px;
+      background: linear-gradient(135deg, rgba(0,212,255,.14), rgba(167,139,250,.14));
+      border: 1px solid rgba(0,212,255,.18);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .tech-card .t-tag { font-size: 11px; font-weight: 700; color: var(--neon); letter-spacing: 2px; margin-bottom: 10px; display: block; }
+    .tech-card h3 { font-size: 19px; font-weight: 700; margin-bottom: 12px; }
+    .tech-card p { color: var(--muted); font-size: 14px; line-height: 1.75; }
+    .stack-row { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+    .s-badge {
+      padding: 7px 15px; border-radius: 7px; font-size: 13px; font-weight: 500;
+      color: var(--dim); background: rgba(255,255,255,.04); border: 1px solid var(--border);
+      transition: all .3s; cursor: default;
+    }
+    .s-badge:hover { border-color: rgba(0,212,255,.4); color: var(--neon); background: rgba(0,212,255,.05); }
+
+    /* ── SERVICES ── */
+    #services { background: var(--bg2); }
+    .svc-item {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 80px;
+      align-items: center; padding: 64px 0; border-bottom: 1px solid var(--border);
+    }
+    .svc-item:first-of-type { padding-top: 0; }
+    .svc-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .svc-item.rev { direction: rtl; }
+    .svc-item.rev > * { direction: ltr; }
+    .svc-visual {
+      aspect-ratio: 4/3; background: var(--card); border: 1px solid var(--border);
+      border-radius: 20px; display: flex; align-items: center; justify-content: center;
+      font-size: 76px; position: relative; overflow: hidden;
+    }
+    .svc-visual .g-overlay {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(0,212,255,.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,212,255,.05) 1px, transparent 1px);
+      background-size: 28px 28px;
+    }
+    .svc-visual .icon-wrap { position: relative; z-index: 1; }
+    .svc-num { font-size: 12px; font-weight: 700; color: var(--neon); letter-spacing: 2px; margin-bottom: 10px; }
+    .svc-content h3 { font-size: clamp(22px, 3vw, 34px); font-weight: 800; line-height: 1.2; margin-bottom: 14px; }
+    .svc-content p { color: var(--dim); font-size: 15px; line-height: 1.8; margin-bottom: 24px; }
+    .feat-list { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+    .feat-list li { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--dim); }
+    .feat-list li::before {
+      content: ''; width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
+      background: linear-gradient(135deg, var(--neon), var(--purple));
+    }
+
+    /* ── PROCESS ── */
+    #process {
+      background: radial-gradient(ellipse at 50% 0%, rgba(0,212,255,.06) 0%, transparent 55%);
+    }
+    .steps {
+      display: grid; grid-template-columns: repeat(4,1fr);
+      gap: 0; margin-top: 68px; position: relative;
+    }
+    .steps::before {
+      content: ''; position: absolute; top: 27px;
+      left: 12.5%; right: 12.5%; height: 1px;
+      background: linear-gradient(to right, var(--neon), var(--purple));
+    }
+    .step { text-align: center; padding: 0 20px; position: relative; z-index: 1; }
+    .step-dot {
+      width: 54px; height: 54px; border-radius: 50%; margin: 0 auto 22px;
+      background: var(--card); border: 2px solid var(--neon);
+      display: flex; align-items: center; justify-content: center; font-size: 22px;
+      box-shadow: 0 0 20px rgba(0,212,255,.2); transition: all .3s;
+    }
+    .step:hover .step-dot { box-shadow: 0 0 32px rgba(0,212,255,.5); transform: scale(1.1); }
+    .step-wk { font-size: 11px; font-weight: 700; color: var(--neon); letter-spacing: 2px; margin-bottom: 8px; }
+    .step h4 { font-size: 17px; font-weight: 700; margin-bottom: 10px; }
+    .step p { font-size: 13px; color: var(--muted); line-height: 1.65; }
+
+    /* ── PORTFOLIO ── */
+    #portfolio { background: var(--bg2); }
+    .port-grid {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 22px; margin-top: 64px;
+    }
+    .port-card {
+      border-radius: 20px; overflow: hidden; background: var(--card);
+      border: 1px solid var(--border); transition: all .4s; cursor: pointer;
+    }
+    .port-card:hover {
+      border-color: rgba(0,212,255,.38);
+      box-shadow: 0 0 42px rgba(0,212,255,.1), 0 24px 60px rgba(0,0,0,.4);
+      transform: translateY(-8px);
+    }
+    .port-img {
+      position: relative; overflow: hidden; height: 380px;
+      background: linear-gradient(160deg, #0d1527, #1a0a2e);
+      display: flex; align-items: flex-end; justify-content: center;
+      padding: 28px 36px 0;
+    }
+    .port-img img {
+      width: auto; max-width: 68%; height: 100%;
+      object-fit: contain; object-position: top;
+      border-radius: 14px 14px 0 0;
+      box-shadow: 0 -10px 40px rgba(0,0,0,.5);
+      display: block;
+    }
+    .port-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(3,7,18,.88) 0%, transparent 55%);
+      opacity: 0; transition: opacity .35s;
+      display: flex; align-items: flex-end; padding: 20px;
+    }
+    .port-card:hover .port-overlay { opacity: 1; }
+    .port-overlay span { color: var(--neon); font-size: 13px; font-weight: 600; }
+    .port-info { padding: 18px 22px; }
+    .port-tag { font-size: 10px; font-weight: 700; color: var(--neon); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 5px; }
+    .port-info h3 { font-size: 17px; font-weight: 700; margin-bottom: 4px; }
+    .port-info p { font-size: 13px; color: var(--muted); }
+
+    /* ── CONTACT ── */
+    #contact {
+      background: radial-gradient(ellipse at 50% 100%, rgba(167,139,250,.07) 0%, transparent 55%);
+    }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1.25fr; gap: 80px; align-items: start; }
+    .c-info .section-title { font-size: clamp(28px, 4vw, 46px); margin-bottom: 18px; }
+    .c-info p { color: var(--dim); font-size: 15px; line-height: 1.85; margin-bottom: 36px; }
+    .c-email {
+      display: flex; align-items: center; gap: 14px; padding: 16px 22px;
+      background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+      text-decoration: none; color: var(--text); transition: all .3s;
+    }
+    .c-email:hover { border-color: rgba(0,212,255,.4); box-shadow: 0 0 22px rgba(0,212,255,.09); }
+    .c-email-icon {
+      width: 42px; height: 42px; border-radius: 10px; font-size: 18px; flex-shrink: 0;
+      background: linear-gradient(135deg, rgba(0,212,255,.14), rgba(167,139,250,.14));
+      display: flex; align-items: center; justify-content: center;
+    }
+    .c-email-text small { font-size: 11px; color: var(--muted); display: block; margin-bottom: 2px; }
+    .c-email-text span { font-size: 14px; font-weight: 600; }
+    .c-form {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 24px; padding: 38px;
+    }
+    .fg { margin-bottom: 18px; }
+    .fg label { display: block; font-size: 12px; font-weight: 600; color: var(--dim); margin-bottom: 7px; letter-spacing: .5px; }
+    .fg input, .fg select, .fg textarea {
+      width: 100%; padding: 12px 15px; background: rgba(255,255,255,.04);
+      border: 1px solid var(--border); border-radius: 10px; color: var(--text);
+      font-family: 'Inter', sans-serif; font-size: 14px; outline: none;
+      transition: all .3s; resize: none;
+    }
+    .fg input:focus, .fg select:focus, .fg textarea:focus {
+      border-color: rgba(0,212,255,.5);
+      box-shadow: 0 0 0 3px rgba(0,212,255,.07);
+      background: rgba(0,212,255,.02);
+    }
+    .fg textarea { height: 120px; }
+    .fg select { appearance: none; cursor: pointer; }
+    .fg select option { background: #0b1220; }
+    .f2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .btn-submit {
+      width: 100%; padding: 14px; margin-top: 6px;
+      background: linear-gradient(135deg, var(--neon), var(--purple));
+      color: #030712; font-weight: 700; font-size: 15px;
+      border-radius: 10px; border: none; cursor: pointer; transition: all .3s;
+    }
+    .btn-submit:hover {
+      box-shadow: 0 0 32px rgba(0,212,255,.4); transform: translateY(-2px);
+    }
+    #form-ok { display: none; text-align: center; padding: 48px 0; }
+    #form-ok .ok-icon { font-size: 52px; margin-bottom: 16px; }
+    #form-ok h3 { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+    #form-ok p { color: var(--muted); font-size: 14px; }
+
+    /* ── FOOTER ── */
+    footer { padding: 44px 0; border-top: 1px solid var(--border); }
+    .foot-inner {
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 20px;
+    }
+    .foot-logo {
+      display: flex; align-items: center; gap: 9px;
+      text-decoration: none; color: var(--text);
+    }
+    .foot-logo .logo-box { width: 28px; height: 28px; font-size: 13px; }
+    .foot-logo span { font-size: 17px; font-weight: 800; }
+    .foot-copy { font-size: 13px; color: var(--muted); }
+    .foot-mail a { font-size: 13px; color: var(--muted); text-decoration: none; transition: color .2s; }
+    .foot-mail a:hover { color: var(--neon); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1024px) {
+      .vision-grid, .contact-grid { grid-template-columns: 1fr; gap: 48px; }
+      .tech-cards { grid-template-columns: 1fr 1fr; }
+      .steps { grid-template-columns: 1fr 1fr; gap: 40px; }
+      .steps::before { display: none; }
+    }
+    @media (max-width: 768px) {
+      section { padding: 80px 0; }
+      .nav-links {
+        display: none; flex-direction: column; position: fixed;
+        inset: 0; background: rgba(3,7,18,.97); backdrop-filter: blur(20px);
+        align-items: center; justify-content: center; gap: 28px;
+        font-size: 18px; z-index: 999;
+      }
+      .nav-links.open { display: flex; }
+      .hamburger { display: flex; }
+      .svc-item { grid-template-columns: 1fr; gap: 28px; }
+      .svc-item.rev { direction: ltr; }
+      .port-grid { grid-template-columns: 1fr; max-width: 360px; margin-left: auto; margin-right: auto; }
+      .tech-cards { grid-template-columns: 1fr; }
+      .steps { grid-template-columns: 1fr 1fr; }
+      .f2 { grid-template-columns: 1fr; }
+      .foot-inner { justify-content: center; text-align: center; flex-direction: column; }
+    }
+    @media (max-width: 480px) {
+      .hero-title { letter-spacing: -2px; }
+      .steps { grid-template-columns: 1fr; }
+      .c-form { padding: 24px; }
+      .port-img { height: 300px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="container">
+    <div class="nav-wrap">
+      <a href="#" class="logo">
+        <div class="logo-box">⚡</div>
+        CodeBridge
+      </a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#vision">비전</a></li>
+        <li><a href="#ai-tech">기술</a></li>
+        <li><a href="#services">서비스</a></li>
+        <li><a href="#portfolio">포트폴리오</a></li>
+        <li><a href="#contact" class="nav-cta">프로젝트 시작하기</a></li>
+      </ul>
+      <div class="hamburger" id="ham"><span></span><span></span><span></span></div>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-content">
+    <h1 class="hero-title">
+      아이디어가 앱이 되는<br>
+      가장 빠른 길,<br>
+      <span class="grad">CodeBridge</span>
+    </h1>
+    <p class="hero-sub">AI 기술로 무장한 전문 개발팀이 당신의 비즈니스 아이디어를<br>검증된 모바일·웹 앱으로 가장 빠르게 연결합니다.</p>
+    <div class="hero-btns">
+      <a href="#contact" class="btn-p">프로젝트 시작하기 →</a>
+      <a href="#portfolio" class="btn-s">포트폴리오 보기</a>
+    </div>
+  </div>
+  <div class="scroll-ind">scroll</div>
+</section>
+
+<!-- TRUST BAR -->
+<div id="trust">
+  <div class="marquee">
+    <div class="mq-group">
+      <div class="mq-item"><span class="mq-dot"></span>React Native</div>
+      <div class="mq-item"><span class="mq-dot"></span>Flutter</div>
+      <div class="mq-item"><span class="mq-dot"></span>Next.js</div>
+      <div class="mq-item"><span class="mq-dot"></span>OpenAI API</div>
+      <div class="mq-item"><span class="mq-dot"></span>Claude API</div>
+      <div class="mq-item"><span class="mq-dot"></span>Supabase</div>
+      <div class="mq-item"><span class="mq-dot"></span>Firebase</div>
+      <div class="mq-item"><span class="mq-dot"></span>AWS</div>
+      <div class="mq-item"><span class="mq-dot"></span>Vercel</div>
+      <div class="mq-item"><span class="mq-dot"></span>TypeScript</div>
+    </div>
+    <div class="mq-group" aria-hidden="true">
+      <div class="mq-item"><span class="mq-dot"></span>React Native</div>
+      <div class="mq-item"><span class="mq-dot"></span>Flutter</div>
+      <div class="mq-item"><span class="mq-dot"></span>Next.js</div>
+      <div class="mq-item"><span class="mq-dot"></span>OpenAI API</div>
+      <div class="mq-item"><span class="mq-dot"></span>Claude API</div>
+      <div class="mq-item"><span class="mq-dot"></span>Supabase</div>
+      <div class="mq-item"><span class="mq-dot"></span>Firebase</div>
+      <div class="mq-item"><span class="mq-dot"></span>AWS</div>
+      <div class="mq-item"><span class="mq-dot"></span>Vercel</div>
+      <div class="mq-item"><span class="mq-dot"></span>TypeScript</div>
+    </div>
+  </div>
+</div>
+
+<!-- VISION -->
+<section id="vision">
+  <div class="container">
+    <div class="vision-grid">
+      <div class="vision-text fu">
+        <span class="label">OUR VISION</span>
+        <h2 class="section-title">
+          우리는 단순히<br>앱을 만들지 않습니다.<br>
+          <span class="grad">성공을 설계합니다.</span>
+        </h2>
+        <p>수백 개의 앱이 매일 출시되지만, 살아남는 건 극소수입니다.<br><br>
+        코드브릿지는 AI 기반의 정밀한 기술력과 실전 경험으로 시장에서 살아남는 제품을 만듭니다. 우리의 코드 한 줄이 스타트업의 미래를 바꿉니다.</p>
+      </div>
+      <div class="stat-cards">
+        <div class="stat-card fu d1">
+          <div class="stat-num">150+</div>
+          <div class="stat-info">
+            <h4>성공적으로 출시한 앱</h4>
+            <p>다양한 산업군의 모바일·웹 앱을 성공적으로 시장에 출시했습니다.</p>
+          </div>
+        </div>
+        <div class="stat-card fu d2">
+          <div class="stat-num">4주</div>
+          <div class="stat-info">
+            <h4>평균 MVP 출시 기간</h4>
+            <p>AI 가속 개발 파이프라인으로 아이디어를 단 4주 만에 제품으로.</p>
+          </div>
+        </div>
+        <div class="stat-card fu d3">
+          <div class="stat-num">98%</div>
+          <div class="stat-info">
+            <h4>고객 재계약 만족도</h4>
+            <p>첫 프로젝트 이후 98%의 고객이 다음 프로젝트도 함께합니다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AI TECH -->
+<section id="ai-tech">
+  <div class="container">
+    <div class="sec-head fu">
+      <span class="label">AI TECHNOLOGY</span>
+      <h2 class="section-title">
+        AI가 바꾼 개발의 패러다임,<br>
+        <span class="grad">우리가 그 최전선에 있습니다.</span>
+      </h2>
+      <p>코드브릿지는 최신 AI 기술을 개발 프로세스 전반에 내재화하여 기존 대비 3배 빠른 속도, 더 높은 품질을 실현합니다.</p>
+    </div>
+    <div class="tech-cards">
+      <div class="tech-card fu d1">
+        <div class="t-icon">🧠</div>
+        <span class="t-tag">AI PLANNING</span>
+        <h3>AI 기획 & 설계</h3>
+        <p>LLM 기반 요구사항 분석과 AI 사용자 시나리오 시뮬레이션으로 기획 단계에서 실패 요인을 사전에 제거합니다. 막연한 아이디어도 정교한 제품 명세로.</p>
+      </div>
+      <div class="tech-card fu d2">
+        <div class="t-icon">⚡</div>
+        <span class="t-tag">AI DEVELOPMENT</span>
+        <h3>AI 가속 개발</h3>
+        <p>AI 코드 생성 및 자동화 파이프라인으로 반복 작업을 제거하고 핵심 기능 개발에 집중합니다. 같은 시간에 3배의 결과물을 만들어냅니다.</p>
+      </div>
+      <div class="tech-card fu d3">
+        <div class="t-icon">🔍</div>
+        <span class="t-tag">AI QA</span>
+        <h3>AI 품질 보증</h3>
+        <p>AI 자동 테스트, 취약점 스캔, 성능 최적화로 사람이 놓치기 쉬운 오류를 원천 차단합니다. 출시 전, 이미 검증된 코드.</p>
+      </div>
+    </div>
+    <div class="stack-row fu">
+      <span class="s-badge">React Native</span>
+      <span class="s-badge">Flutter</span>
+      <span class="s-badge">Next.js</span>
+      <span class="s-badge">OpenAI API</span>
+      <span class="s-badge">Claude API</span>
+      <span class="s-badge">Gemini API</span>
+      <span class="s-badge">Supabase</span>
+      <span class="s-badge">Firebase</span>
+      <span class="s-badge">AWS</span>
+      <span class="s-badge">Vercel</span>
+      <span class="s-badge">TypeScript</span>
+      <span class="s-badge">Node.js</span>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="container">
+    <div class="sec-head fu">
+      <span class="label">SERVICES</span>
+      <h2 class="section-title">우리가 제공하는<br><span class="grad">전문 서비스</span></h2>
+    </div>
+
+    <div class="svc-item">
+      <div class="svc-visual fu">
+        <div class="g-overlay"></div>
+        <div class="icon-wrap">📱</div>
+      </div>
+      <div class="svc-content fu d1">
+        <div class="svc-num">01</div>
+        <h3>모바일 앱 개발</h3>
+        <p>iOS와 Android를 동시에 공략하는 크로스플랫폼 앱 개발. React Native와 Flutter로 네이티브 수준의 성능과 UX를 구현합니다.</p>
+        <ul class="feat-list">
+          <li>iOS / Android 동시 출시</li>
+          <li>네이티브 수준 성능 최적화</li>
+          <li>앱스토어 심사 대응 & 출시 지원</li>
+          <li>푸시 알림, 결제 연동 등 핵심 기능</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="svc-item rev">
+      <div class="svc-visual fu">
+        <div class="g-overlay"></div>
+        <div class="icon-wrap">🌐</div>
+      </div>
+      <div class="svc-content fu d1">
+        <div class="svc-num">02</div>
+        <h3>웹앱 & SaaS 개발</h3>
+        <p>사용자가 몰려도 끄떡없는 확장 가능한 웹 서비스. Next.js 기반의 SEO 최적화된 고성능 웹앱으로 비즈니스를 온라인에 구현합니다.</p>
+        <ul class="feat-list">
+          <li>Next.js 기반 고성능 웹 서비스</li>
+          <li>관리자 대시보드 & CMS 구축</li>
+          <li>SEO 최적화 및 Core Web Vitals 대응</li>
+          <li>글로벌 CDN 및 클라우드 배포</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="svc-item">
+      <div class="svc-visual fu">
+        <div class="g-overlay"></div>
+        <div class="icon-wrap">🤖</div>
+      </div>
+      <div class="svc-content fu d1">
+        <div class="svc-num">03</div>
+        <h3>AI 기능 통합</h3>
+        <p>기존 앱에 AI를 심거나, 처음부터 AI 중심으로 설계합니다. 챗봇, 이미지 분석, 개인화 추천 등 비즈니스에 꼭 맞는 AI 기능을 구현합니다.</p>
+        <ul class="feat-list">
+          <li>LLM 기반 챗봇 & AI 어시스턴트</li>
+          <li>이미지 / 음성 AI 분석 기능</li>
+          <li>개인화 추천 알고리즘</li>
+          <li>OpenAI, Claude, Gemini API 연동</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process">
+  <div class="container">
+    <div class="sec-head fu">
+      <span class="label">HOW WE WORK</span>
+      <h2 class="section-title">아이디어에서 출시까지<br><span class="grad">단 4주</span></h2>
+      <p>검증된 AI 개발 프로세스로 빠르고 정확하게 당신의 제품을 시장에 내놓습니다.</p>
+    </div>
+    <div class="steps">
+      <div class="step fu d1">
+        <div class="step-dot">🎯</div>
+        <div class="step-wk">WEEK 01</div>
+        <h4>요구사항 분석</h4>
+        <p>AI 기반 시장 분석과 사용자 리서치로 제품의 핵심 가치를 정의합니다.</p>
+      </div>
+      <div class="step fu d2">
+        <div class="step-dot">✏️</div>
+        <div class="step-wk">WEEK 02</div>
+        <h4>기획 & 디자인</h4>
+        <p>와이어프레임부터 고품질 UI/UX 디자인까지, 빠르게 시각화합니다.</p>
+      </div>
+      <div class="step fu d3">
+        <div class="step-dot">⚡</div>
+        <div class="step-wk">WEEK 03</div>
+        <h4>AI 가속 개발</h4>
+        <p>AI 파이프라인으로 핵심 기능을 빠르게 구현하고 지속적으로 테스트합니다.</p>
+      </div>
+      <div class="step fu d4">
+        <div class="step-dot">🚀</div>
+        <div class="step-wk">WEEK 04</div>
+        <h4>출시 & 지원</h4>
+        <p>앱스토어 출시부터 사후 모니터링까지, 성공적인 런칭을 함께합니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO -->
+<section id="portfolio">
+  <div class="container">
+    <div class="sec-head fu">
+      <span class="label">PORTFOLIO</span>
+      <h2 class="section-title">직접 만든<br><span class="grad">결과물로 말합니다</span></h2>
+    </div>
+    <div class="port-grid">
+      <div class="port-card fu d1">
+        <div class="port-img">
+          <img src="Portfolio/1.png" alt="AI 번호 추천 앱">
+          <div class="port-overlay"><span>자세히 보기 →</span></div>
+        </div>
+        <div class="port-info">
+          <div class="port-tag">Mobile App · AI</div>
+          <h3>AI 번호 추천 앱</h3>
+          <p>Gemini AI 기반 통계 분석으로 최적의 번호를 추천하는 스마트 앱</p>
+        </div>
+      </div>
+      <div class="port-card fu d2">
+        <div class="port-img">
+          <img src="Portfolio/2.png" alt="AI 타로 카드 앱">
+          <div class="port-overlay"><span>자세히 보기 →</span></div>
+        </div>
+        <div class="port-info">
+          <div class="port-tag">Mobile App · AI</div>
+          <h3>AI 타로 카드 앱</h3>
+          <p>AI가 고민을 분석하고 맞춤형 타로 리딩을 제공하는 신비로운 앱</p>
+        </div>
+      </div>
+      <div class="port-card fu d3">
+        <div class="port-img">
+          <img src="Portfolio/3.png" alt="타로 카드 선택 화면">
+          <div class="port-overlay"><span>자세히 보기 →</span></div>
+        </div>
+        <div class="port-info">
+          <div class="port-tag">Mobile App · UX</div>
+          <h3>타로 카드 선택 UX</h3>
+          <p>직관과 감성을 자극하는 몰입형 카드 선택 인터랙션 경험</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <div class="contact-grid">
+      <div class="c-info fu">
+        <span class="label">CONTACT</span>
+        <h2 class="section-title">
+          프로젝트를<br>시작할 준비가<br>
+          <span class="grad">되셨나요?</span>
+        </h2>
+        <p>아이디어가 있다면 지금 바로 연락주세요.<br>24시간 이내에 전문 컨설턴트가 응답합니다.<br><br>무료 초기 상담으로 프로젝트 가능성을 함께 탐색해 드립니다.</p>
+        <a href="mailto:codebridge.corp@gmail.com" class="c-email">
+          <div class="c-email-icon">✉️</div>
+          <div class="c-email-text">
+            <small>이메일 문의</small>
+            <span>codebridge.corp@gmail.com</span>
+          </div>
+        </a>
+      </div>
+      <div class="c-form fu d1">
+        <form id="contactForm" onsubmit="handleSubmit(event)">
+          <div class="f2">
+            <div class="fg">
+              <label>이름 *</label>
+              <input type="text" placeholder="홍길동" required>
+            </div>
+            <div class="fg">
+              <label>회사명</label>
+              <input type="text" placeholder="(주)코드브릿지">
+            </div>
+          </div>
+          <div class="fg">
+            <label>이메일 *</label>
+            <input type="email" placeholder="hello@company.com" required>
+          </div>
+          <div class="fg">
+            <label>프로젝트 유형</label>
+            <select>
+              <option value="">선택해주세요</option>
+              <option>모바일 앱 개발</option>
+              <option>웹앱 / SaaS 개발</option>
+              <option>AI 기능 통합</option>
+              <option>기타 문의</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label>프로젝트 내용 *</label>
+            <textarea placeholder="어떤 앱을 만들고 싶으신가요? 간략하게 설명해주세요." required></textarea>
+          </div>
+          <button type="submit" class="btn-submit">무료 상담 신청하기 →</button>
+        </form>
+        <div id="form-ok">
+          <div class="ok-icon">✅</div>
+          <h3>문의가 접수되었습니다!</h3>
+          <p>24시간 이내에 담당자가 연락드리겠습니다.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="foot-inner">
+      <a href="#" class="foot-logo">
+        <div class="logo-box">⚡</div>
+        <span>CodeBridge</span>
+      </a>
+      <p class="foot-copy" id="copy"></p>
+      <div class="foot-mail"><a href="mailto:codebridge.corp@gmail.com">codebridge.corp@gmail.com</a></div>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ── PARTICLE CANVAS ── */
+const canvas = document.getElementById('hero-canvas');
+const ctx = canvas.getContext('2d');
+let particles = [], raf;
+
+function resize() {
+  canvas.width  = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+
+function initParticles() {
+  particles = [];
+  const n = Math.min(Math.floor(canvas.width * canvas.height / 14000), 80);
+  for (let i = 0; i < n; i++) {
+    particles.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      r: Math.random() * 1.4 + 0.4,
+      vx: (Math.random() - .5) * .38,
+      vy: (Math.random() - .5) * .38,
+      a: Math.random() * .45 + .15,
+    });
+  }
+}
+
+function tick() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  for (let i = 0; i < particles.length; i++) {
+    const p = particles[i];
+    for (let j = i + 1; j < particles.length; j++) {
+      const q = particles[j];
+      const dx = p.x - q.x, dy = p.y - q.y;
+      const d  = Math.sqrt(dx * dx + dy * dy);
+      if (d < 130) {
+        ctx.beginPath();
+        ctx.strokeStyle = `rgba(0,212,255,${.07 * (1 - d / 130)})`;
+        ctx.lineWidth = .5;
+        ctx.moveTo(p.x, p.y);
+        ctx.lineTo(q.x, q.y);
+        ctx.stroke();
+      }
+    }
+  }
+  particles.forEach(p => {
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(0,212,255,${p.a})`;
+    ctx.fill();
+    p.x += p.vx; p.y += p.vy;
+    if (p.x < 0 || p.x > canvas.width)  p.vx *= -1;
+    if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+  });
+  raf = requestAnimationFrame(tick);
+}
+
+resize(); initParticles(); tick();
+window.addEventListener('resize', () => { resize(); initParticles(); });
+
+/* ── NAV SCROLL ── */
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 40));
+
+/* ── HAMBURGER ── */
+const ham = document.getElementById('ham');
+const links = document.getElementById('navLinks');
+ham.addEventListener('click', () => {
+  ham.classList.toggle('open');
+  links.classList.toggle('open');
+});
+links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+  ham.classList.remove('open');
+  links.classList.remove('open');
+}));
+
+/* ── FADE-IN ON SCROLL ── */
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fu').forEach(el => io.observe(el));
+
+/* ── CONTACT FORM ── */
+function handleSubmit(e) {
+  e.preventDefault();
+  document.getElementById('contactForm').style.display = 'none';
+  document.getElementById('form-ok').style.display    = 'block';
+}
+
+/* ── FOOTER YEAR ── */
+document.getElementById('copy').textContent =
+  '© ' + new Date().getFullYear() + ' CodeBridge. All rights reserved.';
+</script>
+</body>
+</html>
