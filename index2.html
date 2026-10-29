@@ -49,6 +49,9 @@
       --t-label-size:   12px;   /* English section labels */
       --t-ui-size:      15px;   /* buttons, menu */
       --t-stat-size:    clamp(40px, 4vw, 48px);
+      /* hero & section titles are the exception to the 800/600/400 rule */
+      --title-light:  100;   /* plain part */
+      --title-strong: 600;   /* accent (.hl) part */
       --c-title: var(--text);  --c-body: var(--dim);  --c-caption: var(--muted);
       /* light "client website" inside the service browser mockup */
       --mk-paper:  #F8FAFC;
@@ -68,7 +71,7 @@
       --border:    #E3E8F0;
       --text:      #0F172A;
       --dim:       #4B5567;
-      --muted:     #8A94A6;
+      --muted:     #6B7586;
       --accent:    #2F6BFF;
       --accent-strong:       #2563EB;   /* white text 5.2:1 */
       --accent-strong-hover: #1D4ED8;
@@ -115,12 +118,13 @@
       text-transform: uppercase; color: var(--accent); margin-bottom: 16px; display: block;
     }
     .section-title {
-      font-size: var(--t-section-size); font-weight: var(--fw-bold);
+      font-size: var(--t-section-size); font-weight: var(--title-light);
       line-height: var(--t-section-lh); letter-spacing: -0.025em; color: var(--c-title);
     }
     /* key words inside a paragraph (1-2 per paragraph) */
     p strong { color: var(--c-title); font-weight: var(--fw-semi); }
     .hl { color: var(--accent); }
+    .hero-title .hl, .section-title .hl { font-weight: var(--title-strong); }
 
     /* fade-up */
     .fu { opacity: 0; transform: translateY(36px); transition: opacity .8s ease, transform .8s ease; }
@@ -208,7 +212,7 @@
     @media (prefers-reduced-motion: reduce) { .hero-bg .blob { animation: none; } }
     .hero-content { position: relative; z-index: 1; max-width: 840px; }
     .hero-title {
-      font-size: var(--t-hero-size); font-weight: var(--fw-bold);
+      font-size: var(--t-hero-size); font-weight: var(--title-light);
       line-height: var(--t-hero-lh); letter-spacing: -0.03em; color: var(--c-title); margin-bottom: 24px;
     }
     .hero-title-sub {
@@ -620,6 +624,7 @@
       .steps::before { display: none; }
     }
     @media (max-width: 768px) {
+      :root { --title-light: 200; }
       section { padding: 80px 0; }
       .nav-links {
         display: none; flex-direction: column; position: fixed;
