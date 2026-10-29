@@ -38,6 +38,17 @@
       --blob-2:    #7FA8FF;   /* light blue */
       --blob-opacity:  .13;
       --grain-opacity: .07;
+      /* type scale: hero / section / card / body / caption (+ label) */
+      --fw-bold: 800;  --fw-semi: 600;  --fw-regular: 400;
+      --t-hero-size:    clamp(44px, 8vw, 88px);   --t-hero-lh: 1.08;
+      --t-section-size: clamp(34px, 5vw, 58px);   --t-section-lh: 1.15;
+      --t-card-size:    clamp(19px, 1.8vw, 24px); --t-card-lh: 1.35;
+      --t-body-size:    16px;                     --t-body-lh: 1.75;
+      --t-caption-size: 13px;                     --t-caption-lh: 1.6;
+      --t-label-size:   12px;   /* English section labels */
+      --t-ui-size:      15px;   /* buttons, menu */
+      --t-stat-size:    clamp(40px, 4vw, 48px);
+      --c-title: var(--text);  --c-body: var(--dim);  --c-caption: var(--muted);
       /* light "client website" inside the service browser mockup */
       --mk-paper:  #F8FAFC;
       --mk-white:  #FFFFFF;
@@ -68,13 +79,15 @@
     section { padding: 120px 0; }
 
     .label {
-      font-size: 11px; font-weight: 700; letter-spacing: 3px;
-      text-transform: uppercase; color: var(--accent); margin-bottom: 14px; display: block;
+      font-size: var(--t-label-size); font-weight: var(--fw-semi); letter-spacing: .2em;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 16px; display: block;
     }
     .section-title {
-      font-size: clamp(32px, 5vw, 56px);
-      font-weight: 800; line-height: 1.1; letter-spacing: -0.02em;
+      font-size: var(--t-section-size); font-weight: var(--fw-bold);
+      line-height: var(--t-section-lh); letter-spacing: -0.025em; color: var(--c-title);
     }
+    /* key words inside a paragraph (1-2 per paragraph) */
+    p strong { color: var(--c-title); font-weight: var(--fw-semi); }
     .hl { color: var(--accent); }
 
     /* fade-up */
@@ -98,7 +111,7 @@
     nav.scrolled::before { opacity: 1; }
     .nav-wrap { display: flex; align-items: center; justify-content: space-between; }
     .logo {
-      font-size: 19px; font-weight: 800; text-decoration: none; color: var(--text);
+      font-size: 19px; font-weight: var(--fw-bold); text-decoration: none; color: var(--text);
       display: flex; align-items: center; gap: 9px;
     }
     .logo-box {
@@ -109,15 +122,15 @@
     .logo-box svg { width: 62%; height: 62%; }
     .nav-links { display: flex; align-items: center; gap: 34px; list-style: none; }
     .nav-links a {
-      text-decoration: none; color: var(--muted); font-size: 14px;
-      font-weight: 500; transition: color .2s;
+      text-decoration: none; color: var(--c-body); font-size: var(--t-ui-size);
+      font-weight: var(--fw-regular); transition: color .2s;
     }
     .nav-links a:hover { color: var(--text); }
     .nav-links a.nav-cta:hover { background: var(--accent-strong-hover); }
     .nav-cta {
       padding: 8px 20px !important;
       background: var(--accent-strong); transition: background .2s !important;
-      color: var(--on-accent) !important; border-radius: 8px; font-weight: 700 !important;
+      color: var(--on-accent) !important; border-radius: 8px; font-weight: var(--fw-semi) !important;
     }
     .hamburger {
       display: none; flex-direction: column; gap: 5px;
@@ -163,39 +176,39 @@
     @media (prefers-reduced-motion: reduce) { .hero-bg .blob { animation: none; } }
     .hero-content { position: relative; z-index: 1; max-width: 840px; }
     .hero-title {
-      font-size: clamp(44px, 8.5vw, 92px);
-      font-weight: 900; line-height: 1.04; letter-spacing: -0.02em; margin-bottom: 24px;
+      font-size: var(--t-hero-size); font-weight: var(--fw-bold);
+      line-height: var(--t-hero-lh); letter-spacing: -0.03em; color: var(--c-title); margin-bottom: 24px;
     }
     .hero-title-sub {
       display: block; margin-top: 22px;
-      font-size: clamp(18px, 2.4vw, 28px); font-weight: 700; line-height: 1.3; color: var(--text);
+      font-size: var(--t-card-size); font-weight: var(--fw-semi); line-height: var(--t-card-lh); letter-spacing: -0.02em; color: var(--c-title);
     }
     .sr-only {
       position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
       overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
     }
     .hero-sub {
-      font-size: clamp(15px, 1.8vw, 19px); color: var(--dim);
-      line-height: 1.75; margin: 0 auto 48px; max-width: 560px;
+      font-size: var(--t-body-size); color: var(--c-body);
+      line-height: var(--t-body-lh); margin: 0 auto 44px; max-width: 560px;
     }
     .hero-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
     .btn-p {
       padding: 14px 32px; background: var(--accent-strong);
-      color: var(--on-accent); font-weight: 700; font-size: 15px; border-radius: 10px;
+      color: var(--on-accent); font-weight: var(--fw-semi); font-size: var(--t-ui-size); border-radius: 10px;
       text-decoration: none; border: none; cursor: pointer;
       display: inline-flex; align-items: center; gap: 8px; transition: all .3s;
     }
     .btn-p:hover { background: var(--accent-strong-hover); transform: translateY(-2px); }
     .btn-s {
-      padding: 14px 32px; background: transparent; color: var(--text); font-weight: 600;
-      font-size: 15px; border-radius: 10px; text-decoration: none;
+      padding: 14px 32px; background: transparent; color: var(--text); font-weight: var(--fw-semi);
+      font-size: var(--t-ui-size); border-radius: 10px; text-decoration: none;
       border: 1px solid var(--border); cursor: pointer; transition: all .3s;
     }
     .btn-s:hover { border-color: color-mix(in srgb, var(--accent) 50%, transparent); color: var(--accent); }
     .scroll-ind {
       position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%);
       display: flex; flex-direction: column; align-items: center; gap: 8px;
-      font-size: 11px; color: var(--muted); letter-spacing: 2px; text-transform: uppercase;
+      font-size: var(--t-label-size); color: var(--c-caption); letter-spacing: .2em; text-transform: uppercase;
       animation: bob 2.2s ease-in-out infinite;
     }
     .scroll-ind::after {
@@ -221,8 +234,8 @@
     .marquee { display: flex; width: max-content; animation: mq var(--mq-dur, 146s) linear infinite; }
     .mq-group { display: flex; align-items: center; gap: 44px; padding-right: 44px; }
     .mq-item {
-      color: var(--muted); font-size: 13px; font-weight: 600;
-      letter-spacing: .5px; white-space: nowrap;
+      color: var(--c-caption); font-size: var(--t-caption-size); font-weight: var(--fw-semi);
+      letter-spacing: .02em; white-space: nowrap;
       display: flex; align-items: center; gap: 8px;
     }
     .mq-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--accent); }
@@ -231,7 +244,7 @@
     /* ── VISION ── */
     .vision-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
     .vision-text .section-title { margin-bottom: 20px; }
-    .vision-text p { color: var(--dim); font-size: 16px; line-height: 1.85; }
+    .vision-text p { color: var(--c-body); font-size: var(--t-body-size); line-height: var(--t-body-lh); }
     .stat-cards { display: flex; flex-direction: column; gap: 14px; }
     .stat-card {
       padding: 26px 30px; background: var(--card);
@@ -248,20 +261,20 @@
       transform: translateX(5px);
     }
     .stat-num {
-      font-size: 38px; font-weight: 900; line-height: 1; min-width: 90px;
+      font-size: var(--t-stat-size); font-weight: var(--fw-bold); line-height: 1; min-width: 108px; letter-spacing: -0.03em;
       color: var(--accent);
     }
-    .stat-info h4 { font-size: 15px; font-weight: 700; margin-bottom: 3px; }
-    .stat-info p { font-size: 13px; color: var(--muted); line-height: 1.45; }
+    .stat-info h4 { font-size: var(--t-card-size); font-weight: var(--fw-semi); line-height: var(--t-card-lh); color: var(--c-title); margin-bottom: 4px; }
+    .stat-info p { font-size: var(--t-caption-size); color: var(--c-caption); line-height: var(--t-caption-lh); }
 
     /* ── AI TECH ── */
     #ai-tech { padding: 100px 0; }
     .sec-head { text-align: center; margin-bottom: 64px; }
     #ai-tech .sec-head { margin-bottom: 40px; }
-    .sec-head p { color: var(--dim); font-size: 17px; margin-top: 16px; max-width: 540px; margin-left: auto; margin-right: auto; }
+    .sec-head p { color: var(--c-body); font-size: var(--t-body-size); line-height: var(--t-body-lh); margin-top: 18px; max-width: 540px; margin-left: auto; margin-right: auto; }
     .stack-badges { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; max-width: 980px; margin: 0 auto; }
     .s-badge {
-      padding: 7px 15px; border-radius: 7px; font-size: 13px; font-weight: 500;
+      padding: 7px 15px; border-radius: 7px; font-size: var(--t-caption-size); font-weight: var(--fw-regular);
       color: var(--dim); background: color-mix(in srgb, var(--text) 4%, transparent); border: 1px solid var(--border);
       transition: all .3s; cursor: default;
     }
@@ -291,12 +304,11 @@
     }
     .svc-visual .icon-wrap { position: relative; z-index: 1; }
     #services .svc-visual, #portfolio .case-card { background: var(--bg); }
-    .svc-num { font-size: 12px; font-weight: 700; color: var(--accent); letter-spacing: 2px; margin-bottom: 10px; }
-    .svc-content h3 { font-size: clamp(22px, 3vw, 34px); font-weight: 800; line-height: 1.2; margin-bottom: 14px; }
-    .svc-content p { color: var(--dim); font-size: 15px; line-height: 1.8; margin-bottom: 24px; }
-    .svc-content p strong { color: var(--text); font-weight: 700; }
+    .svc-num { font-size: var(--t-label-size); font-weight: var(--fw-semi); color: var(--accent); letter-spacing: .2em; margin-bottom: 10px; }
+    .svc-content h3 { font-size: var(--t-card-size); font-weight: var(--fw-semi); line-height: var(--t-card-lh); color: var(--c-title); margin-bottom: 12px; }
+    .svc-content p { color: var(--c-body); font-size: var(--t-body-size); line-height: var(--t-body-lh); margin-bottom: 22px; }
     .feat-list { list-style: none; display: flex; flex-direction: column; gap: 9px; }
-    .feat-list li { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--dim); }
+    .feat-list li { display: flex; align-items: center; gap: 10px; font-size: var(--t-body-size); color: var(--c-body); }
     .feat-list li::before {
       content: ''; width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
       background: var(--accent);
@@ -438,9 +450,9 @@
     }
     .step-dot .ico { width: 24px; height: 24px; }
     .step:hover .step-dot { transform: translateY(-3px); }
-    .step-wk { font-size: 11px; font-weight: 700; color: var(--accent); letter-spacing: 2px; margin-bottom: 8px; }
-    .step h4 { font-size: 17px; font-weight: 700; margin-bottom: 10px; }
-    .step p { font-size: 13px; color: var(--muted); line-height: 1.65; }
+    .step-wk { font-size: var(--t-label-size); font-weight: var(--fw-semi); color: var(--accent); letter-spacing: .2em; margin-bottom: 8px; }
+    .step h4 { font-size: var(--t-card-size); font-weight: var(--fw-semi); line-height: var(--t-card-lh); color: var(--c-title); margin-bottom: 8px; }
+    .step p { font-size: var(--t-caption-size); color: var(--c-caption); line-height: var(--t-caption-lh); }
 
     /* ── PORTFOLIO ── */
     #portfolio { background: var(--bg2); }
@@ -459,11 +471,11 @@
       background: color-mix(in srgb, var(--text) 3%, var(--bg));
     }
     .case-body { display: flex; flex-direction: column; gap: 10px; flex: 1; padding: 18px 22px 22px; }
-    .case-body h3 { font-size: 18px; font-weight: 700; letter-spacing: -0.02em; }
-    .case-body p { font-size: 15px; color: var(--dim); line-height: 1.7; }
+    .case-body h3 { font-size: var(--t-card-size); font-weight: var(--fw-semi); line-height: var(--t-card-lh); letter-spacing: -0.02em; color: var(--c-title); }
+    .case-body p { font-size: var(--t-body-size); color: var(--c-body); line-height: var(--t-body-lh); }
     .case-tags { display: flex; flex-wrap: wrap; gap: 6px; }
     .case-tag {
-      font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 99px; color: var(--accent);
+      font-size: var(--t-label-size); font-weight: var(--fw-semi); padding: 4px 10px; border-radius: 99px; color: var(--accent);
       background: color-mix(in srgb, var(--accent) 10%, transparent); border: 1px solid color-mix(in srgb, var(--accent) 28%, transparent);
     }
     .case-tag.is-own { color: var(--on-accent); background: var(--accent); border-color: var(--accent); }
@@ -523,14 +535,14 @@
 
     .case-feature { display: grid; grid-template-columns: 1.2fr 1fr; }
     .case-feature .case-body { justify-content: center; gap: 14px; padding: 44px 48px; }
-    .case-feature .case-body h3 { font-size: clamp(24px, 2.6vw, 32px); font-weight: 800; }
+    .case-feature .case-body h3 { font-size: var(--t-card-size); }
 
     .case-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
 
     /* ── CONTACT ── */
     .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
-    .c-info .section-title { font-size: clamp(28px, 4vw, 46px); margin-bottom: 18px; }
-    .c-info p { color: var(--dim); font-size: 15px; line-height: 1.85; }
+    .c-info .section-title { margin-bottom: 20px; }
+    .c-info p { color: var(--c-body); font-size: var(--t-body-size); line-height: var(--t-body-lh); }
     .c-methods { display: grid; gap: 18px; }
     .c-card {
       display: flex; align-items: center; gap: 18px; padding: 26px 28px;
@@ -547,10 +559,10 @@
       display: flex; align-items: center; justify-content: center;
     }
     .c-card-icon .ico { width: 24px; height: 24px; }
-    .c-card-text small { font-size: 11px; color: var(--muted); display: block; margin-bottom: 4px; letter-spacing: .5px; }
-    .c-card-text span { font-size: 18px; font-weight: 700; letter-spacing: .3px; word-break: break-all; }
-    .c-card.mail .c-card-text span { font-size: 15px; }
-    .c-note { font-size: 13px; color: var(--muted); margin-top: 4px; }
+    .c-card-text small { font-size: var(--t-caption-size); color: var(--c-caption); display: block; margin-bottom: 2px; }
+    .c-card-text span { font-size: var(--t-card-size); font-weight: var(--fw-semi); line-height: var(--t-card-lh); word-break: break-all; }
+    .c-card.mail .c-card-text span { font-size: var(--t-body-size); }
+    .c-note { font-size: var(--t-caption-size); color: var(--c-caption); margin-top: 4px; }
 
     /* ── FOOTER ── */
     footer { padding: 44px 0; border-top: 1px solid var(--border); }
@@ -563,10 +575,10 @@
       text-decoration: none; color: var(--text);
     }
     .foot-logo .logo-box { width: 28px; height: 28px; }
-    .foot-logo span { font-size: 17px; font-weight: 800; }
-    .foot-copy { font-size: 13px; color: var(--muted); }
+    .foot-logo span { font-size: 17px; font-weight: var(--fw-bold); }
+    .foot-copy { font-size: var(--t-caption-size); color: var(--c-caption); }
     .foot-mail { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; justify-content: center; }
-    .foot-mail a { font-size: 13px; color: var(--muted); text-decoration: none; transition: color .2s; }
+    .foot-mail a { font-size: var(--t-caption-size); color: var(--c-caption); text-decoration: none; transition: color .2s; }
     .foot-mail a:hover { color: var(--accent); }
 
     /* ── RESPONSIVE ── */
@@ -595,11 +607,12 @@
       .foot-inner { justify-content: center; text-align: center; flex-direction: column; }
     }
     @media (max-width: 600px) {
+      :root { --t-body-size: 15px; }
       .stack-badges { gap: 8px; }
       .stack-badges .s-badge { padding: 6px 12px; font-size: 12.5px; }
     }
     @media (max-width: 480px) {
-      .hero-title { font-size: clamp(36px, 10.4vw, 44px); }
+      :root { --t-hero-size: clamp(36px, 10.4vw, 44px); }
       .steps { grid-template-columns: 1fr; }
       .c-card { padding: 20px 22px; gap: 14px; }
     }
@@ -636,7 +649,7 @@
       개발까지 <span class="hl">한 번에</span><span class="sr-only"> — </span>
       <span class="hero-title-sub">웹사이트·앱 제작 <span class="hl">CodeBridge</span></span>
     </h1>
-    <p class="hero-sub">브랜드 웹사이트부터 모바일 앱, 웹 서비스까지<br>한 팀이 기획·디자인·개발·출시를 책임지고 완성합니다.</p>
+    <p class="hero-sub">브랜드 웹사이트부터 모바일 앱, 웹 서비스까지<br><strong>한 팀이</strong> 기획·디자인·개발·출시를 책임지고 완성합니다.</p>
     <div class="hero-btns">
       <a href="#contact" class="btn-p">프로젝트 문의하기 →</a>
       <a href="#portfolio" class="btn-s">포트폴리오 보기</a>
@@ -776,8 +789,8 @@
           한 번 맡긴 고객이<br>
           <span class="hl">다시 찾는 팀</span>
         </h2>
-        <p>CodeBridge는 각 분야 7년 이상 실무 경력의 디자이너와 개발자가 함께하는 웹·앱 제작 스튜디오입니다.<br><br>
-        기획 단계부터 함께 고민하고 끝까지 꼼꼼히 챙기기 때문에, 한 번 작업한 고객이 다음 프로젝트도 다시 맡겨 주십니다.</p>
+        <p>CodeBridge는 <strong>각 분야 7년 이상 실무 경력</strong>의 디자이너와 개발자가 함께하는 웹·앱 제작 스튜디오입니다.<br><br>
+        기획 단계부터 함께 고민하고 끝까지 꼼꼼히 챙기기 때문에, 한 번 작업한 고객이 <strong>다음 프로젝트도 다시</strong> 맡겨 주십니다.</p>
       </div>
       <div class="stat-cards">
         <div class="stat-card fu d1">
@@ -812,7 +825,7 @@
     <div class="sec-head fu">
       <span class="label">TECH STACK</span>
       <h2 class="section-title">검증된 기술로<br><span class="hl">탄탄하게 만듭니다</span></h2>
-      <p>반복 작업에는 AI 도구를 활용해 시간을 아끼고, 그만큼 디자인 디테일과 품질 점검에 더 집중합니다.</p>
+      <p>반복 작업에는 AI 도구를 활용해 시간을 아끼고, 그만큼 <strong>디자인 디테일과 품질 점검</strong>에 더 집중합니다.</p>
     </div>
     <!-- 순서: 디자인 → 프론트엔드 → 앱 → 백엔드 → 데이터베이스 → 인프라 → AI -->
     <div class="stack-badges fu">
@@ -927,7 +940,7 @@
       <div class="svc-content fu d1">
         <div class="svc-num">02</div>
         <h3>웹사이트 제작</h3>
-        <p>브랜드 홈페이지와 랜딩페이지부터 운영에 필요한 관리자 페이지까지, 목적에 맞는 웹사이트를 만듭니다. PC·태블릿·모바일 어디서나 보기 좋은 반응형으로, 웹 표준과 검색 노출까지 고려해 제작합니다.</p>
+        <p>브랜드 홈페이지와 랜딩페이지부터 운영에 필요한 관리자 페이지까지, 목적에 맞는 웹사이트를 만듭니다. PC·태블릿·모바일 어디서나 보기 좋은 반응형으로, <strong>웹 표준과 검색 노출</strong>까지 고려해 제작합니다.</p>
         <ul class="feat-list">
           <li>브랜드 홈페이지 · 랜딩페이지 제작</li>
           <li>관리자 페이지 · 콘텐츠 관리 기능</li>
@@ -979,7 +992,7 @@
       <div class="svc-content fu d1">
         <div class="svc-num">03</div>
         <h3>모바일 앱 개발</h3>
-        <p>iOS와 Android 앱을 기획부터 스토어 출시까지 함께 진행합니다. 앱스토어·구글 플레이 심사 기준에 맞춰 준비하고, 심사 과정의 수정 요청에도 대응합니다. CodeBridge가 직접 기획하고 출시한 앱도 있어, 출시 과정을 처음부터 끝까지 경험으로 알고 있습니다.</p>
+        <p>iOS와 Android 앱을 기획부터 스토어 출시까지 함께 진행합니다. 앱스토어·구글 플레이 심사 기준에 맞춰 준비하고, 심사 과정의 수정 요청에도 대응합니다. CodeBridge가 <strong>직접 기획하고 출시한 앱</strong>도 있어, 출시 과정을 처음부터 끝까지 경험으로 알고 있습니다.</p>
         <ul class="feat-list">
           <li>iOS · Android 앱 개발과 출시</li>
           <li>앱스토어 · 구글 플레이 심사 대응</li>
@@ -997,7 +1010,7 @@
     <div class="sec-head fu">
       <span class="label">HOW WE WORK</span>
       <h2 class="section-title">상담부터 출시까지,<br><span class="hl">한 단계씩 함께합니다</span></h2>
-      <p>작업 범위에 맞춰 일정을 먼저 안내하고, 확정된 시안 그대로 정확하게 구현합니다. 진행 상황은 단계마다 수시로 공유해 드려요.</p>
+      <p>작업 범위에 맞춰 일정을 먼저 안내하고, <strong>확정된 시안 그대로</strong> 정확하게 구현합니다. 진행 상황은 단계마다 수시로 공유해 드려요.</p>
     </div>
     <div class="steps">
       <div class="step fu d1">
@@ -1045,7 +1058,7 @@
         </div></div>
         <div class="case-body">
           <h3>AI 팩폭도사</h3>
-          <p>오늘의 운세·사주·타로·꿈 해몽을 한 앱에 담은 운세 서비스를 기획부터 개발까지 직접 만들었습니다.</p>
+          <p>오늘의 운세·사주·타로·꿈 해몽을 한 앱에 담은 운세 서비스를 <strong>기획부터 개발까지 직접</strong> 만들었습니다.</p>
           <div class="case-tags"><span class="case-tag">앱</span><span class="case-tag is-own">자체 서비스</span><span class="case-tag is-role">기획 · 디자인 · 개발</span></div>
         </div>
       </article>
@@ -1107,7 +1120,7 @@
           프로젝트를<br>시작할 준비가<br>
           <span class="hl">되셨나요?</span>
         </h2>
-        <p>만들고 싶은 서비스가 있다면 전화나 이메일로 편하게 연락주세요.<br>예상 견적과 일정을 안내해 드려요.</p>
+        <p>만들고 싶은 서비스가 있다면 전화나 이메일로 편하게 연락주세요.<br><strong>예상 견적과 일정</strong>을 안내해 드려요.</p>
       </div>
       <div class="c-methods fu d1">
         <a href="tel:01030301734" class="c-card">
