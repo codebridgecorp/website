@@ -338,15 +338,7 @@
       border-radius: 20px; display: flex; align-items: center; justify-content: center;
       font-size: 76px; position: relative; overflow: hidden;
     }
-    .svc-visual .g-overlay {
-      position: absolute; inset: 0;
-      background-image:
-        linear-gradient(color-mix(in srgb, var(--text) 4%, transparent) 1px, transparent 1px),
-        linear-gradient(90deg, color-mix(in srgb, var(--text) 4%, transparent) 1px, transparent 1px);
-      background-size: 28px 28px;
-    }
-    .svc-visual .icon-wrap { position: relative; z-index: 1; }
-    #services .svc-visual, #portfolio .case-card { background: var(--bg); }
+    #portfolio .case-card { background: var(--bg); }
     .svc-num { font-size: var(--t-label-size); font-weight: var(--fw-semi); color: var(--accent); letter-spacing: .2em; margin-bottom: 10px; }
     .svc-content h3 { font-size: var(--t-card-size); font-weight: var(--fw-semi); line-height: var(--t-card-lh); color: var(--c-title); margin-bottom: 12px; }
     .svc-content p { color: var(--c-body); font-size: var(--t-body-size); line-height: var(--t-body-lh); margin-bottom: 22px; }
@@ -365,7 +357,7 @@
     /* 01 phones */
     /* large phones cropped by .svc-visual (overflow: hidden); frame = portfolio .pf-* frame */
     .mk-phones { position: absolute; inset: 0; }
-    .mk-phones .mk-phone { position: absolute; height: 140%; transition: transform .8s ease; }
+    .mk-phones .mk-phone { position: absolute; height: 112%; transition: transform .8s ease; }
     /* app screen (colors follow site variables; sizes scale with phone width) */
     .mk-app {
       position: absolute; inset: 0; display: flex; flex-direction: column; gap: .6em;
@@ -404,8 +396,8 @@
     .ma-info li { display: flex; justify-content: space-between; font-size: .9em; }
     .ma-info span { color: var(--dim); }
     .mk-app .ma-cta { margin-top: auto; }
-    .mk-phones .front { top: 8%; left: 10%; z-index: 2; }
-    .mk-phones .back { top: 13%; left: 47%; transform-origin: 50% 0; transform: rotate(3deg) translateY(4%); opacity: .9; }
+    .mk-phones .front { top: 8%; left: 18.5%; z-index: 2; }
+    .mk-phones .back { top: 12%; left: 48%; transform-origin: 50% 0; transform: rotate(3deg) translateY(4%); opacity: .9; }
     .fu.in .mk-phones .back { transform: rotate(5deg); }
 
     /* 02 browser */
@@ -923,7 +915,6 @@
 
     <div class="svc-item">
       <div class="svc-visual has-mk fu">
-        <div class="g-overlay"></div>
         <div class="mk" aria-hidden="true">
           <div class="mk-dash">
             <div class="mk-side"><div class="lg"></div><span class="on"></span><span></span><span></span><span></span><span></span></div>
@@ -966,7 +957,6 @@
 
     <div class="svc-item rev">
       <div class="svc-visual has-mk fu">
-        <div class="g-overlay"></div>
         <div class="mk" aria-hidden="true">
           <div class="mk-browser">
             <div class="mk-bar"><i></i><i></i><i></i><div class="mk-url">yourbrand.com</div></div>
@@ -1005,7 +995,6 @@
 
     <div class="svc-item">
       <div class="svc-visual has-mk fu">
-        <div class="g-overlay"></div>
         <div class="mk" aria-hidden="true">
                     <div class="mk-phones">
             <div class="mk-phone back pf-phone"><div class="pf-device"><div class="pf-screen">
