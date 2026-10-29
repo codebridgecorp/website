@@ -189,7 +189,13 @@
       padding: 28px 0; overflow: hidden;
       border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
     }
-    .marquee { display: flex; width: max-content; animation: mq 28s linear infinite; }
+    /* one .mq-group must be wider than the widest screen (2560px+); duration keeps ~40px/s */
+    .mq-mask {
+      overflow: hidden;
+      -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+              mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+    }
+    .marquee { display: flex; width: max-content; animation: mq var(--mq-dur, 146s) linear infinite; }
     .mq-group { display: flex; align-items: center; gap: 44px; padding-right: 44px; }
     .mq-item {
       color: var(--muted); font-size: 13px; font-weight: 600;
@@ -238,7 +244,10 @@
     .sec-head { text-align: center; margin-bottom: 64px; }
     #ai-tech .sec-head { margin-bottom: 40px; }
     .sec-head p { color: var(--dim); font-size: 17px; margin-top: 16px; max-width: 540px; margin-left: auto; margin-right: auto; }
-    .stack-row { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+    .stack-groups { display: grid; gap: 14px; max-width: 860px; margin: 0 auto; }
+    .stack-group { display: grid; grid-template-columns: 112px 1fr; align-items: center; gap: 18px; }
+    .stack-label { font-size: 12px; font-weight: 700; color: var(--dim); text-align: right; }
+    .stack-badges { display: flex; flex-wrap: wrap; gap: 8px; }
     .s-badge {
       padding: 7px 15px; border-radius: 7px; font-size: 13px; font-weight: 500;
       color: var(--dim); background: rgba(255,255,255,.04); border: 1px solid var(--border);
@@ -581,6 +590,13 @@
       .steps { grid-template-columns: 1fr 1fr; }
       .foot-inner { justify-content: center; text-align: center; flex-direction: column; }
     }
+    @media (max-width: 600px) {
+      .stack-groups { gap: 18px; }
+      .stack-group { grid-template-columns: 1fr; gap: 8px; }
+      .stack-label { text-align: left; }
+      .stack-badges { gap: 6px; }
+      .stack-badges .s-badge { padding: 6px 12px; font-size: 12.5px; }
+    }
     @media (max-width: 480px) {
       .hero-title { font-size: clamp(36px, 10.4vw, 44px); }
       .steps { grid-template-columns: 1fr; }
@@ -632,31 +648,122 @@
 
 <!-- TRUST BAR -->
 <div id="trust">
+  <div class="mq-mask">
   <div class="marquee">
+    <!-- 목록을 두 번 넣어 한 묶음이 초광폭 화면보다 길게 유지 -->
     <div class="mq-group">
+      <div class="mq-item"><span class="mq-dot"></span>Figma</div>
+      <div class="mq-item"><span class="mq-dot"></span>Photoshop</div>
+      <div class="mq-item"><span class="mq-dot"></span>Illustrator</div>
+      <div class="mq-item"><span class="mq-dot"></span>JavaScript</div>
+      <div class="mq-item"><span class="mq-dot"></span>TypeScript</div>
+      <div class="mq-item"><span class="mq-dot"></span>Next.js</div>
       <div class="mq-item"><span class="mq-dot"></span>React Native</div>
       <div class="mq-item"><span class="mq-dot"></span>Flutter</div>
-      <div class="mq-item"><span class="mq-dot"></span>Next.js</div>
-      <div class="mq-item"><span class="mq-dot"></span>OpenAI API</div>
-      <div class="mq-item"><span class="mq-dot"></span>Claude API</div>
+      <div class="mq-item"><span class="mq-dot"></span>Kotlin</div>
+      <div class="mq-item"><span class="mq-dot"></span>Java</div>
+      <div class="mq-item"><span class="mq-dot"></span>Spring Boot</div>
+      <div class="mq-item"><span class="mq-dot"></span>Node.js</div>
+      <div class="mq-item"><span class="mq-dot"></span>PHP</div>
+      <div class="mq-item"><span class="mq-dot"></span>Laravel</div>
+      <div class="mq-item"><span class="mq-dot"></span>CodeIgniter</div>
+      <div class="mq-item"><span class="mq-dot"></span>MySQL</div>
+      <div class="mq-item"><span class="mq-dot"></span>MariaDB</div>
+      <div class="mq-item"><span class="mq-dot"></span>Redis</div>
       <div class="mq-item"><span class="mq-dot"></span>Supabase</div>
       <div class="mq-item"><span class="mq-dot"></span>Firebase</div>
       <div class="mq-item"><span class="mq-dot"></span>AWS</div>
+      <div class="mq-item"><span class="mq-dot"></span>Docker</div>
       <div class="mq-item"><span class="mq-dot"></span>Vercel</div>
+      <div class="mq-item"><span class="mq-dot"></span>GitHub</div>
+      <div class="mq-item"><span class="mq-dot"></span>OpenAI API</div>
+      <div class="mq-item"><span class="mq-dot"></span>Claude API</div>
+      <div class="mq-item"><span class="mq-dot"></span>Gemini API</div>
+      <div class="mq-item"><span class="mq-dot"></span>Figma</div>
+      <div class="mq-item"><span class="mq-dot"></span>Photoshop</div>
+      <div class="mq-item"><span class="mq-dot"></span>Illustrator</div>
+      <div class="mq-item"><span class="mq-dot"></span>JavaScript</div>
       <div class="mq-item"><span class="mq-dot"></span>TypeScript</div>
+      <div class="mq-item"><span class="mq-dot"></span>Next.js</div>
+      <div class="mq-item"><span class="mq-dot"></span>React Native</div>
+      <div class="mq-item"><span class="mq-dot"></span>Flutter</div>
+      <div class="mq-item"><span class="mq-dot"></span>Kotlin</div>
+      <div class="mq-item"><span class="mq-dot"></span>Java</div>
+      <div class="mq-item"><span class="mq-dot"></span>Spring Boot</div>
+      <div class="mq-item"><span class="mq-dot"></span>Node.js</div>
+      <div class="mq-item"><span class="mq-dot"></span>PHP</div>
+      <div class="mq-item"><span class="mq-dot"></span>Laravel</div>
+      <div class="mq-item"><span class="mq-dot"></span>CodeIgniter</div>
+      <div class="mq-item"><span class="mq-dot"></span>MySQL</div>
+      <div class="mq-item"><span class="mq-dot"></span>MariaDB</div>
+      <div class="mq-item"><span class="mq-dot"></span>Redis</div>
+      <div class="mq-item"><span class="mq-dot"></span>Supabase</div>
+      <div class="mq-item"><span class="mq-dot"></span>Firebase</div>
+      <div class="mq-item"><span class="mq-dot"></span>AWS</div>
+      <div class="mq-item"><span class="mq-dot"></span>Docker</div>
+      <div class="mq-item"><span class="mq-dot"></span>Vercel</div>
+      <div class="mq-item"><span class="mq-dot"></span>GitHub</div>
+      <div class="mq-item"><span class="mq-dot"></span>OpenAI API</div>
+      <div class="mq-item"><span class="mq-dot"></span>Claude API</div>
+      <div class="mq-item"><span class="mq-dot"></span>Gemini API</div>
     </div>
     <div class="mq-group" aria-hidden="true">
+      <div class="mq-item"><span class="mq-dot"></span>Figma</div>
+      <div class="mq-item"><span class="mq-dot"></span>Photoshop</div>
+      <div class="mq-item"><span class="mq-dot"></span>Illustrator</div>
+      <div class="mq-item"><span class="mq-dot"></span>JavaScript</div>
+      <div class="mq-item"><span class="mq-dot"></span>TypeScript</div>
+      <div class="mq-item"><span class="mq-dot"></span>Next.js</div>
       <div class="mq-item"><span class="mq-dot"></span>React Native</div>
       <div class="mq-item"><span class="mq-dot"></span>Flutter</div>
-      <div class="mq-item"><span class="mq-dot"></span>Next.js</div>
-      <div class="mq-item"><span class="mq-dot"></span>OpenAI API</div>
-      <div class="mq-item"><span class="mq-dot"></span>Claude API</div>
+      <div class="mq-item"><span class="mq-dot"></span>Kotlin</div>
+      <div class="mq-item"><span class="mq-dot"></span>Java</div>
+      <div class="mq-item"><span class="mq-dot"></span>Spring Boot</div>
+      <div class="mq-item"><span class="mq-dot"></span>Node.js</div>
+      <div class="mq-item"><span class="mq-dot"></span>PHP</div>
+      <div class="mq-item"><span class="mq-dot"></span>Laravel</div>
+      <div class="mq-item"><span class="mq-dot"></span>CodeIgniter</div>
+      <div class="mq-item"><span class="mq-dot"></span>MySQL</div>
+      <div class="mq-item"><span class="mq-dot"></span>MariaDB</div>
+      <div class="mq-item"><span class="mq-dot"></span>Redis</div>
       <div class="mq-item"><span class="mq-dot"></span>Supabase</div>
       <div class="mq-item"><span class="mq-dot"></span>Firebase</div>
       <div class="mq-item"><span class="mq-dot"></span>AWS</div>
+      <div class="mq-item"><span class="mq-dot"></span>Docker</div>
       <div class="mq-item"><span class="mq-dot"></span>Vercel</div>
+      <div class="mq-item"><span class="mq-dot"></span>GitHub</div>
+      <div class="mq-item"><span class="mq-dot"></span>OpenAI API</div>
+      <div class="mq-item"><span class="mq-dot"></span>Claude API</div>
+      <div class="mq-item"><span class="mq-dot"></span>Gemini API</div>
+      <div class="mq-item"><span class="mq-dot"></span>Figma</div>
+      <div class="mq-item"><span class="mq-dot"></span>Photoshop</div>
+      <div class="mq-item"><span class="mq-dot"></span>Illustrator</div>
+      <div class="mq-item"><span class="mq-dot"></span>JavaScript</div>
       <div class="mq-item"><span class="mq-dot"></span>TypeScript</div>
+      <div class="mq-item"><span class="mq-dot"></span>Next.js</div>
+      <div class="mq-item"><span class="mq-dot"></span>React Native</div>
+      <div class="mq-item"><span class="mq-dot"></span>Flutter</div>
+      <div class="mq-item"><span class="mq-dot"></span>Kotlin</div>
+      <div class="mq-item"><span class="mq-dot"></span>Java</div>
+      <div class="mq-item"><span class="mq-dot"></span>Spring Boot</div>
+      <div class="mq-item"><span class="mq-dot"></span>Node.js</div>
+      <div class="mq-item"><span class="mq-dot"></span>PHP</div>
+      <div class="mq-item"><span class="mq-dot"></span>Laravel</div>
+      <div class="mq-item"><span class="mq-dot"></span>CodeIgniter</div>
+      <div class="mq-item"><span class="mq-dot"></span>MySQL</div>
+      <div class="mq-item"><span class="mq-dot"></span>MariaDB</div>
+      <div class="mq-item"><span class="mq-dot"></span>Redis</div>
+      <div class="mq-item"><span class="mq-dot"></span>Supabase</div>
+      <div class="mq-item"><span class="mq-dot"></span>Firebase</div>
+      <div class="mq-item"><span class="mq-dot"></span>AWS</div>
+      <div class="mq-item"><span class="mq-dot"></span>Docker</div>
+      <div class="mq-item"><span class="mq-dot"></span>Vercel</div>
+      <div class="mq-item"><span class="mq-dot"></span>GitHub</div>
+      <div class="mq-item"><span class="mq-dot"></span>OpenAI API</div>
+      <div class="mq-item"><span class="mq-dot"></span>Claude API</div>
+      <div class="mq-item"><span class="mq-dot"></span>Gemini API</div>
     </div>
+  </div>
   </div>
 </div>
 
@@ -708,19 +815,35 @@
       <h2 class="section-title">검증된 기술로<br><span class="grad">탄탄하게 만듭니다</span></h2>
       <p>반복 작업에는 AI 도구를 활용해 시간을 아끼고, 그만큼 디자인 디테일과 품질 점검에 더 집중합니다.</p>
     </div>
-    <div class="stack-row fu">
-      <span class="s-badge">React Native</span>
-      <span class="s-badge">Flutter</span>
-      <span class="s-badge">Next.js</span>
-      <span class="s-badge">OpenAI API</span>
-      <span class="s-badge">Claude API</span>
-      <span class="s-badge">Gemini API</span>
-      <span class="s-badge">Supabase</span>
-      <span class="s-badge">Firebase</span>
-      <span class="s-badge">AWS</span>
-      <span class="s-badge">Vercel</span>
-      <span class="s-badge">TypeScript</span>
-      <span class="s-badge">Node.js</span>
+    <div class="stack-groups fu">
+      <div class="stack-group">
+        <span class="stack-label">디자인</span>
+        <div class="stack-badges"><span class="s-badge">Figma</span><span class="s-badge">Photoshop</span><span class="s-badge">Illustrator</span></div>
+      </div>
+      <div class="stack-group">
+        <span class="stack-label">프론트엔드</span>
+        <div class="stack-badges"><span class="s-badge">JavaScript</span><span class="s-badge">TypeScript</span><span class="s-badge">Next.js</span></div>
+      </div>
+      <div class="stack-group">
+        <span class="stack-label">앱</span>
+        <div class="stack-badges"><span class="s-badge">React Native</span><span class="s-badge">Flutter</span><span class="s-badge">Kotlin</span></div>
+      </div>
+      <div class="stack-group">
+        <span class="stack-label">백엔드</span>
+        <div class="stack-badges"><span class="s-badge">Java</span><span class="s-badge">Spring Boot</span><span class="s-badge">Node.js</span><span class="s-badge">PHP</span><span class="s-badge">Laravel</span><span class="s-badge">CodeIgniter</span></div>
+      </div>
+      <div class="stack-group">
+        <span class="stack-label">데이터베이스</span>
+        <div class="stack-badges"><span class="s-badge">MySQL</span><span class="s-badge">MariaDB</span><span class="s-badge">Redis</span><span class="s-badge">Supabase</span><span class="s-badge">Firebase</span></div>
+      </div>
+      <div class="stack-group">
+        <span class="stack-label">인프라</span>
+        <div class="stack-badges"><span class="s-badge">AWS</span><span class="s-badge">Docker</span><span class="s-badge">Vercel</span><span class="s-badge">GitHub</span></div>
+      </div>
+      <div class="stack-group">
+        <span class="stack-label">AI</span>
+        <div class="stack-badges"><span class="s-badge">OpenAI API</span><span class="s-badge">Claude API</span><span class="s-badge">Gemini API</span></div>
+      </div>
     </div>
   </div>
 </section>
