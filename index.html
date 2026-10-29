@@ -19,7 +19,6 @@
       --text:   #f1f5f9;
       --dim:    #94a3b8;
       --muted:  #4a5568;
-      --device: #e5e7eb;   /* portfolio phone frame */
     }
     html { scroll-behavior: smooth; }
     body {
@@ -480,12 +479,24 @@
     .pf-bar i { width: clamp(4px, 1.3cqw, 8px); aspect-ratio: 1; border-radius: 50%; background: #f87171; }
     .pf-bar i:nth-child(2) { background: #fbbf24; } .pf-bar i:nth-child(3) { background: #34d399; }
     .pf-view { position: relative; aspect-ratio: 16 / 10; overflow: hidden; background: var(--bg); }
-    .pf-phone {
-      position: relative; aspect-ratio: 9 / 19.5; overflow: hidden; background: var(--bg);
-      border: clamp(4px, 2.6cqw, 8px) solid var(--device); border-radius: 16% / 7.4%;
-      box-shadow: 0 14px 34px rgba(0,0,0,.45), 0 0 0 1px rgba(0,0,0,.35);
+    /* phone: same bezel color, 1px line and shadow as the browser frame.
+       Sizes use the phone's own width (cqw), so the bezel looks even everywhere. */
+    .pf-phone { position: relative; aspect-ratio: 9 / 19.5; container-type: inline-size; }
+    .pf-device {
+      --r: 15cqw; --bw: clamp(3px, 2.6cqw, 5px);
+      position: absolute; inset: 0; padding: var(--bw); border-radius: var(--r);
+      background: color-mix(in srgb, var(--text) 10%, var(--card));
+      border: 1px solid color-mix(in srgb, var(--text) 14%, transparent); box-shadow: 0 18px 40px rgba(0,0,0,.45);
     }
-    .pf-view img, .pf-phone img {
+    .pf-screen {
+      position: relative; height: 100%; overflow: hidden; background: var(--bg);
+      border-radius: calc(var(--r) - var(--bw) - 1px);
+    }
+    .pf-notch {
+      position: absolute; z-index: 1; left: 50%; top: calc(var(--bw) + 1px + 3cqw); transform: translateX(-50%);
+      width: 28cqw; height: 8cqw; border-radius: 99px; background: #05070d; opacity: .9;
+    }
+    .pf-view img, .pf-screen img {
       position: absolute; left: 0; top: 0; display: block; width: 100%; height: 100%;
       object-fit: cover; object-position: top;
     }
@@ -516,9 +527,7 @@
     .case-feature .case-body { justify-content: center; gap: 14px; padding: 44px 48px; }
     .case-feature .case-body h3 { font-size: clamp(24px, 2.6vw, 32px); font-weight: 800; }
 
-    .case-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 22px; }
-    .case-grid > .case-card { grid-column: span 2; }
-    .case-grid > .case-card.is-wide { grid-column: span 3; }
+    .case-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
 
     /* ── CONTACT ── */
     #contact {
@@ -566,10 +575,6 @@
 
     /* ── RESPONSIVE ── */
     @media (max-width: 1024px) {
-      .case-grid { grid-template-columns: 1fr 1fr; }
-      .case-grid > .case-card, .case-grid > .case-card.is-wide { grid-column: auto; }
-      .case-grid > .case-card:last-child:nth-child(odd) { grid-column: 1 / -1; }
-      .case-grid > .case-card:last-child:nth-child(odd) .case-media { aspect-ratio: 2 / 1; padding: 4%; }
       .vision-grid, .contact-grid { grid-template-columns: 1fr; gap: 48px; }
       .steps { grid-template-columns: 1fr 1fr; gap: 40px; }
       .steps::before { display: none; }
@@ -589,9 +594,7 @@
       .case-feature { grid-template-columns: 1fr; }
       .case-feature .case-body { padding: 22px 22px 26px; }
       .case-grid { grid-template-columns: 1fr; }
-      .case-grid > .case-card, .case-grid > .case-card.is-wide { grid-column: auto; }
       .case-media { padding: 6%; }
-      .case-grid > .case-card:last-child:nth-child(odd) .case-media { aspect-ratio: 4 / 3; padding: 6%; }
       .steps { grid-template-columns: 1fr 1fr; }
       .foot-inner { justify-content: center; text-align: center; flex-direction: column; }
     }
@@ -933,67 +936,56 @@
       <!-- 대표 작업 (큰 카드) -->
       <article class="case-card case-feature fu">
         <div class="case-media"><div class="pf-stage pf-trio">
-          <div class="pf-phone side l"><img src="Portfolio/aiview-alerts.jpg" alt="아이뷰 자녀 알림 화면" loading="lazy" width="600" height="1240"></div>
-          <div class="pf-phone main"><img src="Portfolio/aiview-schedule.jpg" alt="아이뷰 일정 화면" loading="lazy" width="600" height="1285"></div>
-          <div class="pf-phone side r"><img src="Portfolio/aiview-form.jpg" alt="아이뷰 일정 등록 화면" loading="lazy" width="600" height="1240"></div>
+          <div class="pf-phone side l"><div class="pf-device"><div class="pf-screen"><img src="Portfolio/dosa-tarot-pick.png" alt="AI 팩폭도사 타로 카드 선택 화면" loading="lazy" width="540" height="1000"></div><i class="pf-notch"></i></div></div>
+          <div class="pf-phone main"><div class="pf-device"><div class="pf-screen"><img src="Portfolio/dosa-home.png" alt="AI 팩폭도사 홈 화면" loading="lazy" width="540" height="1000"></div><i class="pf-notch"></i></div></div>
+          <div class="pf-phone side r"><div class="pf-device"><div class="pf-screen"><img src="Portfolio/dosa-tarot-result.png" alt="AI 팩폭도사 타로 리딩 결과 화면" loading="lazy" width="540" height="1000"></div><i class="pf-notch"></i></div></div>
         </div></div>
         <div class="case-body">
-          <h3>아이뷰</h3>
-          <p>자녀의 학원 일정과 도착·이탈 알림을 한눈에 확인하는 부모용 일정 관리 앱의 화면을 디자인하고 퍼블리싱했습니다.</p>
-          <div class="case-tags"><span class="case-tag">앱</span><span class="case-tag is-role">UI·UX 디자인 · 퍼블리싱</span></div>
+          <h3>AI 팩폭도사</h3>
+          <p>오늘의 운세·사주·타로·꿈 해몽을 한 앱에 담은 운세 서비스를 기획부터 개발까지 직접 만들었습니다.</p>
+          <div class="case-tags"><span class="case-tag">앱</span><span class="case-tag is-own">자체 서비스</span><span class="case-tag is-role">기획 · 디자인 · 개발</span></div>
         </div>
       </article>
 
-      <!-- 작은 카드들: is-wide = 넓은 칸 (PC에서 윗줄 2개 + 아랫줄 3개) -->
+      <!-- 작은 카드들 (PC 2×2, 모바일 1열) -->
       <div class="case-grid">
-        <article class="case-card is-wide fu d1">
-          <div class="case-media"><div class="pf-stage pf-combo">
-            <div class="pf-browser"><div class="pf-bar"><i></i><i></i><i></i></div><div class="pf-view is-long" style="--dur:5s"><img src="Portfolio/lguplus-drone-pc.jpg" alt="LG U+ 스마트드론 PC 상품 목록 화면" loading="lazy" width="1200" height="1676"></div></div>
-            <div class="pf-phone  is-long" style="--dur:7s"><img src="Portfolio/lguplus-drone-mo.jpg" alt="LG U+ 스마트드론 모바일 상품 목록 화면" loading="lazy" width="600" height="2926"></div>
-          </div></div>
-          <div class="case-body">
-            <h3>LG U+ 스마트드론</h3>
-            <div class="case-tags"><span class="case-tag">반응형 웹</span><span class="case-tag is-role">디자인</span></div>
-          </div>
-        </article>
-        <article class="case-card is-wide fu d2">
+        <article class="case-card fu d1">
           <div class="case-media"><div class="pf-stage pf-combo">
             <div class="pf-browser"><div class="pf-bar"><i></i><i></i><i></i></div><div class="pf-view is-long" style="--dur:9s"><img src="Portfolio/raonsecure-pc.jpg" alt="라온시큐어 PC 메인 화면" loading="lazy" width="1200" height="3225"></div></div>
-            <div class="pf-phone  is-long" style="--dur:16s"><img src="Portfolio/raonsecure-mo.jpg" alt="라온시큐어 모바일 메인 화면" loading="lazy" width="600" height="7173"></div>
+            <div class="pf-phone "><div class="pf-device"><div class="pf-screen is-long" style="--dur:16s"><img src="Portfolio/raonsecure-mo.jpg" alt="라온시큐어 모바일 메인 화면" loading="lazy" width="600" height="7173"></div><i class="pf-notch"></i></div></div>
           </div></div>
           <div class="case-body">
             <h3>라온시큐어</h3>
-            <div class="case-tags"><span class="case-tag">기업 홈페이지</span><span class="case-tag is-role">디자인</span></div>
+            <div class="case-tags"><span class="case-tag">반응형 웹</span><span class="case-tag is-role">디자인 · 퍼블리싱</span></div>
           </div>
         </article>
-        <article class="case-card  fu d1">
+        <article class="case-card fu d2">
           <div class="case-media"><div class="pf-stage pf-solo">
             <div class="pf-browser"><div class="pf-bar"><i></i><i></i><i></i></div><div class="pf-view is-long" style="--dur:12s"><img src="Portfolio/buzzvil-advertiser-pc.jpg" alt="버즈빌 광고주 소개 페이지 화면" loading="lazy" width="1200" height="4413"></div></div>
           </div></div>
           <div class="case-body">
             <h3>버즈빌</h3>
-            <div class="case-tags"><span class="case-tag">서비스 소개 페이지</span><span class="case-tag is-role">디자인</span></div>
+            <div class="case-tags"><span class="case-tag">반응형 웹</span><span class="case-tag is-role">디자인 · 퍼블리싱</span></div>
           </div>
         </article>
-        <article class="case-card  fu d2">
+        <article class="case-card fu d1">
           <div class="case-media"><div class="pf-stage pf-duo">
-            <div class="pf-phone a"><img src="Portfolio/mym-splash.jpg" alt="MYM 스플래시 화면" loading="lazy" width="600" height="1066"></div>
-            <div class="pf-phone b is-long" style="--dur:10s"><img src="Portfolio/mym-main.jpg" alt="MYM 메인 화면" loading="lazy" width="600" height="4001"></div>
+            <div class="pf-phone a"><div class="pf-device"><div class="pf-screen"><img src="Portfolio/mym-splash.jpg" alt="MYM 스플래시 화면" loading="lazy" width="600" height="1066"></div><i class="pf-notch"></i></div></div>
+            <div class="pf-phone b"><div class="pf-device"><div class="pf-screen is-long" style="--dur:10s"><img src="Portfolio/mym-main.jpg" alt="MYM 메인 화면" loading="lazy" width="600" height="4001"></div><i class="pf-notch"></i></div></div>
           </div></div>
           <div class="case-body">
             <h3>MYM</h3>
             <div class="case-tags"><span class="case-tag">앱</span><span class="case-tag is-role">디자인</span></div>
           </div>
         </article>
-        <article class="case-card  fu d3">
-          <div class="case-media"><div class="pf-stage pf-trio">
-            <div class="pf-phone side l"><img src="Portfolio/dosa-tarot-pick.png" alt="AI 팩폭도사 타로 카드 선택 화면" loading="lazy" width="540" height="1000"></div>
-            <div class="pf-phone main"><img src="Portfolio/dosa-home.png" alt="AI 팩폭도사 홈 화면" loading="lazy" width="540" height="1000"></div>
-            <div class="pf-phone side r"><img src="Portfolio/dosa-tarot-result.png" alt="AI 팩폭도사 타로 리딩 결과 화면" loading="lazy" width="540" height="1000"></div>
+        <article class="case-card fu d2">
+          <div class="case-media"><div class="pf-stage pf-duo">
+            <div class="pf-phone a"><div class="pf-device"><div class="pf-screen"><img src="Portfolio/aiview-schedule.jpg" alt="아이뷰 일정 화면" loading="lazy" width="600" height="1285"></div><i class="pf-notch"></i></div></div>
+            <div class="pf-phone b"><div class="pf-device"><div class="pf-screen"><img src="Portfolio/aiview-alerts.jpg" alt="아이뷰 자녀 알림 화면" loading="lazy" width="600" height="1240"></div><i class="pf-notch"></i></div></div>
           </div></div>
           <div class="case-body">
-            <h3>AI 팩폭도사</h3>
-            <div class="case-tags"><span class="case-tag">앱</span><span class="case-tag is-own">자체 서비스</span><span class="case-tag is-role">기획 · 디자인 · 개발</span></div>
+            <h3>아이뷰</h3>
+            <div class="case-tags"><span class="case-tag">앱</span><span class="case-tag is-role">기획 · 디자인 · 퍼블리싱</span></div>
           </div>
         </article>
       </div>
