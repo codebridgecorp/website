@@ -29,6 +29,7 @@
       --shadow:    rgba(0,0,0,.45);
       --notch:     #05070D;
       --scrollbar: #263043;
+      --footer-bg: #0B0F17;
       /* status / window-dot colors */
       --red:       #F87171;
       --yellow:    #FBBF24;
@@ -80,19 +81,13 @@
       --shadow:    rgba(15,23,42,.12);
       --notch:     #0B0F17;
       --scrollbar: #CBD5E1;
+      --footer-bg: #F1F4F9;
       --blob-1:    #A9C8FF;   /* pastel sky */
       --blob-2:    #CDBDFF;   /* pastel lavender */
       --blob-opacity:  .55;
       --grain-opacity: .05;
     }
     [data-theme="light"] .hero-shade { display: none; }   /* center is already light; avoids banding on white */
-    /* light theme keeps a dark navy footer to close the page */
-    [data-theme="light"] footer {
-      --bg: #0B0F17; --border: rgba(255,255,255,.08);
-      --text: #F1F5F9; --dim: #A3AEC2; --muted: #6B778C; --accent: #4D84FF;
-      --c-title: var(--text); --c-body: var(--dim); --c-caption: var(--muted);
-      background: var(--bg); color: var(--text);
-    }
     html { scroll-behavior: smooth; }
     body {
       background: var(--bg);
@@ -608,12 +603,13 @@
     }
     .c-card-icon .ico { width: 24px; height: 24px; }
     .c-card-text small { font-size: var(--t-caption-size); color: var(--c-caption); display: block; margin-bottom: 2px; }
-    .c-card-text span { font-size: var(--t-card-size); font-weight: var(--fw-semi); line-height: var(--t-card-lh); word-break: break-all; }
-    .c-card.mail .c-card-text span { font-size: var(--t-body-size); }
+    /* phone and email share one size; it shrinks with the card so the email always fits on one line */
+    .c-card-text { flex: 1; min-width: 0; container-type: inline-size; }
+    .c-card-text span { display: block; white-space: nowrap; font-size: min(var(--t-card-size), 7.4cqi); font-weight: var(--fw-semi); line-height: var(--t-card-lh); }
     .c-note { font-size: var(--t-caption-size); color: var(--c-caption); margin-top: 4px; }
 
     /* ── FOOTER ── */
-    footer { padding: 44px 0; border-top: 1px solid var(--border); }
+    footer { padding: 44px 0; border-top: 1px solid var(--border); background: var(--footer-bg); }
     .foot-inner {
       display: flex; justify-content: space-between; align-items: center;
       flex-wrap: wrap; gap: 20px;
@@ -663,7 +659,8 @@
     @media (max-width: 480px) {
       :root { --t-hero-size: clamp(36px, 10.4vw, 44px); }
       .steps { grid-template-columns: 1fr; }
-      .c-card { padding: 20px 22px; gap: 14px; }
+      .c-card { padding: 18px; gap: 12px; }
+      .c-card-icon { width: 44px; height: 44px; border-radius: 11px; }
     }
   </style>
 </head>
