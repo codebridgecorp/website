@@ -291,6 +291,7 @@
     .svc-num { font-size: 12px; font-weight: 700; color: var(--neon); letter-spacing: 2px; margin-bottom: 10px; }
     .svc-content h3 { font-size: clamp(22px, 3vw, 34px); font-weight: 800; line-height: 1.2; margin-bottom: 14px; }
     .svc-content p { color: var(--dim); font-size: 15px; line-height: 1.8; margin-bottom: 24px; }
+    .svc-content p strong { color: var(--text); font-weight: 700; }
     .feat-list { list-style: none; display: flex; flex-direction: column; gap: 9px; }
     .feat-list li { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--dim); }
     .feat-list li::before {
@@ -549,7 +550,7 @@
         CodeBridge
       </a>
       <ul class="nav-links" id="navLinks">
-        <li><a href="#vision">비전</a></li>
+        <li><a href="#vision">소개</a></li>
         <li><a href="#ai-tech">기술</a></li>
         <li><a href="#services">서비스</a></li>
         <li><a href="#portfolio">포트폴리오</a></li>
@@ -615,7 +616,7 @@
   <div class="container">
     <div class="vision-grid">
       <div class="vision-text fu">
-        <span class="label">OUR VISION</span>
+        <span class="label">ABOUT US</span>
         <h2 class="section-title">
           한 번 맡긴 고객이<br>
           <span class="grad">다시 찾는 팀</span>
@@ -710,31 +711,6 @@
       <div class="svc-visual has-mk fu">
         <div class="g-overlay"></div>
         <div class="mk" aria-hidden="true">
-          <div class="mk-glow"></div>
-          <div class="mk-phones">
-            <div class="mk-phone back"><img src="Portfolio/dosa-home.png" alt="" loading="lazy"></div>
-            <div class="mk-phone front"><img src="Portfolio/lotto-main.png" alt="" loading="lazy"></div>
-            <div class="mk-toast"><i></i><div><b>새 알림이 도착했어요</b><span>오늘의 추천 결과를 확인하세요</span></div></div>
-          </div>
-        </div>
-      </div>
-      <div class="svc-content fu d1">
-        <div class="svc-num">01</div>
-        <h3>모바일 앱 개발</h3>
-        <p>iOS와 Android를 동시에 공략하는 크로스플랫폼 앱 개발. React Native와 Flutter로 네이티브 수준의 성능과 UX를 구현합니다.</p>
-        <ul class="feat-list">
-          <li>iOS / Android 동시 출시</li>
-          <li>네이티브 수준 성능 최적화</li>
-          <li>앱스토어 심사 대응 & 출시 지원</li>
-          <li>푸시 알림, 결제 연동 등 핵심 기능</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="svc-item rev">
-      <div class="svc-visual has-mk fu">
-        <div class="g-overlay"></div>
-        <div class="mk" aria-hidden="true">
           <div class="mk-browser">
             <div class="mk-bar"><i></i><i></i><i></i><div class="mk-url">yourbrand.com</div></div>
             <div class="mk-site">
@@ -758,14 +734,39 @@
         </div>
       </div>
       <div class="svc-content fu d1">
-        <div class="svc-num">02</div>
-        <h3>웹앱 & SaaS 개발</h3>
-        <p>사용자가 몰려도 끄떡없는 확장 가능한 웹 서비스. Next.js 기반의 SEO 최적화된 고성능 웹앱으로 비즈니스를 온라인에 구현합니다.</p>
+        <div class="svc-num">01</div>
+        <h3>웹사이트 제작</h3>
+        <p>브랜드 홈페이지와 랜딩페이지부터 운영에 필요한 관리자 페이지까지, 목적에 맞는 웹사이트를 만듭니다. PC·태블릿·모바일 어디서나 보기 좋은 반응형으로, 웹 표준과 검색 노출까지 고려해 제작합니다.</p>
         <ul class="feat-list">
-          <li>Next.js 기반 고성능 웹 서비스</li>
-          <li>관리자 대시보드 & CMS 구축</li>
-          <li>SEO 최적화 및 Core Web Vitals 대응</li>
-          <li>글로벌 CDN 및 클라우드 배포</li>
+          <li>브랜드 홈페이지 · 랜딩페이지 제작</li>
+          <li>관리자 페이지 · 콘텐츠 관리 기능</li>
+          <li>PC·태블릿·모바일 반응형</li>
+          <li>웹 표준 준수와 검색 노출 최적화(SEO)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="svc-item rev">
+      <div class="svc-visual has-mk fu">
+        <div class="g-overlay"></div>
+        <div class="mk" aria-hidden="true">
+          <div class="mk-glow"></div>
+          <div class="mk-phones">
+            <div class="mk-phone back"><img src="Portfolio/dosa-home.png" alt="" loading="lazy"></div>
+            <div class="mk-phone front"><img src="Portfolio/lotto-main.png" alt="" loading="lazy"></div>
+            <div class="mk-toast"><i></i><div><b>새 알림이 도착했어요</b><span>오늘의 추천 결과를 확인하세요</span></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="svc-content fu d1">
+        <div class="svc-num">02</div>
+        <h3>모바일 앱 개발</h3>
+        <p>iOS와 Android 앱을 기획부터 스토어 출시까지 함께 진행합니다. 앱스토어·구글 플레이 심사 기준에 맞춰 준비하고, 심사 과정의 수정 요청에도 대응합니다. CodeBridge가 직접 기획하고 출시한 앱도 있어, 출시 과정을 처음부터 끝까지 경험으로 알고 있습니다.</p>
+        <ul class="feat-list">
+          <li>iOS · Android 앱 개발과 출시</li>
+          <li>앱스토어 · 구글 플레이 심사 대응</li>
+          <li>푸시 알림 · 결제 등 핵심 기능 구현</li>
+          <li>출시 후 업데이트 · 유지보수</li>
         </ul>
       </div>
     </div>
@@ -793,7 +794,7 @@
                 </div>
                 <div class="mk-card"><b>채널별 유입</b>
                   <div class="mk-bars"><i style="--h:70%"></i><i style="--h:45%"></i><i style="--h:90%"></i><i style="--h:35%"></i></div>
-                  <div class="mk-ai"><i></i>AI 인사이트: 검색 유입이 늘고 있어요</div>
+                  <div class="mk-ai"><i></i>디자인 시안 그대로 구현했어요</div>
                 </div>
               </div>
             </div>
@@ -802,13 +803,13 @@
       </div>
       <div class="svc-content fu d1">
         <div class="svc-num">03</div>
-        <h3>AI 기능 통합</h3>
-        <p>기존 앱에 AI를 심거나, 처음부터 AI 중심으로 설계합니다. 챗봇, 이미지 분석, 개인화 추천 등 비즈니스에 꼭 맞는 AI 기능을 구현합니다.</p>
+        <h3>UI·UX 디자인</h3>
+        <p>사용자가 헤매지 않는 화면 흐름을 설계하고, 브랜드에 맞는 디자인을 만듭니다. <strong>디자인한 사람이 직접 퍼블리싱까지 — 시안 그대로 구현</strong>하기 때문에 디자인과 실제 화면이 달라지지 않습니다.</p>
         <ul class="feat-list">
-          <li>LLM 기반 챗봇 & AI 어시스턴트</li>
-          <li>이미지 / 음성 AI 분석 기능</li>
-          <li>개인화 추천 알고리즘</li>
-          <li>OpenAI, Claude, Gemini API 연동</li>
+          <li>화면 설계(와이어프레임) · 사용자 흐름 정리</li>
+          <li>브랜드에 맞는 UI 디자인 시안</li>
+          <li>디자이너가 직접 퍼블리싱해 시안 그대로 구현</li>
+          <li>디자인 가이드 · 공통 컴포넌트 정리</li>
         </ul>
       </div>
     </div>
