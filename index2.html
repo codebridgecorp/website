@@ -569,10 +569,12 @@
     .pf-duo .b { transform: translate(-4%, -47%) scale(.92); }
     .pf-duo.is-even .b { transform: translate(-6%, -50%); }   /* 아이뷰: both phones same height */
     /* AI 팩폭도사: center phone keeps its top; side phones sit 7% lower and may be cropped at the bottom */
-    .pf-trio .pf-phone { height: 106%; top: 3%; }
+    .pf-trio { --trio-spread: 60%; }   /* side phone offset from center, as % of phone width */
+    .pf-trio .pf-phone { height: 128%; top: 3%; }
     .pf-trio .main { transform: translate(-50%, 0); z-index: 1; }
-    .pf-trio .l { transform: translate(-116%, 7%); }
-    .pf-trio .r { transform: translate(16%, 7%); }
+    .pf-trio .l { transform: translate(calc(-50% - var(--trio-spread)), 7%); }
+    .pf-trio .r { transform: translate(calc(-50% + var(--trio-spread)), 7%); }
+    @media (max-width: 768px) { .pf-trio { --trio-spread: 56%; } }
     .case-media:has(.pf-trio) { overflow: hidden; }
 
     .case-feature { display: grid; grid-template-columns: 1.2fr 1fr; }
