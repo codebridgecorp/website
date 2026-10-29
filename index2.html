@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <title>웹사이트·앱 제작 CodeBridge — 기획부터 디자인, 개발까지 한 번에</title>
+  <meta name="description" content="CodeBridge는 기획부터 디자인, 개발까지 한 번에 진행하는 웹사이트·앱 제작 팀입니다. 브랜드 홈페이지, 모바일 앱, 웹 서비스 제작 견적이 궁금하다면 편하게 문의해 주세요.">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    /* All colors live here. A light theme only needs a new set of these values. */
+    :root {
+      /* base */
+      --bg:        #0B0F17;
+      --bg2:       #121826;   /* alternate section background */
+      --card:      #121826;
+      --border:    rgba(255,255,255,.08);
+      --text:      #F1F5F9;   /* headings */
+      --dim:       #A3AEC2;   /* body text */
+      --muted:     #6B778C;   /* secondary text */
+      --accent:    #4D84FF;   /* the one point color: text, icons, tags */
+      --accent-strong:       #2F6BFF;   /* button fill (white text 4.5:1) */
+      --accent-strong-hover: #2259E6;
+      --on-accent: #FFFFFF;   /* text/icons on an accent fill */
+      /* surfaces & effects */
+      --nav-bg:    rgba(11,15,23,.88);
+      --menu-bg:   rgba(11,15,23,.97);
+      --shadow:    rgba(0,0,0,.45);
+      --notch:     #05070D;
+      --scrollbar: #263043;
+      /* status / window-dot colors */
+      --red:       #F87171;
+      --yellow:    #FBBF24;
+      --green:     #34D399;
+      /* hero blobs */
+      --blob-1:    #4D84FF;   /* accent blue */
+      --blob-2:    #7FA8FF;   /* light blue */
+      --blob-opacity:  .22;
+      --grain-opacity: .07;
+      /* type scale: hero / section / card / body / caption (+ label) */
+      --fw-bold: 800;  --fw-semi: 600;  --fw-regular: 400;
+      --t-hero-size:    clamp(44px, 8vw, 88px);   --t-hero-lh: 1.08;
+      --t-section-size: clamp(34px, 5vw, 58px);   --t-section-lh: 1.15;
+      --t-card-size:    clamp(19px, 1.8vw, 24px); --t-card-lh: 1.35;
+      --t-body-size:    16px;                     --t-body-lh: 1.75;
+      --t-caption-size: 13px;                     --t-caption-lh: 1.6;
+      --t-label-size:   12px;   /* English section labels */
+      --t-ui-size:      15px;   /* buttons, menu */
+      --t-stat-size:    clamp(40px, 4vw, 48px);
+      --c-title: var(--text);  --c-body: var(--dim);  --c-caption: var(--muted);
+      /* light "client website" inside the service browser mockup */
+      --mk-paper:  #F8FAFC;
+      --mk-white:  #FFFFFF;
+      --mk-line:   #E2E8F0;
+      --mk-line-2: #CBD5E1;
+      --mk-ink:    #0F172A;
+      --mk-ink-2:  #475569;
+      --mk-ink-3:  #64748B;
+      --mk-tint:   #DBEAFE;
+    }
+    /* Light theme: same variables, light values (index2.html sets data-theme="light") */
+    [data-theme="light"] {
+      --bg:        #FFFFFF;
+      --bg2:       #F5F7FB;
+      --card:      #F5F7FB;
+      --border:    #E3E8F0;
+      --text:      #0F172A;
+      --dim:       #4B5567;
+      --muted:     #8A94A6;
+      --accent:    #2F6BFF;
+      --accent-strong:       #2563EB;   /* white text 5.2:1 */
+      --accent-strong-hover: #1D4ED8;
+      --on-accent: #FFFFFF;
+      --nav-bg:    rgba(255,255,255,.86);
+      --menu-bg:   rgba(255,255,255,.97);
+      --shadow:    rgba(15,23,42,.12);
+      --notch:     #0B0F17;
+      --scrollbar: #CBD5E1;
+      --blob-1:    #A9C8FF;   /* pastel sky */
+      --blob-2:    #CDBDFF;   /* pastel lavender */
+      --blob-opacity:  .55;
+      --grain-opacity: .05;
+    }
+    [data-theme="light"] .hero-shade { display: none; }   /* center is already light; avoids banding on white */
+    /* light theme keeps a dark navy footer to close the page */
+    [data-theme="light"] footer {
+      --bg: #0B0F17; --border: rgba(255,255,255,.08);
+      --text: #F1F5F9; --dim: #A3AEC2; --muted: #6B778C; --accent: #4D84FF;
+      --c-title: var(--text); --c-body: var(--dim); --c-caption: var(--muted);
+      background: var(--bg); color: var(--text);
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      word-break: keep-all;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+    /* 제목 자간 (포트폴리오 섹션 제외) */
+    :is(h1, h2, h3, h4):not(#portfolio *) { letter-spacing: -0.02em; }
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--scrollbar); border-radius: 3px; }
+
+    /* ── UTILITIES ── */
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+    section { padding: 120px 0; }
+
+    .label {
+      font-size: var(--t-label-size); font-weight: var(--fw-semi); letter-spacing: .2em;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 16px; display: block;
+    }
+    .section-title {
+      font-size: var(--t-section-size); font-weight: var(--fw-bold);
+      line-height: var(--t-section-lh); letter-spacing: -0.025em; color: var(--c-title);
+    }
+    /* key words inside a paragraph (1-2 per paragraph) */
+    p strong { color: var(--c-title); font-weight: var(--fw-semi); }
+    .hl { color: var(--accent); }
+
+    /* fade-up */
+    .fu { opacity: 0; transform: translateY(36px); transition: opacity .8s ease, transform .8s ease; }
+    .fu.in { opacity: 1; transform: none; }
+    .d1 { transition-delay: .1s; } .d2 { transition-delay: .2s; }
+    .d3 { transition-delay: .3s; } .d4 { transition-delay: .4s; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      padding: 20px 0; transition: all .3s;
+    }
+    nav.scrolled { border-bottom: 1px solid var(--border); padding: 13px 0; }
+    /* blur lives on a pseudo-element so the fixed mobile menu stays full-screen */
+    nav::before {
+      content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+      background: var(--nav-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      opacity: 0; transition: opacity .3s;
+    }
+    nav.scrolled::before { opacity: 1; }
+    .nav-wrap { display: flex; align-items: center; justify-content: space-between; }
+    .logo {
+      font-size: 19px; font-weight: var(--fw-bold); text-decoration: none; color: var(--text);
+      display: flex; align-items: center; gap: 9px;
+    }
+    .logo-box {
+      width: 32px; height: 32px; border-radius: 8px;
+      background: var(--accent);
+      display: flex; align-items: center; justify-content: center; color: var(--on-accent);
+    }
+    .logo-box svg { width: 62%; height: 62%; }
+    .nav-links { display: flex; align-items: center; gap: 34px; list-style: none; }
+    .nav-links a {
+      text-decoration: none; color: var(--c-body); font-size: var(--t-ui-size);
+      font-weight: var(--fw-regular); transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-links a.nav-cta:hover { background: var(--accent-strong-hover); }
+    .nav-cta {
+      padding: 8px 20px !important;
+      background: var(--accent-strong); transition: background .2s !important;
+      color: var(--on-accent) !important; border-radius: 8px; font-weight: var(--fw-semi) !important;
+    }
+    .hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      cursor: pointer; z-index: 1001; padding: 4px;
+    }
+    .hamburger span {
+      display: block; width: 24px; height: 2px;
+      background: var(--text); border-radius: 2px; transition: all .3s;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* ── HERO ── */
+    #hero {
+      position: relative; min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      text-align: center; padding: 140px 24px 100px; overflow: hidden;
+    }
+    /* soft light from the top edges; the center stays dark so the copy reads clearly.
+       Transform-only animation (blur is rasterized once). */
+    .hero-bg { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+    .blob {
+      position: absolute; border-radius: 50%; aspect-ratio: 1;
+      filter: blur(80px); opacity: var(--blob-opacity); will-change: transform;
+    }
+    .blob.b1 { width: 30vmax; background: var(--blob-1); top: -11vmax; left: -8vmax; animation: blob1 28s ease-in-out infinite alternate; }
+    .blob.b2 { width: 26vmax; background: var(--blob-2); top: -8vmax; right: -7vmax; animation: blob2 34s ease-in-out infinite alternate; }
+    .blob.b3 { width: 34vmax; background: var(--blob-1); top: -26vmax; left: 50%; margin-left: -17vmax; animation: blob3 31s ease-in-out infinite alternate; }
+    @keyframes blob1 { to { transform: translate3d(7vw, 5vh, 0) scale(1.08); } }
+    @keyframes blob2 { to { transform: translate3d(-6vw, 6vh, 0) scale(.94); } }
+    @keyframes blob3 { to { transform: translate3d(4vw, 4vh, 0) scale(1.06); } }
+    /* keep the area behind the copy dark */
+    .hero-shade { position: absolute; inset: 0; background: radial-gradient(ellipse 50% 42% at 50% 58%, color-mix(in srgb, var(--bg) 85%, transparent), transparent 75%); }
+    /* very light grain so the soft gradients don't band */
+    .hero-grain {
+      position: absolute; inset: 0; opacity: var(--grain-opacity);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+    /* fade into the next section's background */
+    .hero-bg::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 40%; background: linear-gradient(to bottom, transparent, var(--bg)); }
+    @media (max-width: 768px) { .blob { filter: blur(56px); } }
+    @media (prefers-reduced-motion: reduce) { .hero-bg .blob { animation: none; } }
+    .hero-content { position: relative; z-index: 1; max-width: 840px; }
+    .hero-title {
+      font-size: var(--t-hero-size); font-weight: var(--fw-bold);
+      line-height: var(--t-hero-lh); letter-spacing: -0.03em; color: var(--c-title); margin-bottom: 24px;
+    }
+    .hero-title-sub {
+      display: block; margin-top: 22px;
+      font-size: var(--t-card-size); font-weight: var(--fw-semi); line-height: var(--t-card-lh); letter-spacing: -0.02em; color: var(--c-title);
+    }
+    .sr-only {
+      position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+    }
+    .hero-sub {
+      font-size: var(--t-body-size); color: var(--c-body);
+      line-height: var(--t-body-lh); margin: 0 auto 44px; max-width: 560px;
+    }
+    .hero-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+    .btn-p {
+      padding: 14px 32px; background: var(--accent-strong);
+      color: var(--on-accent); font-weight: var(--fw-semi); font-size: var(--t-ui-size); border-radius: 10px;
+      text-decoration: none; border: none; cursor: pointer;
+      display: inline-flex; align-items: center; gap: 8px; transition: all .3s;
+    }
+    .btn-p:hover { background: var(--accent-strong-hover); transform: translateY(-2px); }
+    .btn-s {
+      padding: 14px 32px; background: transparent; color: var(--text); font-weight: var(--fw-semi);
+      font-size: var(--t-ui-size); border-radius: 10px; text-decoration: none;
+      border: 1px solid var(--border); cursor: pointer; transition: all .3s;
+    }
+    .btn-s:hover { border-color: color-mix(in srgb, var(--accent) 50%, transparent); color: var(--accent); }
+    .scroll-ind {
+      position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      font-size: var(--t-label-size); color: var(--c-caption); letter-spacing: .2em; text-transform: uppercase;
+      animation: bob 2.2s ease-in-out infinite;
+    }
+    .scroll-ind::after {
+      content: ''; width: 1px; height: 36px;
+      background: linear-gradient(to bottom, var(--muted), transparent);
+    }
+    @keyframes bob {
+      0%,100% { transform: translateX(-50%) translateY(0); }
+      50%      { transform: translateX(-50%) translateY(8px); }
+    }
+
+    /* ── TRUST MARQUEE ── */
+    #trust {
+      padding: 28px 0; overflow: hidden;
+      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+    }
+    /* one .mq-group must be wider than the widest screen (2560px+); duration keeps ~40px/s */
+    .mq-mask {
+      overflow: hidden;
+      -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+              mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+    }
+    .marquee { display: flex; width: max-content; animation: mq var(--mq-dur, 146s) linear infinite; }
+    .mq-group { display: flex; align-items: center; gap: 44px; padding-right: 44px; }
+    .mq-item {
+      color: var(--c-caption); font-size: var(--t-caption-size); font-weight: var(--fw-semi);
+      letter-spacing: .02em; white-space: nowrap;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .mq-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--accent); }
+    @keyframes mq { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    /* ── VISION ── */
+    .vision-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+    .vision-text .section-title { margin-bottom: 20px; }
+    .vision-text p { color: var(--c-body); font-size: var(--t-body-size); line-height: var(--t-body-lh); }
+    .stat-cards { display: flex; flex-direction: column; gap: 14px; }
+    .stat-card {
+      padding: 26px 30px; background: var(--card);
+      border: 1px solid var(--border); border-radius: 16px;
+      display: flex; align-items: center; gap: 22px;
+      position: relative; overflow: hidden; transition: all .3s;
+    }
+    .stat-card::before {
+      content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+      background: var(--accent);
+    }
+    .stat-card:hover {
+      border-color: color-mix(in srgb, var(--accent) 35%, transparent);
+      transform: translateX(5px);
+    }
+    .stat-num {
+      font-size: var(--t-stat-size); font-weight: var(--fw-bold); line-height: 1; min-width: 108px; letter-spacing: -0.03em;
+      color: var(--accent);
+    }
+    .stat-info h4 { font-size: var(--t-card-size); font-weight: var(--fw-semi); line-height: var(--t-card-lh); color: var(--c-title); margin-bottom: 4px; }
+    .stat-info p { font-size: var(--t-caption-size); color: var(--c-caption); line-height: var(--t-caption-lh); }
+
+    /* ── AI TECH ── */
+    #ai-tech { padding: 100px 0; }
+    .sec-head { text-align: center; margin-bottom: 64px; }
+    #ai-tech .sec-head { margin-bottom: 40px; }
+    .sec-head p { color: var(--c-body); font-size: var(--t-body-size); line-height: var(--t-body-lh); margin-top: 18px; max-width: 540px; margin-left: auto; margin-right: auto; }
+    .stack-badges { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; max-width: 980px; margin: 0 auto; }
+    .s-badge {
+      padding: 7px 15px; border-radius: 7px; font-size: var(--t-caption-size); font-weight: var(--fw-regular);
+      color: var(--dim); background: color-mix(in srgb, var(--text) 4%, transparent); border: 1px solid var(--border);
+      transition: all .3s; cursor: default;
+    }
+    .s-badge:hover { border-color: color-mix(in srgb, var(--accent) 45%, transparent); color: var(--accent); }
+
+    /* ── SERVICES ── */
+    #services { background: var(--bg2); }
+    .svc-item {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 80px;
+      align-items: center; padding: 64px 0; border-bottom: 1px solid var(--border);
+    }
+    .svc-item:first-of-type { padding-top: 0; }
+    .svc-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .svc-item.rev { direction: rtl; }
+    .svc-item.rev > * { direction: ltr; }
+    .svc-visual {
+      aspect-ratio: 4/3; background: var(--card); border: 1px solid var(--border);
+      border-radius: 20px; display: flex; align-items: center; justify-content: center;
+      font-size: 76px; position: relative; overflow: hidden;
+    }
+    .svc-visual .g-overlay {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(color-mix(in srgb, var(--text) 4%, transparent) 1px, transparent 1px),
+        linear-gradient(90deg, color-mix(in srgb, var(--text) 4%, transparent) 1px, transparent 1px);
+      background-size: 28px 28px;
+    }
+    .svc-visual .icon-wrap { position: relative; z-index: 1; }
+    #services .svc-visual, #portfolio .case-card { background: var(--bg); }
+    .svc-num { font-size: var(--t-label-size); font-weight: var(--fw-semi); color: var(--accent); letter-spacing: .2em; margin-bottom: 10px; }
+    .svc-content h3 { font-size: var(--t-card-size); font-weight: var(--fw-semi); line-height: var(--t-card-lh); color: var(--c-title); margin-bottom: 12px; }
+    .svc-content p { color: var(--c-body); font-size: var(--t-body-size); line-height: var(--t-body-lh); margin-bottom: 22px; }
+    .feat-list { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+    .feat-list li { display: flex; align-items: center; gap: 10px; font-size: var(--t-body-size); color: var(--c-body); }
+    .feat-list li::before {
+      content: ''; width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
+      background: var(--accent);
+    }
+
+    /* ── SERVICE MOCKUPS ── */
+    .svc-visual.has-mk { font-size: 16px; display: block; }
+    .mk { position: absolute; inset: 0; z-index: 1; display: flex; align-items: center; justify-content: center; padding: 7%; }
+    .mk * { box-sizing: border-box; }
+
+    /* 01 phones */
+    /* large phones cropped by .svc-visual (overflow: hidden); frame = portfolio .pf-* frame */
+    .mk-phones { position: absolute; inset: 0; }
+    .mk-phones .mk-phone { position: absolute; height: 140%; transition: transform .8s ease; }
+    /* app screen (colors follow site variables; sizes scale with phone width) */
+    .mk-app {
+      position: absolute; inset: 0; display: flex; flex-direction: column; gap: .6em;
+      padding: 2.7em 1.1em 1.2em; background: var(--bg); color: var(--text); text-align: left;
+      font-size: 5.8cqw; line-height: 1.3; letter-spacing: -0.01em;
+    }
+    .mk-app ul { list-style: none; }
+    .ma-status { position: absolute; top: 1.15em; left: 1.6em; right: 1.6em; display: flex; justify-content: space-between; align-items: center; font-size: .85em; }
+    .ma-status span { width: 1.9em; height: .85em; border-radius: .3em; border: 1px solid var(--dim); }
+    .ma-head small { display: block; color: var(--dim); font-size: .85em; }
+    .ma-head b { font-size: 1.6em; font-weight: 800; }
+    .ma-chips { display: flex; gap: .4em; }
+    .ma-chips span { padding: .35em .75em; border-radius: 99px; border: 1px solid var(--border); background: var(--card); color: var(--dim); font-size: .85em; }
+    .ma-chips .on { border-color: var(--accent); color: var(--accent); }
+    .ma-sec { display: flex; justify-content: space-between; align-items: baseline; font-weight: 700; margin-top: .2em; }
+    .ma-sec em { font-style: normal; color: var(--dim); font-weight: 500; font-size: .9em; }
+    .ma-days { display: grid; grid-template-columns: repeat(5, 1fr); gap: .4em; }
+    .ma-days div { text-align: center; padding: .5em 0; border-radius: .7em; background: var(--card); border: 1px solid var(--border); font-weight: 700; }
+    .ma-days small { display: block; font-size: .75em; color: var(--dim); font-weight: 500; margin-bottom: .1em; }
+    .ma-days .on, .ma-cta { background: var(--accent); color: var(--on-accent); border-color: transparent; }
+    .ma-days .on small { color: inherit; opacity: .75; }
+    .ma-times { display: grid; grid-template-columns: repeat(3, 1fr); gap: .4em; }
+    .ma-times span { text-align: center; padding: .55em 0; border-radius: .6em; border: 1px solid var(--border); background: var(--card); font-size: .95em; font-weight: 600; }
+    .ma-times .on { border-color: var(--accent); color: var(--accent); }
+    .ma-times .off { color: var(--muted); text-decoration: line-through; }
+    .ma-summary { display: flex; justify-content: space-between; padding: .7em .85em; border-radius: .7em; background: var(--card); border: 1px solid var(--border); font-size: .9em; }
+    .ma-summary span { color: var(--dim); }
+    .ma-cta { text-align: center; padding: .85em 0; border-radius: .8em; font-weight: 800; font-size: 1.05em; }
+    .ma-top { display: flex; align-items: center; gap: .6em; font-weight: 700; }
+    .ma-top i { width: .6em; height: .6em; border-left: 1.5px solid var(--text); border-bottom: 1.5px solid var(--text); transform: rotate(45deg); }
+    .ma-img { height: 28%; flex-shrink: 0; border-radius: .9em; background: color-mix(in srgb, var(--accent) 35%, var(--card)); }
+    .ma-tag { color: var(--accent); font-weight: 700; font-size: .8em; }
+    .ma-title { font-size: 1.35em; font-weight: 800; margin-top: -.45em; }
+    .ma-desc { color: var(--dim); font-size: .85em; line-height: 1.45; }
+    .ma-info { display: flex; flex-direction: column; gap: .5em; padding: .75em .85em; border-radius: .7em; background: var(--card); border: 1px solid var(--border); }
+    .ma-info li { display: flex; justify-content: space-between; font-size: .9em; }
+    .ma-info span { color: var(--dim); }
+    .mk-app .ma-cta { margin-top: auto; }
+    .mk-phones .front { top: 8%; left: 10%; z-index: 2; }
+    .mk-phones .back { top: 13%; left: 47%; transform-origin: 50% 0; transform: rotate(3deg) translateY(4%); opacity: .9; }
+    .fu.in .mk-phones .back { transform: rotate(5deg); }
+
+    /* 02 browser */
+    .mk-browser {
+      width: 100%; height: 100%; border-radius: 12px; overflow: hidden; background: var(--mk-paper);
+      box-shadow: 0 24px 60px var(--shadow); border: 1px solid var(--border);
+      display: flex; flex-direction: column; position: relative;
+    }
+    .mk-bar { height: 28px; flex-shrink: 0; background: var(--mk-line); display: flex; align-items: center; gap: 6px; padding: 0 10px; }
+    .mk-bar i { width: 8px; height: 8px; border-radius: 50%; background: var(--red); }
+    .mk-bar i:nth-child(2) { background: var(--yellow); } .mk-bar i:nth-child(3) { background: var(--green); }
+    .mk-url { margin-left: 10px; flex: 1; max-width: 55%; height: 16px; border-radius: 99px; background: var(--mk-white); font-size: 9px; color: var(--mk-ink-3); display: flex; align-items: center; padding: 0 10px; }
+    .mk-site { flex: 1; color: var(--mk-ink); padding: 4% 6%; display: flex; flex-direction: column; overflow: hidden; }
+    .mk-snav { display: flex; align-items: center; gap: 14px; font-size: 9px; color: var(--mk-ink-2); }
+    .mk-snav b { font-size: 11px; color: var(--mk-ink); margin-right: auto; font-weight: 800; letter-spacing: -.3px; }
+    .mk-snav em { font-style: normal; padding: 4px 10px; border-radius: 99px; background: var(--mk-ink); color: var(--mk-white); }
+    .mk-hero { display: grid; grid-template-columns: 1.1fr 1fr; gap: 6%; align-items: center; margin-top: 5%; }
+    .mk-hero small { font-size: 8px; font-weight: 700; color: var(--accent); letter-spacing: 1.5px; }
+    .mk-hero h5 { font-size: clamp(13px, 1.7vw, 19px); font-weight: 800; line-height: 1.25; letter-spacing: -.5px; margin: 6px 0 8px; }
+    .mk-hero p { font-size: 9px; color: var(--mk-ink-3); line-height: 1.5; margin-bottom: 10px; }
+    .mk-btns { display: flex; gap: 6px; }
+    .mk-btns span { font-size: 8px; padding: 5px 10px; border-radius: 6px; background: var(--accent); color: var(--on-accent); font-weight: 600; }
+    .mk-btns span + span { background: transparent; color: var(--mk-ink); border: 1px solid var(--mk-line-2); }
+    .mk-shot { aspect-ratio: 4/3; border-radius: 12px; background: var(--mk-tint); position: relative; overflow: hidden; }
+    .mk-shot::before { content: ''; position: absolute; width: 58%; height: 58%; border-radius: 50%; right: -10%; top: -8%; background: color-mix(in srgb, var(--accent) 35%, transparent); }
+    .mk-shot::after { content: ''; position: absolute; left: 10%; bottom: 10%; width: 55%; height: 30%; border-radius: 8px; background: var(--mk-white); box-shadow: 0 6px 16px color-mix(in srgb, var(--mk-ink) 12%, transparent); }
+    .mk-feats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4%; margin-top: auto; padding-top: 4%; }
+    .mk-feats div { background: var(--mk-white); border: 1px solid var(--mk-line); border-radius: 8px; padding: 6px 8px; font-size: 8px; color: var(--mk-ink-3); line-height: 1.4; }
+    .mk-feats div b { display: block; font-size: 9px; color: var(--mk-ink); margin-bottom: 2px; }
+    .mk-feats div::before { content: ''; display: block; width: 12px; height: 12px; border-radius: 4px; background: var(--mk-tint); margin-bottom: 4px; }
+
+    /* 03 dashboard */
+    .mk-dash {
+      width: 100%; height: 100%; border-radius: 12px; overflow: hidden; display: grid; grid-template-columns: 16% 1fr;
+      background: var(--card); border: 1px solid var(--border); box-shadow: 0 24px 60px var(--shadow); font-size: 9px; color: var(--dim);
+    }
+    .mk-side { background: var(--bg); border-right: 1px solid var(--border); padding: 12px 10%; display: flex; flex-direction: column; gap: 9px; }
+    .mk-side .lg { width: 18px; height: 18px; border-radius: 6px; background: var(--accent); margin-bottom: 8px; }
+    .mk-side span { height: 6px; border-radius: 3px; background: color-mix(in srgb, var(--text) 8%, transparent); }
+    .mk-side span.on { background: color-mix(in srgb, var(--accent) 60%, transparent); }
+    .mk-main { padding: 12px 14px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+    .mk-top { display: flex; align-items: center; justify-content: space-between; }
+    .mk-top b { color: var(--text); font-size: 11px; font-weight: 700; }
+    .mk-top em { font-style: normal; font-size: 8px; padding: 3px 8px; border-radius: 99px; background: color-mix(in srgb, var(--accent) 12%, transparent); color: var(--accent); border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent); }
+    .mk-kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .mk-kpis div { background: color-mix(in srgb, var(--text) 3%, transparent); border: 1px solid var(--border); border-radius: 8px; padding: 8px; }
+    .mk-kpis strong { display: block; color: var(--text); font-size: clamp(12px, 1.3vw, 15px); font-weight: 800; margin-top: 2px; }
+    .mk-kpis small { color: var(--green); font-size: 8px; }
+    .mk-kpis small.dn { color: var(--red); }
+    .mk-row { display: grid; grid-template-columns: 1.7fr 1fr; gap: 8px; flex: 1; min-height: 0; }
+    .mk-card { background: color-mix(in srgb, var(--text) 3%, transparent); border: 1px solid var(--border); border-radius: 8px; padding: 8px; display: flex; flex-direction: column; min-height: 0; }
+    .mk-card > b { color: var(--text); font-size: 9px; font-weight: 600; margin-bottom: 6px; }
+    .mk-card svg { width: 100%; flex: 1; min-height: 0; color: var(--accent); }
+    .mk-line { stroke-dasharray: 400; stroke-dashoffset: 400; transition: stroke-dashoffset 1.8s ease .4s; }
+    .fu.in .mk-line { stroke-dashoffset: 0; }
+    .mk-bars { flex: 1; display: flex; align-items: flex-end; gap: 6%; padding-top: 4px; }
+    .mk-bars i { flex: 1; border-radius: 3px 3px 0 0; background: var(--accent); opacity: .85; height: 8%; transition: height 1s ease; }
+    .fu.in .mk-bars i { height: var(--h); }
+    .mk-ai { display: flex; gap: 6px; align-items: center; margin-top: 6px; font-size: 8px; color: var(--dim); line-height: 1.35; padding: 6px; border-radius: 6px; background: color-mix(in srgb, var(--accent) 8%, transparent); }
+    .mk-ai i { width: 12px; height: 12px; border-radius: 4px; flex-shrink: 0; background: var(--accent); }
+
+    @media (max-width: 768px) {
+      .mk { padding: 6%; }
+      .mk-feats { display: none; }
+      .mk-ai { display: none; }
+      .mk-site { justify-content: center; }
+      .mk-hero { margin-top: 0; padding-top: 4%; }
+    }
+
+    /* ── PROCESS ── */
+    .steps {
+      display: grid; grid-template-columns: repeat(4,1fr);
+      gap: 0; margin-top: 68px; position: relative;
+    }
+    .steps::before {
+      content: ''; position: absolute; top: 27px;
+      left: 12.5%; right: 12.5%; height: 1px;
+      background: color-mix(in srgb, var(--accent) 35%, transparent);
+    }
+    .step { text-align: center; padding: 0 20px; position: relative; z-index: 1; }
+    .step-dot {
+      width: 54px; height: 54px; border-radius: 50%; margin: 0 auto 22px; color: var(--accent);
+      background: color-mix(in srgb, var(--accent) 14%, var(--bg));
+      display: flex; align-items: center; justify-content: center; transition: transform .3s;
+    }
+    .step-dot .ico { width: 24px; height: 24px; }
+    .step:hover .step-dot { transform: translateY(-3px); }
+    .step-wk { font-size: var(--t-label-size); font-weight: var(--fw-semi); color: var(--accent); letter-spacing: .2em; margin-bottom: 8px; }
+    .step h4 { font-size: var(--t-card-size); font-weight: var(--fw-semi); line-height: var(--t-card-lh); color: var(--c-title); margin-bottom: 8px; }
+    .step p { font-size: var(--t-caption-size); color: var(--c-caption); line-height: var(--t-caption-lh); }
+
+    /* ── PORTFOLIO ── */
+    #portfolio { background: var(--bg2); }
+    .case-list { display: flex; flex-direction: column; gap: 22px; margin-top: 64px; }
+    .case-card {
+      display: flex; flex-direction: column; min-width: 0;
+      background: var(--card); border: 1px solid var(--border); border-radius: 20px; overflow: hidden;
+      transition: opacity .8s ease, transform .6s ease, border-color .35s, box-shadow .35s;
+    }
+    .case-card:hover {
+      border-color: color-mix(in srgb, var(--accent) 38%, transparent);
+      box-shadow: 0 24px 60px var(--shadow); transform: translateY(-4px);
+    }
+    .case-media {
+      container-type: inline-size; aspect-ratio: 4 / 3; padding: 7%;
+      background: color-mix(in srgb, var(--text) 3%, var(--bg));
+    }
+    .case-body { display: flex; flex-direction: column; gap: 10px; flex: 1; padding: 18px 22px 22px; }
+    .case-body h3 { font-size: var(--t-card-size); font-weight: var(--fw-semi); line-height: var(--t-card-lh); letter-spacing: -0.02em; color: var(--c-title); }
+    .case-body p { font-size: var(--t-body-size); color: var(--c-body); line-height: var(--t-body-lh); }
+    .case-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .case-tag {
+      font-size: var(--t-label-size); font-weight: var(--fw-semi); padding: 4px 10px; border-radius: 99px; color: var(--accent);
+      background: color-mix(in srgb, var(--accent) 10%, transparent); border: 1px solid color-mix(in srgb, var(--accent) 28%, transparent);
+    }
+    .case-tag.is-own { color: var(--on-accent); background: var(--accent); border-color: var(--accent); }
+    .case-tag.is-role { color: var(--dim); background: color-mix(in srgb, var(--text) 5%, transparent); border-color: var(--border); }
+
+    /* device frames (same family as the service mockups) */
+    .pf-stage { position: relative; width: 100%; height: 100%; }
+    .pf-browser {
+      border-radius: 10px; overflow: hidden; background: var(--card);
+      border: 1px solid color-mix(in srgb, var(--text) 14%, transparent); box-shadow: 0 18px 40px var(--shadow);
+    }
+    .pf-bar { display: flex; align-items: center; gap: 5px; height: clamp(14px, 4.4cqw, 26px); padding: 0 3%; background: color-mix(in srgb, var(--text) 10%, var(--card)); }
+    .pf-bar i { width: clamp(4px, 1.3cqw, 8px); aspect-ratio: 1; border-radius: 50%; background: var(--red); }
+    .pf-bar i:nth-child(2) { background: var(--yellow); } .pf-bar i:nth-child(3) { background: var(--green); }
+    .pf-view { position: relative; aspect-ratio: 16 / 10; overflow: hidden; background: var(--bg); }
+    /* phone: same bezel color, 1px line and shadow as the browser frame.
+       Sizes use the phone's own width (cqw), so the bezel looks even everywhere. */
+    .pf-phone { position: relative; aspect-ratio: 9 / 19.5; container-type: inline-size; }
+    .pf-device {
+      --r: 15cqw; --bw: clamp(3px, 2.6cqw, 5px);
+      position: absolute; inset: 0; padding: var(--bw); border-radius: var(--r);
+      background: color-mix(in srgb, var(--text) 10%, var(--card));
+      border: 1px solid color-mix(in srgb, var(--text) 14%, transparent); box-shadow: 0 18px 40px var(--shadow);
+    }
+    .pf-screen {
+      position: relative; height: 100%; overflow: hidden; background: var(--bg);
+      border-radius: calc(var(--r) - var(--bw) - 1px);
+    }
+    .pf-notch {
+      position: absolute; z-index: 1; left: 50%; top: calc(var(--bw) + 1px + 3cqw); transform: translateX(-50%);
+      width: 28cqw; height: 8cqw; border-radius: 99px; background: var(--notch); opacity: .9;
+    }
+    .pf-view img, .pf-screen img {
+      position: absolute; left: 0; top: 0; display: block; width: 100%; height: 100%;
+      object-fit: cover; object-position: top;
+    }
+    /* long captures: top first, slow scroll on hover */
+    .is-long img { height: auto; min-height: 100%; transition: top .9s ease, transform .9s ease; }
+    @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+      .case-card:hover .is-long img {
+        top: 100%; transform: translateY(-100%);
+        transition-duration: var(--dur, 8s); transition-timing-function: linear;
+      }
+    }
+
+    /* layouts */
+    .pf-combo .pf-browser { position: absolute; left: 0; top: 50%; width: 80%; transform: translateY(-56%); }
+    .pf-combo .pf-phone { position: absolute; right: 2%; bottom: 0; height: 84%; z-index: 1; }
+    .pf-duo .pf-phone, .pf-trio .pf-phone { position: absolute; top: 50%; left: 50%; }
+    .pf-duo .pf-phone { height: 100%; }
+    .pf-duo .a { transform: translate(-92%, -50%); z-index: 1; }
+    .pf-duo .b { transform: translate(-4%, -47%) scale(.92); }
+    .pf-trio .main { height: 100%; transform: translate(-50%, -50%); z-index: 1; }
+    .pf-trio .side { height: 82%; }
+    .pf-trio .l { transform: translate(-128%, -50%); }
+    .pf-trio .r { transform: translate(28%, -50%); }
+
+    .case-feature { display: grid; grid-template-columns: 1.2fr 1fr; }
+    .case-feature .case-body { justify-content: center; gap: 14px; padding: 44px 48px; }
+    .case-feature .case-body h3 { font-size: var(--t-card-size); }
+
+    .case-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+
+    /* ── CONTACT ── */
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+    .c-info .section-title { margin-bottom: 20px; }
+    .c-info p { color: var(--c-body); font-size: var(--t-body-size); line-height: var(--t-body-lh); }
+    .c-methods { display: grid; gap: 18px; }
+    .c-card {
+      display: flex; align-items: center; gap: 18px; padding: 26px 28px;
+      background: var(--card); border: 1px solid var(--border); border-radius: 16px;
+      text-decoration: none; color: var(--text); transition: all .3s;
+    }
+    .c-card:hover {
+      border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+      transform: translateY(-2px);
+    }
+    .c-card-icon {
+      width: 52px; height: 52px; border-radius: 13px; flex-shrink: 0; color: var(--accent);
+      background: color-mix(in srgb, var(--accent) 12%, transparent);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .c-card-icon .ico { width: 24px; height: 24px; }
+    .c-card-text small { font-size: var(--t-caption-size); color: var(--c-caption); display: block; margin-bottom: 2px; }
+    .c-card-text span { font-size: var(--t-card-size); font-weight: var(--fw-semi); line-height: var(--t-card-lh); word-break: break-all; }
+    .c-card.mail .c-card-text span { font-size: var(--t-body-size); }
+    .c-note { font-size: var(--t-caption-size); color: var(--c-caption); margin-top: 4px; }
+
+    /* ── FOOTER ── */
+    footer { padding: 44px 0; border-top: 1px solid var(--border); }
+    .foot-inner {
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 20px;
+    }
+    .foot-logo {
+      display: flex; align-items: center; gap: 9px;
+      text-decoration: none; color: var(--text);
+    }
+    .foot-logo .logo-box { width: 28px; height: 28px; }
+    .foot-logo span { font-size: 17px; font-weight: var(--fw-bold); }
+    .foot-copy { font-size: var(--t-caption-size); color: var(--c-caption); }
+    .foot-mail { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; justify-content: center; }
+    .foot-mail a { font-size: var(--t-caption-size); color: var(--c-caption); text-decoration: none; transition: color .2s; }
+    .foot-mail a:hover { color: var(--accent); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1024px) {
+      .vision-grid, .contact-grid { grid-template-columns: 1fr; gap: 48px; }
+      .steps { grid-template-columns: 1fr 1fr; gap: 40px; }
+      .steps::before { display: none; }
+    }
+    @media (max-width: 768px) {
+      section { padding: 80px 0; }
+      .nav-links {
+        display: none; flex-direction: column; position: fixed;
+        inset: 0; background: var(--menu-bg); backdrop-filter: blur(20px);
+        align-items: center; justify-content: center; gap: 28px;
+        font-size: 18px; z-index: 999;
+      }
+      .nav-links.open { display: flex; }
+      .hamburger { display: flex; }
+      .svc-item { grid-template-columns: 1fr; gap: 28px; }
+      .svc-item.rev { direction: ltr; }
+      .case-feature { grid-template-columns: 1fr; }
+      .case-feature .case-body { padding: 22px 22px 26px; }
+      .case-grid { grid-template-columns: 1fr; }
+      .case-media { padding: 6%; }
+      .steps { grid-template-columns: 1fr 1fr; }
+      .foot-inner { justify-content: center; text-align: center; flex-direction: column; }
+    }
+    @media (max-width: 600px) {
+      :root { --t-body-size: 15px; }
+      .stack-badges { gap: 8px; }
+      .stack-badges .s-badge { padding: 6px 12px; font-size: 12.5px; }
+    }
+    @media (max-width: 480px) {
+      :root { --t-hero-size: clamp(36px, 10.4vw, 44px); }
+      .steps { grid-template-columns: 1fr; }
+      .c-card { padding: 20px 22px; gap: 14px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="container">
+    <div class="nav-wrap">
+      <a href="#" class="logo">
+        <div class="logo-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 15h20"/><path d="M4 15Q12 3 20 15"/><path d="M8 15v-4.5M12 15V9M16 15v-4.5"/></svg></div>
+        CodeBridge
+      </a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#vision">소개</a></li>
+        <li><a href="#ai-tech">기술</a></li>
+        <li><a href="#services">서비스</a></li>
+        <li><a href="#portfolio">포트폴리오</a></li>
+        <li><a href="#contact" class="nav-cta">프로젝트 문의하기</a></li>
+      </ul>
+      <div class="hamburger" id="ham"><span></span><span></span><span></span></div>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg" aria-hidden="true"><span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span><span class="hero-shade"></span><span class="hero-grain"></span></div>
+  <div class="hero-content">
+    <h1 class="hero-title">
+      기획부터 디자인,<br>
+      개발까지 <span class="hl">한 번에</span><span class="sr-only"> — </span>
+      <span class="hero-title-sub">웹사이트·앱 제작 <span class="hl">CodeBridge</span></span>
+    </h1>
+    <p class="hero-sub">브랜드 웹사이트부터 모바일 앱, 웹 서비스까지<br><strong>한 팀이</strong> 기획·디자인·개발·출시를 책임지고 완성합니다.</p>
+    <div class="hero-btns">
+      <a href="#contact" class="btn-p">프로젝트 문의하기 →</a>
+      <a href="#portfolio" class="btn-s">포트폴리오 보기</a>
+    </div>
+  </div>
+  <div class="scroll-ind">scroll</div>
+</section>
+
+<!-- TRUST BAR -->
+<div id="trust">
+  <div class="mq-mask">
+  <div class="marquee">
+    <!-- 목록을 두 번 넣어 한 묶음이 초광폭 화면보다 길게 유지 -->
+    <div class="mq-group">
+      <div class="mq-item"><span class="mq-dot"></span>Figma</div>
+      <div class="mq-item"><span class="mq-dot"></span>Photoshop</div>
+      <div class="mq-item"><span class="mq-dot"></span>Illustrator</div>
+      <div class="mq-item"><span class="mq-dot"></span>JavaScript</div>
+      <div class="mq-item"><span class="mq-dot"></span>TypeScript</div>
+      <div class="mq-item"><span class="mq-dot"></span>Next.js</div>
+      <div class="mq-item"><span class="mq-dot"></span>React Native</div>
+      <div class="mq-item"><span class="mq-dot"></span>Flutter</div>
+      <div class="mq-item"><span class="mq-dot"></span>Kotlin</div>
+      <div class="mq-item"><span class="mq-dot"></span>Java</div>
+      <div class="mq-item"><span class="mq-dot"></span>Spring Boot</div>
+      <div class="mq-item"><span class="mq-dot"></span>Node.js</div>
+      <div class="mq-item"><span class="mq-dot"></span>PHP</div>
+      <div class="mq-item"><span class="mq-dot"></span>Laravel</div>
+      <div class="mq-item"><span class="mq-dot"></span>CodeIgniter</div>
+      <div class="mq-item"><span class="mq-dot"></span>MySQL</div>
+      <div class="mq-item"><span class="mq-dot"></span>MariaDB</div>
+      <div class="mq-item"><span class="mq-dot"></span>Redis</div>
+      <div class="mq-item"><span class="mq-dot"></span>Supabase</div>
+      <div class="mq-item"><span class="mq-dot"></span>Firebase</div>
+      <div class="mq-item"><span class="mq-dot"></span>AWS</div>
+      <div class="mq-item"><span class="mq-dot"></span>Docker</div>
+      <div class="mq-item"><span class="mq-dot"></span>Vercel</div>
+      <div class="mq-item"><span class="mq-dot"></span>GitHub</div>
+      <div class="mq-item"><span class="mq-dot"></span>OpenAI API</div>
+      <div class="mq-item"><span class="mq-dot"></span>Claude API</div>
+      <div class="mq-item"><span class="mq-dot"></span>Gemini API</div>
+      <div class="mq-item"><span class="mq-dot"></span>Figma</div>
+      <div class="mq-item"><span class="mq-dot"></span>Photoshop</div>
+      <div class="mq-item"><span class="mq-dot"></span>Illustrator</div>
+      <div class="mq-item"><span class="mq-dot"></span>JavaScript</div>
+      <div class="mq-item"><span class="mq-dot"></span>TypeScript</div>
+      <div class="mq-item"><span class="mq-dot"></span>Next.js</div>
+      <div class="mq-item"><span class="mq-dot"></span>React Native</div>
+      <div class="mq-item"><span class="mq-dot"></span>Flutter</div>
+      <div class="mq-item"><span class="mq-dot"></span>Kotlin</div>
+      <div class="mq-item"><span class="mq-dot"></span>Java</div>
+      <div class="mq-item"><span class="mq-dot"></span>Spring Boot</div>
+      <div class="mq-item"><span class="mq-dot"></span>Node.js</div>
+      <div class="mq-item"><span class="mq-dot"></span>PHP</div>
+      <div class="mq-item"><span class="mq-dot"></span>Laravel</div>
+      <div class="mq-item"><span class="mq-dot"></span>CodeIgniter</div>
+      <div class="mq-item"><span class="mq-dot"></span>MySQL</div>
+      <div class="mq-item"><span class="mq-dot"></span>MariaDB</div>
+      <div class="mq-item"><span class="mq-dot"></span>Redis</div>
+      <div class="mq-item"><span class="mq-dot"></span>Supabase</div>
+      <div class="mq-item"><span class="mq-dot"></span>Firebase</div>
+      <div class="mq-item"><span class="mq-dot"></span>AWS</div>
+      <div class="mq-item"><span class="mq-dot"></span>Docker</div>
+      <div class="mq-item"><span class="mq-dot"></span>Vercel</div>
+      <div class="mq-item"><span class="mq-dot"></span>GitHub</div>
+      <div class="mq-item"><span class="mq-dot"></span>OpenAI API</div>
+      <div class="mq-item"><span class="mq-dot"></span>Claude API</div>
+      <div class="mq-item"><span class="mq-dot"></span>Gemini API</div>
+    </div>
+    <div class="mq-group" aria-hidden="true">
+      <div class="mq-item"><span class="mq-dot"></span>Figma</div>
+      <div class="mq-item"><span class="mq-dot"></span>Photoshop</div>
+      <div class="mq-item"><span class="mq-dot"></span>Illustrator</div>
+      <div class="mq-item"><span class="mq-dot"></span>JavaScript</div>
+      <div class="mq-item"><span class="mq-dot"></span>TypeScript</div>
+      <div class="mq-item"><span class="mq-dot"></span>Next.js</div>
+      <div class="mq-item"><span class="mq-dot"></span>React Native</div>
+      <div class="mq-item"><span class="mq-dot"></span>Flutter</div>
+      <div class="mq-item"><span class="mq-dot"></span>Kotlin</div>
+      <div class="mq-item"><span class="mq-dot"></span>Java</div>
+      <div class="mq-item"><span class="mq-dot"></span>Spring Boot</div>
+      <div class="mq-item"><span class="mq-dot"></span>Node.js</div>
+      <div class="mq-item"><span class="mq-dot"></span>PHP</div>
+      <div class="mq-item"><span class="mq-dot"></span>Laravel</div>
+      <div class="mq-item"><span class="mq-dot"></span>CodeIgniter</div>
+      <div class="mq-item"><span class="mq-dot"></span>MySQL</div>
+      <div class="mq-item"><span class="mq-dot"></span>MariaDB</div>
+      <div class="mq-item"><span class="mq-dot"></span>Redis</div>
+      <div class="mq-item"><span class="mq-dot"></span>Supabase</div>
+      <div class="mq-item"><span class="mq-dot"></span>Firebase</div>
+      <div class="mq-item"><span class="mq-dot"></span>AWS</div>
+      <div class="mq-item"><span class="mq-dot"></span>Docker</div>
+      <div class="mq-item"><span class="mq-dot"></span>Vercel</div>
+      <div class="mq-item"><span class="mq-dot"></span>GitHub</div>
+      <div class="mq-item"><span class="mq-dot"></span>OpenAI API</div>
+      <div class="mq-item"><span class="mq-dot"></span>Claude API</div>
+      <div class="mq-item"><span class="mq-dot"></span>Gemini API</div>
+      <div class="mq-item"><span class="mq-dot"></span>Figma</div>
+      <div class="mq-item"><span class="mq-dot"></span>Photoshop</div>
+      <div class="mq-item"><span class="mq-dot"></span>Illustrator</div>
+      <div class="mq-item"><span class="mq-dot"></span>JavaScript</div>
+      <div class="mq-item"><span class="mq-dot"></span>TypeScript</div>
+      <div class="mq-item"><span class="mq-dot"></span>Next.js</div>
+      <div class="mq-item"><span class="mq-dot"></span>React Native</div>
+      <div class="mq-item"><span class="mq-dot"></span>Flutter</div>
+      <div class="mq-item"><span class="mq-dot"></span>Kotlin</div>
+      <div class="mq-item"><span class="mq-dot"></span>Java</div>
+      <div class="mq-item"><span class="mq-dot"></span>Spring Boot</div>
+      <div class="mq-item"><span class="mq-dot"></span>Node.js</div>
+      <div class="mq-item"><span class="mq-dot"></span>PHP</div>
+      <div class="mq-item"><span class="mq-dot"></span>Laravel</div>
+      <div class="mq-item"><span class="mq-dot"></span>CodeIgniter</div>
+      <div class="mq-item"><span class="mq-dot"></span>MySQL</div>
+      <div class="mq-item"><span class="mq-dot"></span>MariaDB</div>
+      <div class="mq-item"><span class="mq-dot"></span>Redis</div>
+      <div class="mq-item"><span class="mq-dot"></span>Supabase</div>
+      <div class="mq-item"><span class="mq-dot"></span>Firebase</div>
+      <div class="mq-item"><span class="mq-dot"></span>AWS</div>
+      <div class="mq-item"><span class="mq-dot"></span>Docker</div>
+      <div class="mq-item"><span class="mq-dot"></span>Vercel</div>
+      <div class="mq-item"><span class="mq-dot"></span>GitHub</div>
+      <div class="mq-item"><span class="mq-dot"></span>OpenAI API</div>
+      <div class="mq-item"><span class="mq-dot"></span>Claude API</div>
+      <div class="mq-item"><span class="mq-dot"></span>Gemini API</div>
+    </div>
+  </div>
+  </div>
+</div>
+
+<!-- VISION -->
+<section id="vision">
+  <div class="container">
+    <div class="vision-grid">
+      <div class="vision-text fu">
+        <span class="label">ABOUT US</span>
+        <h2 class="section-title">
+          한 번 맡긴 고객이<br>
+          <span class="hl">다시 찾는 팀</span>
+        </h2>
+        <p>CodeBridge는 <strong>각 분야 7년 이상 실무 경력</strong>의 디자이너와 개발자가 함께하는 웹·앱 제작 스튜디오입니다.<br><br>
+        기획 단계부터 함께 고민하고 끝까지 꼼꼼히 챙기기 때문에, 한 번 작업한 고객이 <strong>다음 프로젝트도 다시</strong> 맡겨 주십니다.</p>
+      </div>
+      <div class="stat-cards">
+        <div class="stat-card fu d1">
+          <div class="stat-num">7년+</div>
+          <div class="stat-info">
+            <h4>디자인·퍼블리싱 실무 경력</h4>
+            <p>보기 편하고 쓰기 쉬운 화면을 설계하고, 웹 표준에 맞게 구현합니다.</p>
+          </div>
+        </div>
+        <div class="stat-card fu d2">
+          <div class="stat-num">7년+</div>
+          <div class="stat-info">
+            <h4>개발 실무 경력</h4>
+            <p>웹사이트, 웹 서비스, 모바일 앱을 설계부터 배포까지 직접 개발합니다.</p>
+          </div>
+        </div>
+        <div class="stat-card fu d3">
+          <div class="stat-num">50+</div>
+          <div class="stat-info">
+            <h4>고객 후기</h4>
+            <p>프로젝트를 함께한 고객들이 직접 남겨주신 후기입니다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AI TECH -->
+<section id="ai-tech">
+  <div class="container">
+    <div class="sec-head fu">
+      <span class="label">TECH STACK</span>
+      <h2 class="section-title">검증된 기술로<br><span class="hl">탄탄하게 만듭니다</span></h2>
+      <p>반복 작업에는 AI 도구를 활용해 시간을 아끼고, 그만큼 <strong>디자인 디테일과 품질 점검</strong>에 더 집중합니다.</p>
+    </div>
+    <!-- 순서: 디자인 → 프론트엔드 → 앱 → 백엔드 → 데이터베이스 → 인프라 → AI -->
+    <div class="stack-badges fu">
+      <span class="s-badge">Figma</span>
+      <span class="s-badge">Photoshop</span>
+      <span class="s-badge">Illustrator</span>
+      <span class="s-badge">JavaScript</span>
+      <span class="s-badge">TypeScript</span>
+      <span class="s-badge">Next.js</span>
+      <span class="s-badge">React Native</span>
+      <span class="s-badge">Flutter</span>
+      <span class="s-badge">Kotlin</span>
+      <span class="s-badge">Java</span>
+      <span class="s-badge">Spring Boot</span>
+      <span class="s-badge">Node.js</span>
+      <span class="s-badge">PHP</span>
+      <span class="s-badge">Laravel</span>
+      <span class="s-badge">CodeIgniter</span>
+      <span class="s-badge">MySQL</span>
+      <span class="s-badge">MariaDB</span>
+      <span class="s-badge">Redis</span>
+      <span class="s-badge">Supabase</span>
+      <span class="s-badge">Firebase</span>
+      <span class="s-badge">AWS</span>
+      <span class="s-badge">Docker</span>
+      <span class="s-badge">Vercel</span>
+      <span class="s-badge">GitHub</span>
+      <span class="s-badge">OpenAI API</span>
+      <span class="s-badge">Claude API</span>
+      <span class="s-badge">Gemini API</span>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="container">
+    <div class="sec-head fu">
+      <span class="label">SERVICES</span>
+      <h2 class="section-title">웹사이트부터 앱까지,<br><span class="hl">한 팀에서 해결하세요</span></h2>
+    </div>
+
+    <div class="svc-item">
+      <div class="svc-visual has-mk fu">
+        <div class="g-overlay"></div>
+        <div class="mk" aria-hidden="true">
+          <div class="mk-dash">
+            <div class="mk-side"><div class="lg"></div><span class="on"></span><span></span><span></span><span></span><span></span></div>
+            <div class="mk-main">
+              <div class="mk-top"><b>대시보드</b><em>이번 달</em></div>
+              <div class="mk-kpis">
+                <div>방문자<strong>24,580</strong><small>▲ 12.4%</small></div>
+                <div>문의 전환<strong>3.8%</strong><small>▲ 0.6%p</small></div>
+                <div>이탈률<strong>41%</strong><small class="dn">▼ 2.1%</small></div>
+              </div>
+              <div class="mk-row">
+                <div class="mk-card"><b>월별 방문 추이</b>
+                  <svg viewBox="0 0 200 80" preserveAspectRatio="none">
+                    <defs><linearGradient id="mkA" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="currentColor" stop-opacity=".28"/><stop offset="1" stop-color="currentColor" stop-opacity="0"/></linearGradient></defs>
+                    <path d="M0 64 L25 56 L50 60 L75 42 L100 46 L125 30 L150 34 L175 18 L200 12 L200 80 L0 80Z" fill="url(#mkA)"/>
+                    <path class="mk-line" d="M0 64 L25 56 L50 60 L75 42 L100 46 L125 30 L150 34 L175 18 L200 12" fill="none" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke"/>
+                  </svg>
+                </div>
+                <div class="mk-card"><b>채널별 유입</b>
+                  <div class="mk-bars"><i style="--h:70%"></i><i style="--h:45%"></i><i style="--h:90%"></i><i style="--h:35%"></i></div>
+                  <div class="mk-ai"><i></i>디자인 시안 그대로 구현했어요</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="svc-content fu d1">
+        <div class="svc-num">01</div>
+        <h3>UI·UX 디자인</h3>
+        <p>웹사이트와 앱 화면을 사용자가 헤매지 않는 흐름으로 설계하고, 브랜드에 맞게 디자인합니다. <strong>디자인한 사람이 직접 퍼블리싱까지 — 시안 그대로 구현</strong>하기 때문에 디자인과 실제 화면이 달라지지 않습니다.</p>
+        <ul class="feat-list">
+          <li>웹사이트 · 앱 화면 디자인</li>
+          <li>화면 설계(와이어프레임) · 사용자 흐름 정리</li>
+          <li>디자이너가 직접 퍼블리싱해 시안 그대로 구현</li>
+          <li>디자인 가이드 · 공통 컴포넌트 정리</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="svc-item rev">
+      <div class="svc-visual has-mk fu">
+        <div class="g-overlay"></div>
+        <div class="mk" aria-hidden="true">
+          <div class="mk-browser">
+            <div class="mk-bar"><i></i><i></i><i></i><div class="mk-url">yourbrand.com</div></div>
+            <div class="mk-site">
+              <div class="mk-snav"><b>BRAND</b><span>소개</span><span>서비스</span><span>고객사례</span><em>문의하기</em></div>
+              <div class="mk-hero">
+                <div>
+                  <small>NEW SERVICE</small>
+                  <h5>브랜드의 첫인상을<br>완성하는 웹사이트</h5>
+                  <p>반응형 디자인부터 SEO까지,<br>모든 기기에서 빠르고 선명하게.</p>
+                  <div class="mk-btns"><span>시작하기</span><span>더 알아보기</span></div>
+                </div>
+                <div class="mk-shot"></div>
+              </div>
+              <div class="mk-feats">
+                <div><b>반응형</b>PC·태블릿·모바일</div>
+                <div><b>빠른 속도</b>최적화된 로딩</div>
+                <div><b>관리 편의</b>쉬운 콘텐츠 수정</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="svc-content fu d1">
+        <div class="svc-num">02</div>
+        <h3>웹사이트 제작</h3>
+        <p>브랜드 홈페이지와 랜딩페이지부터 운영에 필요한 관리자 페이지까지, 목적에 맞는 웹사이트를 만듭니다. PC·태블릿·모바일 어디서나 보기 좋은 반응형으로, <strong>웹 표준과 검색 노출</strong>까지 고려해 제작합니다.</p>
+        <ul class="feat-list">
+          <li>브랜드 홈페이지 · 랜딩페이지 제작</li>
+          <li>관리자 페이지 · 콘텐츠 관리 기능</li>
+          <li>PC·태블릿·모바일 반응형</li>
+          <li>웹 표준 준수와 검색 노출 최적화(SEO)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="svc-item">
+      <div class="svc-visual has-mk fu">
+        <div class="g-overlay"></div>
+        <div class="mk" aria-hidden="true">
+                    <div class="mk-phones">
+            <div class="mk-phone back pf-phone"><div class="pf-device"><div class="pf-screen">
+              <div class="mk-app">
+                <div class="ma-status"><b>9:41</b><span></span></div>
+                <div class="ma-top"><i></i><b>시술 상세</b></div>
+                <div class="ma-img"></div>
+                <small class="ma-tag">헤어 · 커트</small>
+                <b class="ma-title">커트 + 스타일링</b>
+                <p class="ma-desc">상담 후 얼굴형에 맞춰 커트하고 스타일링까지 마무리해 드려요.</p>
+                <ul class="ma-info">
+                  <li><span>소요 시간</span><b>60분</b></li>
+                  <li><span>가격</span><b>35,000원</b></li>
+                  <li><span>담당</span><b>지수 디자이너</b></li>
+                </ul>
+                <div class="ma-cta">이 시술 예약하기</div>
+              </div>
+            </div><i class="pf-notch"></i></div></div>
+            <div class="mk-phone front pf-phone"><div class="pf-device"><div class="pf-screen">
+              <div class="mk-app">
+                <div class="ma-status"><b>9:41</b><span></span></div>
+                <div class="ma-head"><small>모던 헤어 강남점</small><b>예약하기</b></div>
+                <div class="ma-chips"><span class="on">커트</span><span>펌</span><span>염색</span></div>
+                <div class="ma-sec"><span>날짜 선택</span><em>11월</em></div>
+                <div class="ma-days">
+                  <div><small>월</small>9</div><div><small>화</small>10</div><div><small>수</small>11</div><div class="on"><small>목</small>12</div><div><small>금</small>13</div>
+                </div>
+                <div class="ma-sec"><span>시간 선택</span></div>
+                <div class="ma-times"><span>10:00</span><span class="off">11:00</span><span>13:00</span><span class="on">14:30</span><span>16:00</span><span>17:30</span></div>
+                <div class="ma-summary"><span>커트 + 스타일링</span><b>35,000원</b></div>
+                <div class="ma-cta">예약하기</div>
+              </div>
+            </div><i class="pf-notch"></i></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="svc-content fu d1">
+        <div class="svc-num">03</div>
+        <h3>모바일 앱 개발</h3>
+        <p>iOS와 Android 앱을 기획부터 스토어 출시까지 함께 진행합니다. 앱스토어·구글 플레이 심사 기준에 맞춰 준비하고, 심사 과정의 수정 요청에도 대응합니다. CodeBridge가 <strong>직접 기획하고 출시한 앱</strong>도 있어, 출시 과정을 처음부터 끝까지 경험으로 알고 있습니다.</p>
+        <ul class="feat-list">
+          <li>iOS · Android 앱 개발과 출시</li>
+          <li>앱스토어 · 구글 플레이 심사 대응</li>
+          <li>푸시 알림 · 결제 등 핵심 기능 구현</li>
+          <li>출시 후 업데이트 · 유지보수</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process">
+  <div class="container">
+    <div class="sec-head fu">
+      <span class="label">HOW WE WORK</span>
+      <h2 class="section-title">상담부터 출시까지,<br><span class="hl">한 단계씩 함께합니다</span></h2>
+      <p>작업 범위에 맞춰 일정을 먼저 안내하고, <strong>확정된 시안 그대로</strong> 정확하게 구현합니다. 진행 상황은 단계마다 수시로 공유해 드려요.</p>
+    </div>
+    <div class="steps">
+      <div class="step fu d1">
+        <div class="step-dot"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg></div>
+        <div class="step-wk">STEP 01</div>
+        <h4>상담 · 기획</h4>
+        <p>만들고 싶은 서비스와 필요한 기능을 듣고, 작업 범위와 일정, 견적을 정리해 안내합니다.</p>
+      </div>
+      <div class="step fu d2">
+        <div class="step-dot"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.707 21.293a1 1 0 0 1-1.414 0l-1.586-1.586a1 1 0 0 1 0-1.414l5.586-5.586a1 1 0 0 1 1.414 0l1.586 1.586a1 1 0 0 1 0 1.414z"/><path d="m18 13-1.375-6.874a1 1 0 0 0-.746-.776L3.235 2.028a1 1 0 0 0-1.207 1.207L5.35 15.879a1 1 0 0 0 .776.746L13 18"/><path d="m2.3 2.3 7.286 7.286"/><circle cx="11" cy="11" r="2"/></svg></div>
+        <div class="step-wk">STEP 02</div>
+        <h4>디자인</h4>
+        <p>화면 구성과 디자인 시안을 만들고, 피드백을 반영해 확정합니다.</p>
+      </div>
+      <div class="step fu d3">
+        <div class="step-dot"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
+        <div class="step-wk">STEP 03</div>
+        <h4>퍼블리싱 · 개발</h4>
+        <p>확정된 시안 그대로 구현하고, 진행 상황을 수시로 공유해 함께 확인합니다.</p>
+      </div>
+      <div class="step fu d4">
+        <div class="step-dot"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg></div>
+        <div class="step-wk">STEP 04</div>
+        <h4>출시</h4>
+        <p>배포와 스토어 출시까지 진행하고, 마지막까지 꼼꼼히 마무리합니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO -->
+<section id="portfolio">
+  <div class="container">
+    <div class="sec-head fu">
+      <span class="label">PORTFOLIO</span>
+      <h2 class="section-title">직접 디자인하고<br><span class="hl">만들어 온 작업들</span></h2>
+    </div>
+    <div class="case-list">
+      <!-- 대표 작업 (큰 카드) -->
+      <article class="case-card case-feature fu">
+        <div class="case-media"><div class="pf-stage pf-trio">
+          <div class="pf-phone side l"><div class="pf-device"><div class="pf-screen"><img src="Portfolio/dosa-tarot-pick.png" alt="AI 팩폭도사 타로 카드 선택 화면" loading="lazy" width="540" height="1000"></div><i class="pf-notch"></i></div></div>
+          <div class="pf-phone main"><div class="pf-device"><div class="pf-screen"><img src="Portfolio/dosa-home.png" alt="AI 팩폭도사 홈 화면" loading="lazy" width="540" height="1000"></div><i class="pf-notch"></i></div></div>
+          <div class="pf-phone side r"><div class="pf-device"><div class="pf-screen"><img src="Portfolio/dosa-tarot-result.png" alt="AI 팩폭도사 타로 리딩 결과 화면" loading="lazy" width="540" height="1000"></div><i class="pf-notch"></i></div></div>
+        </div></div>
+        <div class="case-body">
+          <h3>AI 팩폭도사</h3>
+          <p>오늘의 운세·사주·타로·꿈 해몽을 한 앱에 담은 운세 서비스를 <strong>기획부터 개발까지 직접</strong> 만들었습니다.</p>
+          <div class="case-tags"><span class="case-tag">앱</span><span class="case-tag is-own">자체 서비스</span><span class="case-tag is-role">기획 · 디자인 · 개발</span></div>
+        </div>
+      </article>
+
+      <!-- 작은 카드들 (PC 2×2, 모바일 1열) -->
+      <div class="case-grid">
+        <article class="case-card fu d1">
+          <div class="case-media"><div class="pf-stage pf-combo">
+            <div class="pf-browser"><div class="pf-bar"><i></i><i></i><i></i></div><div class="pf-view is-long" style="--dur:9s"><img src="Portfolio/raonsecure-pc.jpg" alt="라온시큐어 PC 메인 화면" loading="lazy" width="1200" height="3225"></div></div>
+            <div class="pf-phone "><div class="pf-device"><div class="pf-screen is-long" style="--dur:16s"><img src="Portfolio/raonsecure-main-mo.jpg" alt="라온시큐어 모바일 메인 화면" loading="lazy" width="600" height="7173"></div><i class="pf-notch"></i></div></div>
+          </div></div>
+          <div class="case-body">
+            <h3>라온시큐어</h3>
+            <div class="case-tags"><span class="case-tag">반응형 웹</span><span class="case-tag is-role">디자인 · 퍼블리싱</span></div>
+          </div>
+        </article>
+        <article class="case-card fu d2">
+          <div class="case-media"><div class="pf-stage pf-combo">
+            <div class="pf-browser"><div class="pf-bar"><i></i><i></i><i></i></div><div class="pf-view is-long" style="--dur:9s"><img src="Portfolio/buzzvil-main-pc.jpg" alt="버즈빌 PC 메인 화면" loading="lazy" width="1200" height="3494"></div></div>
+            <div class="pf-phone "><div class="pf-device"><div class="pf-screen is-long" style="--dur:16s"><img src="Portfolio/buzzvil-main-mo.jpg" alt="버즈빌 모바일 메인 화면" loading="lazy" width="600" height="7127"></div><i class="pf-notch"></i></div></div>
+          </div></div>
+          <div class="case-body">
+            <h3>버즈빌</h3>
+            <div class="case-tags"><span class="case-tag">반응형 웹</span><span class="case-tag is-role">디자인 · 퍼블리싱</span></div>
+          </div>
+        </article>
+        <article class="case-card fu d1">
+          <div class="case-media"><div class="pf-stage pf-duo">
+            <div class="pf-phone a"><div class="pf-device"><div class="pf-screen"><img src="Portfolio/mym-splash.jpg" alt="MYM 스플래시 화면" loading="lazy" width="600" height="1066"></div><i class="pf-notch"></i></div></div>
+            <div class="pf-phone b"><div class="pf-device"><div class="pf-screen is-long" style="--dur:10s"><img src="Portfolio/mym-main.jpg" alt="MYM 메인 화면" loading="lazy" width="600" height="4001"></div><i class="pf-notch"></i></div></div>
+          </div></div>
+          <div class="case-body">
+            <h3>MYM</h3>
+            <div class="case-tags"><span class="case-tag">앱</span><span class="case-tag is-role">디자인</span></div>
+          </div>
+        </article>
+        <article class="case-card fu d2">
+          <div class="case-media"><div class="pf-stage pf-duo">
+            <div class="pf-phone a"><div class="pf-device"><div class="pf-screen"><img src="Portfolio/aiview-schedule.jpg" alt="아이뷰 일정 화면" loading="lazy" width="600" height="1285"></div><i class="pf-notch"></i></div></div>
+            <div class="pf-phone b"><div class="pf-device"><div class="pf-screen"><img src="Portfolio/aiview-alerts.jpg" alt="아이뷰 자녀 알림 화면" loading="lazy" width="600" height="1240"></div><i class="pf-notch"></i></div></div>
+          </div></div>
+          <div class="case-body">
+            <h3>아이뷰</h3>
+            <div class="case-tags"><span class="case-tag">앱</span><span class="case-tag is-role">기획 · 디자인 · 퍼블리싱</span></div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <div class="contact-grid">
+      <div class="c-info fu">
+        <span class="label">CONTACT</span>
+        <h2 class="section-title">
+          프로젝트를<br>시작할 준비가<br>
+          <span class="hl">되셨나요?</span>
+        </h2>
+        <p>만들고 싶은 서비스가 있다면 전화나 이메일로 편하게 연락주세요.<br><strong>예상 견적과 일정</strong>을 안내해 드려요.</p>
+      </div>
+      <div class="c-methods fu d1">
+        <a href="tel:01030301734" class="c-card">
+          <div class="c-card-icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+          <div class="c-card-text">
+            <small>전화 문의</small>
+            <span>010-3030-1734</span>
+          </div>
+        </a>
+        <a href="mailto:codebridge.corp@gmail.com" class="c-card mail">
+          <div class="c-card-icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg></div>
+          <div class="c-card-text">
+            <small>이메일 문의</small>
+            <span>codebridge.corp@gmail.com</span>
+          </div>
+        </a>
+        <p class="c-note">문의는 언제든 남겨주세요 · 24시간 이내 답변드려요</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="foot-inner">
+      <a href="#" class="foot-logo">
+        <div class="logo-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 15h20"/><path d="M4 15Q12 3 20 15"/><path d="M8 15v-4.5M12 15V9M16 15v-4.5"/></svg></div>
+        <span>CodeBridge</span>
+      </a>
+      <p class="foot-copy" id="copy"></p>
+      <div class="foot-mail">
+        <a href="tel:01030301734">010-3030-1734</a>
+        <a href="mailto:codebridge.corp@gmail.com">codebridge.corp@gmail.com</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ── NAV SCROLL ── */
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 40));
+
+/* ── HAMBURGER ── */
+const ham = document.getElementById('ham');
+const links = document.getElementById('navLinks');
+ham.addEventListener('click', () => {
+  ham.classList.toggle('open');
+  links.classList.toggle('open');
+});
+links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+  ham.classList.remove('open');
+  links.classList.remove('open');
+}));
+
+/* ── FADE-IN ON SCROLL ── */
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fu').forEach(el => io.observe(el));
+
+/* ── FOOTER YEAR ── */
+document.getElementById('copy').textContent =
+  '© ' + new Date().getFullYear() + ' CodeBridge. All rights reserved.';
+</script>
+</body>
+</html>

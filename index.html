@@ -59,6 +59,37 @@
       --mk-ink-3:  #64748B;
       --mk-tint:   #DBEAFE;
     }
+    /* Light theme: same variables, light values (index2.html sets data-theme="light") */
+    [data-theme="light"] {
+      --bg:        #FFFFFF;
+      --bg2:       #F5F7FB;
+      --card:      #F5F7FB;
+      --border:    #E3E8F0;
+      --text:      #0F172A;
+      --dim:       #4B5567;
+      --muted:     #8A94A6;
+      --accent:    #2F6BFF;
+      --accent-strong:       #2563EB;   /* white text 5.2:1 */
+      --accent-strong-hover: #1D4ED8;
+      --on-accent: #FFFFFF;
+      --nav-bg:    rgba(255,255,255,.86);
+      --menu-bg:   rgba(255,255,255,.97);
+      --shadow:    rgba(15,23,42,.12);
+      --notch:     #0B0F17;
+      --scrollbar: #CBD5E1;
+      --blob-1:    #A9C8FF;   /* pastel sky */
+      --blob-2:    #CDBDFF;   /* pastel lavender */
+      --blob-opacity:  .55;
+      --grain-opacity: .05;
+    }
+    [data-theme="light"] .hero-shade { display: none; }   /* center is already light; avoids banding on white */
+    /* light theme keeps a dark navy footer to close the page */
+    [data-theme="light"] footer {
+      --bg: #0B0F17; --border: rgba(255,255,255,.08);
+      --text: #F1F5F9; --dim: #A3AEC2; --muted: #6B778C; --accent: #4D84FF;
+      --c-title: var(--text); --c-body: var(--dim); --c-caption: var(--muted);
+      background: var(--bg); color: var(--text);
+    }
     html { scroll-behavior: smooth; }
     body {
       background: var(--bg);
