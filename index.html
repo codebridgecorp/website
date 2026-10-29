@@ -208,7 +208,20 @@
     /* fade into the next section's background */
     .hero-bg::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 40%; background: linear-gradient(to bottom, transparent, var(--bg)); }
     @media (max-width: 768px) { .blob { filter: blur(56px); } }
-    @media (prefers-reduced-motion: reduce) { .hero-bg .blob { animation: none; } }
+    /* light theme only: two lower blobs (colors crossed diagonally) + a wide faint glow under the buttons */
+    .blob.b4, .blob.b5, .blob.b6 { display: none; }
+    [data-theme="light"] .blob.b4, [data-theme="light"] .blob.b5, [data-theme="light"] .blob.b6 { display: block; }
+    .blob.b4 { width: 28vmax; background: var(--blob-2); bottom: -14vmax; left: -9vmax; animation: blob4 37s ease-in-out infinite alternate; }
+    .blob.b5 { width: 26vmax; background: var(--blob-1); bottom: -13vmax; right: -8vmax; animation: blob5 43s ease-in-out infinite alternate; }
+    .blob.b6 {
+      aspect-ratio: auto; width: 64vw; height: 22vh; left: 18vw; bottom: -4vh;
+      background: var(--blob-1); opacity: calc(var(--blob-opacity) * .5); animation: blob6 47s ease-in-out infinite alternate;
+    }
+    @keyframes blob4 { to { transform: translate3d(6vw, -5vh, 0) scale(1.07); } }
+    @keyframes blob5 { to { transform: translate3d(-7vw, -4vh, 0) scale(.95); } }
+    @keyframes blob6 { to { transform: translate3d(-3vw, -2vh, 0) scale(1.05, .92); } }
+    [data-theme="light"] .hero-bg::after { height: 18%; }
+    @media (prefers-reduced-motion: reduce) { .hero-bg .blob { animation: none !important; } }
     .hero-content { position: relative; z-index: 1; max-width: 840px; }
     .hero-title {
       font-size: var(--t-hero-size); font-weight: var(--title-light);
@@ -678,7 +691,7 @@
 
 <!-- HERO -->
 <section id="hero">
-  <div class="hero-bg" aria-hidden="true"><span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span><span class="hero-shade"></span><span class="hero-grain"></span></div>
+  <div class="hero-bg" aria-hidden="true"><span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span><span class="blob b4"></span><span class="blob b5"></span><span class="blob b6"></span><span class="hero-shade"></span><span class="hero-grain"></span></div>
   <div class="hero-content">
     <h1 class="hero-title">
       기획부터 디자인,<br>
