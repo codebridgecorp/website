@@ -529,6 +529,9 @@
     /* phone: same bezel color, 1px line and shadow as the browser frame.
        Sizes use the phone's own width (cqw), so the bezel looks even everywhere. */
     .pf-phone { position: relative; aspect-ratio: 9 / 19.5; container-type: inline-size; }
+    /* frame follows the capture: --ar = image width/height; the bezel (~3% of width per side) is added
+       so the inner screen keeps the image's ratio and nothing is cropped */
+    .pf-phone[style*="--ar"] { aspect-ratio: calc(var(--ar) / (0.94 + 0.06 * var(--ar))); }
     .pf-device {
       --r: 15cqw; --bw: clamp(3px, 2.6cqw, 5px);
       position: absolute; inset: 0; padding: var(--bw); border-radius: var(--r);
@@ -560,13 +563,15 @@
     .pf-combo .pf-browser { position: absolute; left: 0; top: 50%; width: 80%; transform: translateY(-56%); }
     .pf-combo .pf-phone { position: absolute; right: 2%; bottom: 0; height: 84%; z-index: 1; }
     .pf-duo .pf-phone, .pf-trio .pf-phone { position: absolute; top: 50%; left: 50%; }
+    /* phones in one card share the same height */
     .pf-duo .pf-phone { height: 100%; }
     .pf-duo .a { transform: translate(-92%, -50%); z-index: 1; }
     .pf-duo .b { transform: translate(-4%, -47%) scale(.92); }
-    .pf-trio .main { height: 100%; transform: translate(-50%, -50%); z-index: 1; }
-    .pf-trio .side { height: 82%; }
-    .pf-trio .l { transform: translate(-128%, -50%); }
-    .pf-trio .r { transform: translate(28%, -50%); }
+    .pf-duo.is-even .b { transform: translate(-6%, -50%); }   /* 아이뷰: both phones same height */
+    .pf-trio .pf-phone { height: 94%; }
+    .pf-trio .main { transform: translate(-50%, -50%); z-index: 1; }
+    .pf-trio .l { transform: translate(-118%, -50%); }
+    .pf-trio .r { transform: translate(18%, -50%); }
 
     .case-feature { display: grid; grid-template-columns: 1.2fr 1fr; }
     .case-feature .case-body { justify-content: center; gap: 14px; padding: 44px 48px; }
@@ -1082,9 +1087,9 @@
       <!-- 대표 작업 (큰 카드) -->
       <article class="case-card case-feature fu">
         <div class="case-media"><div class="pf-stage pf-trio">
-          <div class="pf-phone side l"><div class="pf-device"><div class="pf-screen"><img src="Portfolio/dosa-tarot-pick.png" alt="AI 팩폭도사 타로 카드 선택 화면" loading="lazy" width="540" height="1000"></div><i class="pf-notch"></i></div></div>
-          <div class="pf-phone main"><div class="pf-device"><div class="pf-screen"><img src="Portfolio/dosa-home.png" alt="AI 팩폭도사 홈 화면" loading="lazy" width="540" height="1000"></div><i class="pf-notch"></i></div></div>
-          <div class="pf-phone side r"><div class="pf-device"><div class="pf-screen"><img src="Portfolio/dosa-tarot-result.png" alt="AI 팩폭도사 타로 리딩 결과 화면" loading="lazy" width="540" height="1000"></div><i class="pf-notch"></i></div></div>
+          <div class="pf-phone side l" style="--ar:0.5400"><div class="pf-device"><div class="pf-screen"><img src="Portfolio/dosa-tarot-pick.png" alt="AI 팩폭도사 타로 카드 선택 화면" loading="lazy" width="540" height="1000"></div></div></div>
+          <div class="pf-phone main" style="--ar:0.5400"><div class="pf-device"><div class="pf-screen"><img src="Portfolio/dosa-home.png" alt="AI 팩폭도사 홈 화면" loading="lazy" width="540" height="1000"></div></div></div>
+          <div class="pf-phone side r" style="--ar:0.5400"><div class="pf-device"><div class="pf-screen"><img src="Portfolio/dosa-tarot-result.png" alt="AI 팩폭도사 타로 리딩 결과 화면" loading="lazy" width="540" height="1000"></div></div></div>
         </div></div>
         <div class="case-body">
           <h3>AI 팩폭도사</h3>
@@ -1126,9 +1131,9 @@
           </div>
         </article>
         <article class="case-card fu d2">
-          <div class="case-media"><div class="pf-stage pf-duo">
-            <div class="pf-phone a"><div class="pf-device"><div class="pf-screen"><img src="Portfolio/aiview-schedule.jpg" alt="아이뷰 일정 화면" loading="lazy" width="600" height="1285"></div><i class="pf-notch"></i></div></div>
-            <div class="pf-phone b"><div class="pf-device"><div class="pf-screen"><img src="Portfolio/aiview-alerts.jpg" alt="아이뷰 자녀 알림 화면" loading="lazy" width="600" height="1240"></div><i class="pf-notch"></i></div></div>
+          <div class="case-media"><div class="pf-stage pf-duo is-even">
+            <div class="pf-phone a" style="--ar:0.4669"><div class="pf-device"><div class="pf-screen"><img src="Portfolio/aiview-schedule.jpg" alt="아이뷰 일정 화면" loading="lazy" width="600" height="1285"></div><i class="pf-notch"></i></div></div>
+            <div class="pf-phone b" style="--ar:0.4839"><div class="pf-device"><div class="pf-screen"><img src="Portfolio/aiview-alerts.jpg" alt="아이뷰 자녀 알림 화면" loading="lazy" width="600" height="1240"></div><i class="pf-notch"></i></div></div>
           </div></div>
           <div class="case-body">
             <h3>아이뷰</h3>
