@@ -289,7 +289,8 @@
     .vision-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
     .vision-text .section-title { margin-bottom: 20px; }
     .vision-text p { color: var(--c-body); font-size: var(--t-body-size); line-height: var(--t-body-lh); }
-    .stat-cards { display: flex; flex-direction: column; gap: 14px; }
+    /* equal-height rows; fixed number column so titles/descriptions line up */
+    .stat-cards { display: grid; grid-auto-rows: 1fr; gap: 14px; }
     .stat-card {
       padding: 26px 30px; background: var(--card);
       border: 1px solid var(--border); border-radius: 16px;
@@ -300,14 +301,12 @@
       content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
       background: var(--accent);
     }
-    .stat-card:hover {
-      border-color: color-mix(in srgb, var(--accent) 35%, transparent);
-      transform: translateX(5px);
-    }
+    .stat-card:hover { border-color: color-mix(in srgb, var(--accent) 35%, transparent); }
     .stat-num {
-      font-size: var(--t-stat-size); font-weight: var(--fw-bold); line-height: 1; min-width: 108px; letter-spacing: -0.03em;
+      font-size: var(--t-stat-size); font-weight: var(--fw-bold); line-height: 1; flex: 0 0 112px; letter-spacing: -0.03em;
       color: var(--accent);
     }
+    .stat-info { min-width: 0; }
     .stat-info h4 { font-size: var(--t-card-size); font-weight: var(--fw-semi); line-height: var(--t-card-lh); color: var(--c-title); margin-bottom: 4px; }
     .stat-info p { font-size: var(--t-caption-size); color: var(--c-caption); line-height: var(--t-caption-lh); }
 
@@ -627,6 +626,11 @@
     .foot-mail a:hover { color: var(--accent); }
 
     /* ── RESPONSIVE ── */
+    @media (min-width: 1025px) and (max-width: 1280px) {
+      .vision-grid { gap: 40px; }
+      .stat-card { padding: 24px 22px; gap: 16px; }
+      .stat-num { flex-basis: 104px; }
+    }
     @media (max-width: 1024px) {
       .vision-grid, .contact-grid { grid-template-columns: 1fr; gap: 48px; }
       .steps { grid-template-columns: 1fr 1fr; gap: 40px; }
@@ -661,6 +665,8 @@
       :root { --t-hero-size: clamp(36px, 10.4vw, 44px); }
       .steps { grid-template-columns: 1fr; }
       .c-card { padding: 18px; gap: 12px; }
+      .stat-card { flex-direction: column; align-items: flex-start; gap: 12px; padding: 22px 22px 24px; }
+      .stat-num { flex-basis: auto; }
       .c-card-icon { width: 44px; height: 44px; border-radius: 11px; }
     }
   </style>
@@ -851,7 +857,7 @@
           <div class="stat-num">7년+</div>
           <div class="stat-info">
             <h4>개발 실무 경력</h4>
-            <p>웹사이트, 웹 서비스, 모바일 앱을 설계부터 배포까지 직접 개발합니다.</p>
+            <p>웹사이트와 모바일 앱을 설계부터 배포까지 직접 개발합니다.</p>
           </div>
         </div>
         <div class="stat-card fu d3">
