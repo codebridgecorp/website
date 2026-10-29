@@ -442,44 +442,61 @@
 
     /* ── PORTFOLIO ── */
     #portfolio { background: var(--bg2); }
-    .port-grid {
-      display: grid; grid-template-columns: repeat(3,1fr);
-      gap: 22px; margin-top: 64px;
+    .case-list { display: flex; flex-direction: column; gap: 22px; margin-top: 64px; }
+    .case-card {
+      display: flex; flex-direction: column; min-width: 0;
+      background: var(--card); border: 1px solid var(--border); border-radius: 20px; overflow: hidden;
+      transition: opacity .8s ease, transform .6s ease, border-color .35s, box-shadow .35s;
     }
-    .port-card {
-      border-radius: 20px; overflow: hidden; background: var(--card);
-      border: 1px solid var(--border); transition: all .4s; cursor: pointer;
+    .case-card[hidden] { display: none; }
+    .case-card:hover {
+      border-color: color-mix(in srgb, var(--neon) 38%, transparent);
+      box-shadow: 0 24px 60px rgba(0,0,0,.35); transform: translateY(-4px);
     }
-    .port-card:hover {
-      border-color: rgba(0,212,255,.38);
-      box-shadow: 0 0 42px rgba(0,212,255,.1), 0 24px 60px rgba(0,0,0,.4);
-      transform: translateY(-8px);
-    }
-    .port-img {
-      position: relative; overflow: hidden; height: 380px;
-      background: linear-gradient(160deg, #0d1527, #1a0a2e);
+    .case-media {
+      position: relative; overflow: hidden; height: 300px; padding: 28px 28px 0;
       display: flex; align-items: flex-end; justify-content: center;
-      padding: 28px 36px 0;
+      background:
+        radial-gradient(ellipse at 50% 0%, color-mix(in srgb, var(--purple) 16%, transparent), transparent 70%),
+        linear-gradient(160deg, var(--bg2), var(--bg));
     }
-    .port-img img {
-      width: auto; max-width: 68%; height: 100%;
-      object-fit: contain; object-position: top;
-      border-radius: 14px 14px 0 0;
-      box-shadow: 0 -10px 40px rgba(0,0,0,.5);
-      display: block;
+    .case-shot {
+      display: block; height: 100%; width: auto; aspect-ratio: 27 / 50; object-fit: cover; object-position: top;
+      border-radius: 14px 14px 0 0; box-shadow: 0 -10px 40px rgba(0,0,0,.5);
     }
-    .port-overlay {
-      position: absolute; inset: 0;
-      background: linear-gradient(to top, rgba(3,7,18,.88) 0%, transparent 55%);
-      opacity: 0; transition: opacity .35s;
-      display: flex; align-items: flex-end; padding: 20px;
+    .case-phones { display: flex; align-items: flex-end; justify-content: center; width: 100%; }
+    .case-phones .case-shot { height: auto; width: 30%; }
+    .case-phones .case-shot.main { width: 36%; position: relative; z-index: 1; margin: 0 -4%; }
+    .case-phones .case-shot.side { opacity: .85; }
+    .case-browser { width: 100%; border-radius: 10px 10px 0 0; overflow: hidden; background: var(--bg); box-shadow: 0 -10px 40px rgba(0,0,0,.5); }
+    .case-bar { display: flex; gap: 5px; padding: 8px 10px; background: var(--border); }
+    .case-bar i { width: 7px; height: 7px; border-radius: 50%; background: var(--muted); }
+    .case-browser img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; object-position: top; }
+    .case-body { display: flex; flex-direction: column; gap: 10px; flex: 1; padding: 20px 22px 22px; }
+    .case-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .case-tag {
+      font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 99px; color: var(--neon);
+      background: color-mix(in srgb, var(--neon) 10%, transparent); border: 1px solid color-mix(in srgb, var(--neon) 28%, transparent);
     }
-    .port-card:hover .port-overlay { opacity: 1; }
-    .port-overlay span { color: var(--neon); font-size: 13px; font-weight: 600; }
-    .port-info { padding: 18px 22px; }
-    .port-tag { font-size: 10px; font-weight: 700; color: var(--neon); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 5px; }
-    .port-info h3 { font-size: 17px; font-weight: 700; margin-bottom: 4px; }
-    .port-info p { font-size: 13px; color: var(--muted); }
+    .case-tag.is-own {
+      color: var(--purple); background: color-mix(in srgb, var(--purple) 10%, transparent);
+      border-color: color-mix(in srgb, var(--purple) 30%, transparent);
+    }
+    .case-body h3 { font-size: 18px; font-weight: 700; letter-spacing: -0.02em; }
+    .case-body p { font-size: 14px; color: var(--dim); line-height: 1.7; }
+    .case-role { display: flex; gap: 10px; margin-top: auto; padding-top: 12px; border-top: 1px solid var(--border); font-size: 12px; }
+    .case-role dt { color: var(--muted); }
+    .case-role dd { color: var(--text); font-weight: 600; }
+
+    .case-feature { display: grid; grid-template-columns: 1.2fr 1fr; }
+    .case-feature .case-media { height: auto; padding: 44px 40px 0; overflow: visible; }
+    .case-feature .case-body { justify-content: center; gap: 14px; padding: 44px 48px; }
+    .case-feature .case-body h3 { font-size: clamp(24px, 2.6vw, 32px); font-weight: 800; }
+    .case-feature .case-body p { font-size: 15px; }
+    .case-feature .case-role { margin-top: 8px; }
+
+    .case-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 22px; }
+    .case-grid > .case-card { flex: 0 1 calc((100% - 44px) / 3); }
 
     /* ── CONTACT ── */
     #contact {
@@ -543,7 +560,10 @@
       .hamburger { display: flex; }
       .svc-item { grid-template-columns: 1fr; gap: 28px; }
       .svc-item.rev { direction: ltr; }
-      .port-grid { grid-template-columns: 1fr; max-width: 360px; margin-left: auto; margin-right: auto; }
+      .case-feature { grid-template-columns: 1fr; }
+      .case-feature .case-media { padding: 32px 24px 0; }
+      .case-feature .case-body { padding: 24px 22px 26px; }
+      .case-grid > .case-card { flex-basis: 100%; max-width: 420px; }
       .steps { grid-template-columns: 1fr 1fr; }
       .foot-inner { justify-content: center; text-align: center; flex-direction: column; }
     }
@@ -551,7 +571,6 @@
       .hero-title { font-size: clamp(36px, 10.4vw, 44px); }
       .steps { grid-template-columns: 1fr; }
       .c-card { padding: 20px 22px; gap: 14px; }
-      .port-img { height: 300px; }
     }
   </style>
 </head>
@@ -843,7 +862,7 @@
   <div class="container">
     <div class="sec-head fu">
       <span class="label">HOW WE WORK</span>
-      <h2 class="section-title">랜딩페이지 1~2주,<br><span class="grad">앱 MVP 4주부터</span></h2>
+      <h2 class="section-title">상담부터 출시까지,<br><span class="grad">한 단계씩 함께합니다</span></h2>
       <p>작업 범위에 맞춰 일정을 먼저 안내하고, 확정된 시안 그대로 정확하게 구현합니다. 진행 상황은 단계마다 수시로 공유해 드려요.</p>
     </div>
     <div class="steps">
@@ -868,8 +887,8 @@
       <div class="step fu d4">
         <div class="step-dot">🚀</div>
         <div class="step-wk">STEP 04</div>
-        <h4>출시 · 유지보수 지원</h4>
-        <p>배포와 스토어 출시를 진행하고, 출시 후 수정과 업데이트도 지원합니다.</p>
+        <h4>출시</h4>
+        <p>배포와 스토어 출시까지 진행하고, 마지막까지 꼼꼼히 마무리합니다.</p>
       </div>
     </div>
   </div>
@@ -882,72 +901,83 @@
       <span class="label">PORTFOLIO</span>
       <h2 class="section-title">직접 만든<br><span class="grad">결과물로 말합니다</span></h2>
     </div>
-    <div class="port-grid">
-      <div class="port-card fu d1">
-        <div class="port-img">
-          <img src="Portfolio/lotto-main.png" alt="AI 로또 픽 메인 화면" loading="lazy" width="540" height="1000">
-          <div class="port-overlay"><span>AI 로또 픽 →</span></div>
+    <div class="case-list">
+      <!-- 대표 작업 (큰 카드) -->
+      <article class="case-card case-feature fu">
+        <div class="case-media is-app">
+          <div class="case-phones">
+            <img class="case-shot side" src="Portfolio/dosa-tarot-pick.png" alt="AI 팩폭도사 타로 카드 선택 화면" loading="lazy" width="540" height="1000">
+            <img class="case-shot main" src="Portfolio/dosa-home.png" alt="AI 팩폭도사 홈 화면" loading="lazy" width="540" height="1000">
+            <img class="case-shot side" src="Portfolio/dosa-tarot-result.png" alt="AI 팩폭도사 타로 리딩 결과 화면" loading="lazy" width="540" height="1000">
+          </div>
         </div>
-        <div class="port-info">
-          <div class="port-tag">Mobile App · AI</div>
-          <h3>AI 로또 픽 — 메인</h3>
-          <p>AI 추천·통계 기반·완전 무작위까지, 5가지 번호 생성 방식을 한 화면에</p>
+        <div class="case-body">
+          <div class="case-tags"><span class="case-tag">앱</span><span class="case-tag is-own">자체 서비스</span></div>
+          <h3>AI 팩폭도사</h3>
+          <p>오늘의 운세·사주·타로·꿈 해몽을 한 앱에 담은 운세 서비스를 기획부터 개발까지 직접 만들었습니다.</p>
+          <dl class="case-role"><dt>맡은 역할</dt><dd>기획 · 디자인 · 개발</dd></dl>
         </div>
-      </div>
-      <div class="port-card fu d2">
-        <div class="port-img">
-          <img src="Portfolio/lotto-ai-recommend.png" alt="AI 번호 추천 화면" loading="lazy" width="540" height="1000">
-          <div class="port-overlay"><span>AI 로또 픽 →</span></div>
-        </div>
-        <div class="port-info">
-          <div class="port-tag">Mobile App · AI</div>
-          <h3>AI 번호 추천</h3>
-          <p>Gemini 2.5 Flash-Lite가 과거 당첨 통계를 분석해 번호를 추천</p>
-        </div>
-      </div>
-      <div class="port-card fu d3">
-        <div class="port-img">
-          <img src="Portfolio/lotto-ai-report.png" alt="AI 분석 리포트 화면" loading="lazy" width="540" height="1000">
-          <div class="port-overlay"><span>AI 로또 픽 →</span></div>
-        </div>
-        <div class="port-info">
-          <div class="port-tag">Mobile App · Data</div>
-          <h3>AI 분석 리포트</h3>
-          <p>최근 52회차 출현 빈도를 분석해 추천 근거까지 투명하게 제시</p>
-        </div>
-      </div>
-      <div class="port-card fu d1">
-        <div class="port-img">
-          <img src="Portfolio/dosa-home.png" alt="AI 팩폭도사 홈 화면" loading="lazy" width="540" height="1000">
-          <div class="port-overlay"><span>AI 팩폭도사 →</span></div>
-        </div>
-        <div class="port-info">
-          <div class="port-tag">Mobile App · AI</div>
-          <h3>AI 팩폭도사 — 홈</h3>
-          <p>오늘의 운세·사주·타로·꿈 해몽을 한 앱에 담은 AI 운세 플랫폼</p>
-        </div>
-      </div>
-      <div class="port-card fu d2">
-        <div class="port-img">
-          <img src="Portfolio/dosa-tarot-pick.png" alt="타로 카드 선택 화면" loading="lazy" width="540" height="1000">
-          <div class="port-overlay"><span>AI 팩폭도사 →</span></div>
-        </div>
-        <div class="port-info">
-          <div class="port-tag">Mobile App · UX</div>
-          <h3>타로 카드 선택 UX</h3>
-          <p>직관과 감성을 자극하는 몰입형 카드 선택 인터랙션 경험</p>
-        </div>
-      </div>
-      <div class="port-card fu d3">
-        <div class="port-img">
-          <img src="Portfolio/dosa-tarot-result.png" alt="AI 타로 리딩 결과 화면" loading="lazy" width="540" height="1000">
-          <div class="port-overlay"><span>AI 팩폭도사 →</span></div>
-        </div>
-        <div class="port-info">
-          <div class="port-tag">Mobile App · AI</div>
-          <h3>AI 타로 리딩 결과</h3>
-          <p>과거·현재·미래 3장을 AI가 해석해 풀어주는 맞춤형 리딩 리포트</p>
-        </div>
+      </article>
+
+      <!-- 작은 카드들 -->
+      <div class="case-grid">
+        <article class="case-card fu d1">
+          <div class="case-media is-app">
+            <img class="case-shot" src="Portfolio/lotto-main.png" alt="AI 로또 픽 메인 화면" loading="lazy" width="540" height="1000">
+          </div>
+          <div class="case-body">
+            <div class="case-tags"><span class="case-tag">앱</span></div>
+            <h3>AI 로또 픽</h3>
+            <p>과거 당첨 통계 분석과 여러 번호 생성 방식을 한 화면에 담은 번호 추천 앱입니다.</p>
+            <dl class="case-role"><dt>맡은 역할</dt><dd>기획 · 디자인 · 개발</dd></dl>
+          </div>
+        </article>
+
+        <!--
+          웹 작업 카드 (준비용, 지금은 숨김)
+          사용법: 1) Portfolio 폴더에 이미지 추가 (가로형 화면 캡처, 권장 1600x1000)
+                  2) img의 src·alt, 태그, 제목, 설명, 역할을 수정
+                  3) article의 hidden 속성 삭제
+        -->
+        <article class="case-card fu d2" hidden>
+          <div class="case-media is-web">
+            <div class="case-browser"><div class="case-bar"><i></i><i></i><i></i></div>
+              <img src="Portfolio/web-homepage.png" alt="브랜드 홈페이지 메인 화면" loading="lazy" width="1600" height="1000">
+            </div>
+          </div>
+          <div class="case-body">
+            <div class="case-tags"><span class="case-tag">홈페이지</span></div>
+            <h3>브랜드 홈페이지</h3>
+            <p>한 줄 설명을 입력하세요.</p>
+            <dl class="case-role"><dt>맡은 역할</dt><dd>디자인 · 퍼블리싱</dd></dl>
+          </div>
+        </article>
+        <article class="case-card fu d3" hidden>
+          <div class="case-media is-web">
+            <div class="case-browser"><div class="case-bar"><i></i><i></i><i></i></div>
+              <img src="Portfolio/web-landing.png" alt="랜딩페이지 화면" loading="lazy" width="1600" height="1000">
+            </div>
+          </div>
+          <div class="case-body">
+            <div class="case-tags"><span class="case-tag">랜딩</span></div>
+            <h3>랜딩페이지</h3>
+            <p>한 줄 설명을 입력하세요.</p>
+            <dl class="case-role"><dt>맡은 역할</dt><dd>디자인 · 퍼블리싱</dd></dl>
+          </div>
+        </article>
+        <article class="case-card fu d1" hidden>
+          <div class="case-media is-web">
+            <div class="case-browser"><div class="case-bar"><i></i><i></i><i></i></div>
+              <img src="Portfolio/web-admin.png" alt="관리자 페이지 화면" loading="lazy" width="1600" height="1000">
+            </div>
+          </div>
+          <div class="case-body">
+            <div class="case-tags"><span class="case-tag">관리자</span></div>
+            <h3>관리자 페이지</h3>
+            <p>한 줄 설명을 입력하세요.</p>
+            <dl class="case-role"><dt>맡은 역할</dt><dd>디자인 · 퍼블리싱 · 개발</dd></dl>
+          </div>
+        </article>
       </div>
     </div>
   </div>
