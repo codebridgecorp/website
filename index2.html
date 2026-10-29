@@ -568,10 +568,12 @@
     .pf-duo .a { transform: translate(-92%, -50%); z-index: 1; }
     .pf-duo .b { transform: translate(-4%, -47%) scale(.92); }
     .pf-duo.is-even .b { transform: translate(-6%, -50%); }   /* 아이뷰: both phones same height */
-    .pf-trio .pf-phone { height: 94%; }
-    .pf-trio .main { transform: translate(-50%, -50%); z-index: 1; }
-    .pf-trio .l { transform: translate(-118%, -50%); }
-    .pf-trio .r { transform: translate(18%, -50%); }
+    /* AI 팩폭도사: center phone keeps its top; side phones sit 7% lower and may be cropped at the bottom */
+    .pf-trio .pf-phone { height: 106%; top: 3%; }
+    .pf-trio .main { transform: translate(-50%, 0); z-index: 1; }
+    .pf-trio .l { transform: translate(-116%, 7%); }
+    .pf-trio .r { transform: translate(16%, 7%); }
+    .case-media:has(.pf-trio) { overflow: hidden; }
 
     .case-feature { display: grid; grid-template-columns: 1.2fr 1fr; }
     .case-feature .case-body { justify-content: center; gap: 14px; padding: 44px 48px; }
