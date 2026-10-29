@@ -4,9 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CodeBridge — AI로 아이디어를 앱으로</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -24,10 +23,13 @@
     body {
       background: var(--bg);
       color: var(--text);
-      font-family: 'Inter', -apple-system, sans-serif;
+      font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      word-break: keep-all;
       overflow-x: hidden;
       line-height: 1.6;
     }
+    /* 제목 자간 (포트폴리오 섹션 제외) */
+    :is(h1, h2, h3, h4):not(#portfolio *) { letter-spacing: -0.02em; }
     ::-webkit-scrollbar { width: 5px; }
     ::-webkit-scrollbar-track { background: var(--bg); }
     ::-webkit-scrollbar-thumb { background: #1e3a5f; border-radius: 3px; }
@@ -42,7 +44,7 @@
     }
     .section-title {
       font-size: clamp(32px, 5vw, 56px);
-      font-weight: 800; line-height: 1.1; letter-spacing: -1.5px;
+      font-weight: 800; line-height: 1.1; letter-spacing: -0.02em;
     }
     .grad {
       background: linear-gradient(135deg, var(--neon), var(--purple));
@@ -130,7 +132,7 @@
     }
     .hero-title {
       font-size: clamp(44px, 8.5vw, 92px);
-      font-weight: 900; line-height: 1.04; letter-spacing: -3px; margin-bottom: 24px;
+      font-weight: 900; line-height: 1.04; letter-spacing: -0.02em; margin-bottom: 24px;
     }
     .hero-sub {
       font-size: clamp(15px, 1.8vw, 19px); color: var(--dim);
@@ -287,6 +289,104 @@
       background: linear-gradient(135deg, var(--neon), var(--purple));
     }
 
+    /* ── SERVICE MOCKUPS ── */
+    .svc-visual.has-mk { font-size: 16px; display: block; }
+    .mk { position: absolute; inset: 0; z-index: 1; display: flex; align-items: center; justify-content: center; padding: 7%; }
+    .mk * { box-sizing: border-box; }
+    .mk-glow { position: absolute; width: 60%; height: 60%; border-radius: 50%; background: radial-gradient(circle, rgba(0,212,255,.16), transparent 70%); filter: blur(10px); }
+
+    /* 01 phones */
+    .mk-phones { position: relative; height: 100%; width: 100%; }
+    .mk-phone {
+      position: absolute; top: 50%; height: 94%; aspect-ratio: 9/19;
+      border-radius: 9% / 4.3%; background: #0a0f1c; border: 5px solid #1c2536;
+      box-shadow: 0 24px 60px rgba(0,0,0,.55), inset 0 0 0 1px rgba(255,255,255,.06);
+      overflow: hidden; transition: transform .8s ease;
+    }
+    .mk-phone img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
+    .mk-phone::before { content: ''; position: absolute; top: 2.2%; left: 50%; transform: translateX(-50%); width: 30%; height: 3.2%; background: #0a0f1c; border-radius: 99px; z-index: 2; }
+    .mk-phone.front { left: 50%; transform: translate(-62%, -50%); z-index: 2; }
+    .mk-phone.back { left: 50%; transform: translate(-6%, -46%) rotate(7deg) scale(.88); opacity: .85; }
+    .fu.in .mk-phone.back { transform: translate(2%, -46%) rotate(9deg) scale(.88); }
+    .mk-toast {
+      position: absolute; left: 4%; bottom: 14%; z-index: 3; display: flex; align-items: center; gap: 10px;
+      padding: 10px 14px; border-radius: 12px; background: rgba(15,23,42,.92); border: 1px solid rgba(255,255,255,.1);
+      backdrop-filter: blur(8px); box-shadow: 0 12px 30px rgba(0,0,0,.4); font-size: 12px; line-height: 1.35;
+      opacity: 0; transform: translateY(10px); transition: all .6s ease .5s;
+    }
+    .fu.in .mk-toast { opacity: 1; transform: none; }
+    .mk-toast i { width: 28px; height: 28px; border-radius: 8px; background: linear-gradient(135deg, var(--neon), #3b82f6); flex-shrink: 0; }
+    .mk-toast b { display: block; color: var(--text); font-weight: 700; }
+    .mk-toast span { color: var(--dim); }
+
+    /* 02 browser */
+    .mk-browser {
+      width: 100%; height: 100%; border-radius: 12px; overflow: hidden; background: #f8fafc;
+      box-shadow: 0 24px 60px rgba(0,0,0,.5); border: 1px solid rgba(255,255,255,.1);
+      display: flex; flex-direction: column; position: relative;
+    }
+    .mk-bar { height: 28px; flex-shrink: 0; background: #e2e8f0; display: flex; align-items: center; gap: 6px; padding: 0 10px; }
+    .mk-bar i { width: 8px; height: 8px; border-radius: 50%; background: #f87171; }
+    .mk-bar i:nth-child(2) { background: #fbbf24; } .mk-bar i:nth-child(3) { background: #34d399; }
+    .mk-url { margin-left: 10px; flex: 1; max-width: 55%; height: 16px; border-radius: 99px; background: #fff; font-size: 9px; color: #64748b; display: flex; align-items: center; padding: 0 10px; }
+    .mk-site { flex: 1; color: #0f172a; padding: 4% 6%; display: flex; flex-direction: column; overflow: hidden; }
+    .mk-snav { display: flex; align-items: center; gap: 14px; font-size: 9px; color: #475569; }
+    .mk-snav b { font-size: 11px; color: #0f172a; margin-right: auto; font-weight: 800; letter-spacing: -.3px; }
+    .mk-snav em { font-style: normal; padding: 4px 10px; border-radius: 99px; background: #0f172a; color: #fff; }
+    .mk-hero { display: grid; grid-template-columns: 1.1fr 1fr; gap: 6%; align-items: center; margin-top: 5%; }
+    .mk-hero small { font-size: 8px; font-weight: 700; color: #2563eb; letter-spacing: 1.5px; }
+    .mk-hero h5 { font-size: clamp(13px, 1.7vw, 19px); font-weight: 800; line-height: 1.25; letter-spacing: -.5px; margin: 6px 0 8px; }
+    .mk-hero p { font-size: 9px; color: #64748b; line-height: 1.5; margin-bottom: 10px; }
+    .mk-btns { display: flex; gap: 6px; }
+    .mk-btns span { font-size: 8px; padding: 5px 10px; border-radius: 6px; background: #2563eb; color: #fff; font-weight: 600; }
+    .mk-btns span + span { background: transparent; color: #0f172a; border: 1px solid #cbd5e1; }
+    .mk-shot { aspect-ratio: 4/3; border-radius: 12px; background: linear-gradient(145deg, #dbeafe, #c7d2fe 55%, #e0f2fe); position: relative; overflow: hidden; }
+    .mk-shot::before { content: ''; position: absolute; width: 58%; height: 58%; border-radius: 50%; right: -10%; top: -8%; background: rgba(37,99,235,.35); }
+    .mk-shot::after { content: ''; position: absolute; left: 10%; bottom: 10%; width: 55%; height: 30%; border-radius: 8px; background: rgba(255,255,255,.85); box-shadow: 0 6px 16px rgba(15,23,42,.12); }
+    .mk-feats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4%; margin-top: auto; padding-top: 4%; }
+    .mk-feats div { background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 6px 8px; font-size: 8px; color: #64748b; line-height: 1.4; }
+    .mk-feats div b { display: block; font-size: 9px; color: #0f172a; margin-bottom: 2px; }
+    .mk-feats div::before { content: ''; display: block; width: 12px; height: 12px; border-radius: 4px; background: #dbeafe; margin-bottom: 4px; }
+
+    /* 03 dashboard */
+    .mk-dash {
+      width: 100%; height: 100%; border-radius: 12px; overflow: hidden; display: grid; grid-template-columns: 16% 1fr;
+      background: #0d1526; border: 1px solid rgba(255,255,255,.08); box-shadow: 0 24px 60px rgba(0,0,0,.5); font-size: 9px; color: var(--dim);
+    }
+    .mk-side { background: #0a1120; border-right: 1px solid rgba(255,255,255,.06); padding: 12px 10%; display: flex; flex-direction: column; gap: 9px; }
+    .mk-side .lg { width: 18px; height: 18px; border-radius: 6px; background: linear-gradient(135deg, var(--neon), #3b82f6); margin-bottom: 8px; }
+    .mk-side span { height: 6px; border-radius: 3px; background: rgba(255,255,255,.08); }
+    .mk-side span.on { background: rgba(0,212,255,.55); }
+    .mk-main { padding: 12px 14px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+    .mk-top { display: flex; align-items: center; justify-content: space-between; }
+    .mk-top b { color: var(--text); font-size: 11px; font-weight: 700; }
+    .mk-top em { font-style: normal; font-size: 8px; padding: 3px 8px; border-radius: 99px; background: rgba(0,212,255,.1); color: var(--neon); border: 1px solid rgba(0,212,255,.25); }
+    .mk-kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .mk-kpis div { background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.06); border-radius: 8px; padding: 8px; }
+    .mk-kpis strong { display: block; color: var(--text); font-size: clamp(12px, 1.3vw, 15px); font-weight: 800; margin-top: 2px; }
+    .mk-kpis small { color: #34d399; font-size: 8px; }
+    .mk-kpis small.dn { color: #f87171; }
+    .mk-row { display: grid; grid-template-columns: 1.7fr 1fr; gap: 8px; flex: 1; min-height: 0; }
+    .mk-card { background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.06); border-radius: 8px; padding: 8px; display: flex; flex-direction: column; min-height: 0; }
+    .mk-card > b { color: var(--text); font-size: 9px; font-weight: 600; margin-bottom: 6px; }
+    .mk-card svg { width: 100%; flex: 1; min-height: 0; }
+    .mk-line { stroke-dasharray: 400; stroke-dashoffset: 400; transition: stroke-dashoffset 1.8s ease .4s; }
+    .fu.in .mk-line { stroke-dashoffset: 0; }
+    .mk-bars { flex: 1; display: flex; align-items: flex-end; gap: 6%; padding-top: 4px; }
+    .mk-bars i { flex: 1; border-radius: 3px 3px 0 0; background: linear-gradient(180deg, var(--neon), rgba(59,130,246,.35)); height: 8%; transition: height 1s ease; }
+    .fu.in .mk-bars i { height: var(--h); }
+    .mk-ai { display: flex; gap: 6px; align-items: center; margin-top: 6px; font-size: 8px; color: var(--dim); line-height: 1.35; padding: 6px; border-radius: 6px; background: rgba(0,212,255,.06); }
+    .mk-ai i { width: 12px; height: 12px; border-radius: 4px; flex-shrink: 0; background: linear-gradient(135deg, var(--neon), var(--purple)); }
+
+    @media (max-width: 768px) {
+      .mk { padding: 6%; }
+      .mk-toast { font-size: 11px; padding: 8px 10px; }
+      .mk-feats { display: none; }
+      .mk-ai { display: none; }
+      .mk-site { justify-content: center; }
+      .mk-hero { margin-top: 0; padding-top: 4%; }
+    }
+
     /* ── PROCESS ── */
     #process {
       background: radial-gradient(ellipse at 50% 0%, rgba(0,212,255,.06) 0%, transparent 55%);
@@ -422,7 +522,7 @@
       .foot-inner { justify-content: center; text-align: center; flex-direction: column; }
     }
     @media (max-width: 480px) {
-      .hero-title { letter-spacing: -2px; }
+      .hero-title { font-size: clamp(36px, 10.4vw, 44px); }
       .steps { grid-template-columns: 1fr; }
       .c-card { padding: 20px 22px; gap: 14px; }
       .port-img { height: 300px; }
@@ -598,9 +698,16 @@
     </div>
 
     <div class="svc-item">
-      <div class="svc-visual fu">
+      <div class="svc-visual has-mk fu">
         <div class="g-overlay"></div>
-        <div class="icon-wrap">📱</div>
+        <div class="mk" aria-hidden="true">
+          <div class="mk-glow"></div>
+          <div class="mk-phones">
+            <div class="mk-phone back"><img src="Portfolio/dosa-home.png" alt="" loading="lazy"></div>
+            <div class="mk-phone front"><img src="Portfolio/lotto-main.png" alt="" loading="lazy"></div>
+            <div class="mk-toast"><i></i><div><b>새 알림이 도착했어요</b><span>오늘의 추천 결과를 확인하세요</span></div></div>
+          </div>
+        </div>
       </div>
       <div class="svc-content fu d1">
         <div class="svc-num">01</div>
@@ -616,9 +723,30 @@
     </div>
 
     <div class="svc-item rev">
-      <div class="svc-visual fu">
+      <div class="svc-visual has-mk fu">
         <div class="g-overlay"></div>
-        <div class="icon-wrap">🌐</div>
+        <div class="mk" aria-hidden="true">
+          <div class="mk-browser">
+            <div class="mk-bar"><i></i><i></i><i></i><div class="mk-url">yourbrand.com</div></div>
+            <div class="mk-site">
+              <div class="mk-snav"><b>BRAND</b><span>소개</span><span>서비스</span><span>고객사례</span><em>문의하기</em></div>
+              <div class="mk-hero">
+                <div>
+                  <small>NEW SERVICE</small>
+                  <h5>브랜드의 첫인상을<br>완성하는 웹사이트</h5>
+                  <p>반응형 디자인부터 SEO까지,<br>모든 기기에서 빠르고 선명하게.</p>
+                  <div class="mk-btns"><span>시작하기</span><span>더 알아보기</span></div>
+                </div>
+                <div class="mk-shot"></div>
+              </div>
+              <div class="mk-feats">
+                <div><b>반응형</b>PC·태블릿·모바일</div>
+                <div><b>빠른 속도</b>최적화된 로딩</div>
+                <div><b>관리 편의</b>쉬운 콘텐츠 수정</div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="svc-content fu d1">
         <div class="svc-num">02</div>
@@ -634,9 +762,34 @@
     </div>
 
     <div class="svc-item">
-      <div class="svc-visual fu">
+      <div class="svc-visual has-mk fu">
         <div class="g-overlay"></div>
-        <div class="icon-wrap">🤖</div>
+        <div class="mk" aria-hidden="true">
+          <div class="mk-dash">
+            <div class="mk-side"><div class="lg"></div><span class="on"></span><span></span><span></span><span></span><span></span></div>
+            <div class="mk-main">
+              <div class="mk-top"><b>대시보드</b><em>이번 달</em></div>
+              <div class="mk-kpis">
+                <div>방문자<strong>24,580</strong><small>▲ 12.4%</small></div>
+                <div>문의 전환<strong>3.8%</strong><small>▲ 0.6%p</small></div>
+                <div>이탈률<strong>41%</strong><small class="dn">▼ 2.1%</small></div>
+              </div>
+              <div class="mk-row">
+                <div class="mk-card"><b>월별 방문 추이</b>
+                  <svg viewBox="0 0 200 80" preserveAspectRatio="none">
+                    <defs><linearGradient id="mkA" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#00d4ff" stop-opacity=".28"/><stop offset="1" stop-color="#00d4ff" stop-opacity="0"/></linearGradient></defs>
+                    <path d="M0 64 L25 56 L50 60 L75 42 L100 46 L125 30 L150 34 L175 18 L200 12 L200 80 L0 80Z" fill="url(#mkA)"/>
+                    <path class="mk-line" d="M0 64 L25 56 L50 60 L75 42 L100 46 L125 30 L150 34 L175 18 L200 12" fill="none" stroke="#00d4ff" stroke-width="2" vector-effect="non-scaling-stroke"/>
+                  </svg>
+                </div>
+                <div class="mk-card"><b>채널별 유입</b>
+                  <div class="mk-bars"><i style="--h:70%"></i><i style="--h:45%"></i><i style="--h:90%"></i><i style="--h:35%"></i></div>
+                  <div class="mk-ai"><i></i>AI 인사이트: 검색 유입이 늘고 있어요</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="svc-content fu d1">
         <div class="svc-num">03</div>
