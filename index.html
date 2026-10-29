@@ -79,8 +79,9 @@
     .logo-box {
       width: 32px; height: 32px; border-radius: 8px;
       background: linear-gradient(135deg, var(--neon), var(--purple));
-      display: flex; align-items: center; justify-content: center; font-size: 15px;
+      display: flex; align-items: center; justify-content: center; color: var(--bg);
     }
+    .logo-box svg { width: 62%; height: 62%; }
     .nav-links { display: flex; align-items: center; gap: 34px; list-style: none; }
     .nav-links a {
       text-decoration: none; color: var(--muted); font-size: 14px;
@@ -286,18 +287,13 @@
     .mk-glow { position: absolute; width: 60%; height: 60%; border-radius: 50%; background: radial-gradient(circle, rgba(0,212,255,.16), transparent 70%); filter: blur(10px); }
 
     /* 01 phones */
-    .mk-phones { position: relative; height: 100%; width: 100%; }
-    .mk-phone {
-      position: absolute; top: 50%; height: 94%; aspect-ratio: 9/19;
-      border-radius: 9% / 4.3%; background: #0a0f1c; border: 5px solid #1c2536;
-      box-shadow: 0 24px 60px rgba(0,0,0,.55), inset 0 0 0 1px rgba(255,255,255,.06);
-      overflow: hidden; transition: transform .8s ease;
-    }
+    /* large phones cropped by .svc-visual (overflow: hidden); frame = portfolio .pf-* frame */
+    .mk-phones { position: absolute; inset: 0; }
+    .mk-phones .mk-phone { position: absolute; height: 140%; transition: transform .8s ease; }
     /* app screen (colors follow site variables; sizes scale with phone width) */
-    .mk-phone { container-type: inline-size; }
     .mk-app {
-      position: absolute; inset: 0; display: flex; flex-direction: column; gap: .75em;
-      padding: 2.9em 1.1em 1.2em; background: var(--bg2); color: var(--text); text-align: left;
+      position: absolute; inset: 0; display: flex; flex-direction: column; gap: .6em;
+      padding: 2.7em 1.1em 1.2em; background: var(--bg2); color: var(--text); text-align: left;
       font-size: 5.8cqw; line-height: 1.3; letter-spacing: -0.01em;
     }
     .mk-app ul { list-style: none; }
@@ -332,21 +328,9 @@
     .ma-info li { display: flex; justify-content: space-between; font-size: .9em; }
     .ma-info span { color: var(--dim); }
     .mk-app .ma-cta { margin-top: auto; }
-    .mk-phone::before { content: ''; position: absolute; top: 2.2%; left: 50%; transform: translateX(-50%); width: 30%; height: 3.2%; background: #0a0f1c; border-radius: 99px; z-index: 2; }
-    .mk-phone.front { left: 50%; transform: translate(-62%, -50%); z-index: 2; }
-    .mk-phone.back { left: 50%; transform: translate(-6%, -46%) rotate(7deg) scale(.88); opacity: .85; }
-    .fu.in .mk-phone.back { transform: translate(2%, -46%) rotate(9deg) scale(.88); }
-    .svc-visual.has-mk { container-type: inline-size; }
-    .mk-toast {
-      position: absolute; left: 4%; bottom: 15%; z-index: 3; display: flex; align-items: center; gap: .85em;
-      padding: .7em 1.1em; border-radius: 1em; background: rgba(15,23,42,.92); border: 1px solid rgba(255,255,255,.1);
-      backdrop-filter: blur(8px); box-shadow: 0 12px 30px rgba(0,0,0,.4); font-size: 2.1cqw; line-height: 1.35;
-      opacity: 0; transform: translateY(10px); transition: all .6s ease .5s;
-    }
-    .fu.in .mk-toast { opacity: 1; transform: none; }
-    .mk-toast i { width: 2.3em; height: 2.3em; border-radius: .7em; background: linear-gradient(135deg, var(--neon), #3b82f6); flex-shrink: 0; }
-    .mk-toast b { display: block; color: var(--text); font-weight: 700; }
-    .mk-toast span { color: var(--dim); }
+    .mk-phones .front { top: 8%; left: 10%; z-index: 2; }
+    .mk-phones .back { top: 13%; left: 47%; transform-origin: 50% 0; transform: rotate(3deg) translateY(4%); opacity: .9; }
+    .fu.in .mk-phones .back { transform: rotate(5deg); }
 
     /* 02 browser */
     .mk-browser {
@@ -430,12 +414,12 @@
     }
     .step { text-align: center; padding: 0 20px; position: relative; z-index: 1; }
     .step-dot {
-      width: 54px; height: 54px; border-radius: 50%; margin: 0 auto 22px;
-      background: var(--card); border: 2px solid var(--neon);
-      display: flex; align-items: center; justify-content: center; font-size: 22px;
-      box-shadow: 0 0 20px rgba(0,212,255,.2); transition: all .3s;
+      width: 54px; height: 54px; border-radius: 50%; margin: 0 auto 22px; color: var(--neon);
+      background: color-mix(in srgb, var(--neon) 14%, var(--bg));
+      display: flex; align-items: center; justify-content: center; transition: transform .3s;
     }
-    .step:hover .step-dot { box-shadow: 0 0 32px rgba(0,212,255,.5); transform: scale(1.1); }
+    .step-dot .ico { width: 24px; height: 24px; }
+    .step:hover .step-dot { transform: translateY(-3px); }
     .step-wk { font-size: 11px; font-weight: 700; color: var(--neon); letter-spacing: 2px; margin-bottom: 8px; }
     .step h4 { font-size: 17px; font-weight: 700; margin-bottom: 10px; }
     .step p { font-size: 13px; color: var(--muted); line-height: 1.65; }
@@ -547,10 +531,11 @@
       transform: translateY(-2px);
     }
     .c-card-icon {
-      width: 52px; height: 52px; border-radius: 13px; font-size: 22px; flex-shrink: 0;
-      background: linear-gradient(135deg, rgba(0,212,255,.14), rgba(167,139,250,.14));
+      width: 52px; height: 52px; border-radius: 13px; flex-shrink: 0; color: var(--neon);
+      background: color-mix(in srgb, var(--neon) 12%, transparent);
       display: flex; align-items: center; justify-content: center;
     }
+    .c-card-icon .ico { width: 24px; height: 24px; }
     .c-card-text small { font-size: 11px; color: var(--muted); display: block; margin-bottom: 4px; letter-spacing: .5px; }
     .c-card-text span { font-size: 18px; font-weight: 700; letter-spacing: .3px; word-break: break-all; }
     .c-card.mail .c-card-text span { font-size: 15px; }
@@ -566,7 +551,7 @@
       display: flex; align-items: center; gap: 9px;
       text-decoration: none; color: var(--text);
     }
-    .foot-logo .logo-box { width: 28px; height: 28px; font-size: 13px; }
+    .foot-logo .logo-box { width: 28px; height: 28px; }
     .foot-logo span { font-size: 17px; font-weight: 800; }
     .foot-copy { font-size: 13px; color: var(--muted); }
     .foot-mail { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; justify-content: center; }
@@ -612,7 +597,7 @@
   <div class="container">
     <div class="nav-wrap">
       <a href="#" class="logo">
-        <div class="logo-box">⚡</div>
+        <div class="logo-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 15h20"/><path d="M4 15Q12 3 20 15"/><path d="M8 15v-4.5M12 15V9M16 15v-4.5"/></svg></div>
         CodeBridge
       </a>
       <ul class="nav-links" id="navLinks">
@@ -838,7 +823,7 @@
         <div class="mk" aria-hidden="true">
           <div class="mk-glow"></div>
           <div class="mk-phones">
-            <div class="mk-phone back">
+            <div class="mk-phone back pf-phone"><div class="pf-device"><div class="pf-screen">
               <div class="mk-app">
                 <div class="ma-status"><b>9:41</b><span></span></div>
                 <div class="ma-top"><i></i><b>시술 상세</b></div>
@@ -853,8 +838,8 @@
                 </ul>
                 <div class="ma-cta">이 시술 예약하기</div>
               </div>
-            </div>
-            <div class="mk-phone front">
+            </div><i class="pf-notch"></i></div></div>
+            <div class="mk-phone front pf-phone"><div class="pf-device"><div class="pf-screen">
               <div class="mk-app">
                 <div class="ma-status"><b>9:41</b><span></span></div>
                 <div class="ma-head"><small>모던 헤어 강남점</small><b>예약하기</b></div>
@@ -868,8 +853,7 @@
                 <div class="ma-summary"><span>커트 + 스타일링</span><b>35,000원</b></div>
                 <div class="ma-cta">예약하기</div>
               </div>
-            </div>
-            <div class="mk-toast"><i></i><div><b>예약이 확정됐어요</b><span>11월 12일(목) 14:30 · 커트</span></div></div>
+            </div><i class="pf-notch"></i></div></div>
           </div>
         </div>
       </div>
@@ -898,25 +882,25 @@
     </div>
     <div class="steps">
       <div class="step fu d1">
-        <div class="step-dot">🎯</div>
+        <div class="step-dot"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg></div>
         <div class="step-wk">STEP 01</div>
         <h4>상담 · 기획</h4>
         <p>만들고 싶은 서비스와 필요한 기능을 듣고, 작업 범위와 일정, 견적을 정리해 안내합니다.</p>
       </div>
       <div class="step fu d2">
-        <div class="step-dot">✏️</div>
+        <div class="step-dot"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.707 21.293a1 1 0 0 1-1.414 0l-1.586-1.586a1 1 0 0 1 0-1.414l5.586-5.586a1 1 0 0 1 1.414 0l1.586 1.586a1 1 0 0 1 0 1.414z"/><path d="m18 13-1.375-6.874a1 1 0 0 0-.746-.776L3.235 2.028a1 1 0 0 0-1.207 1.207L5.35 15.879a1 1 0 0 0 .776.746L13 18"/><path d="m2.3 2.3 7.286 7.286"/><circle cx="11" cy="11" r="2"/></svg></div>
         <div class="step-wk">STEP 02</div>
         <h4>디자인</h4>
         <p>화면 구성과 디자인 시안을 만들고, 피드백을 반영해 확정합니다.</p>
       </div>
       <div class="step fu d3">
-        <div class="step-dot">💻</div>
+        <div class="step-dot"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
         <div class="step-wk">STEP 03</div>
         <h4>퍼블리싱 · 개발</h4>
         <p>확정된 시안 그대로 구현하고, 진행 상황을 수시로 공유해 함께 확인합니다.</p>
       </div>
       <div class="step fu d4">
-        <div class="step-dot">🚀</div>
+        <div class="step-dot"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg></div>
         <div class="step-wk">STEP 04</div>
         <h4>출시</h4>
         <p>배포와 스토어 출시까지 진행하고, 마지막까지 꼼꼼히 마무리합니다.</p>
@@ -1007,14 +991,14 @@
       </div>
       <div class="c-methods fu d1">
         <a href="tel:01030301734" class="c-card">
-          <div class="c-card-icon">📞</div>
+          <div class="c-card-icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
           <div class="c-card-text">
             <small>전화 문의</small>
             <span>010-3030-1734</span>
           </div>
         </a>
         <a href="mailto:codebridge.corp@gmail.com" class="c-card mail">
-          <div class="c-card-icon">✉️</div>
+          <div class="c-card-icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg></div>
           <div class="c-card-text">
             <small>이메일 문의</small>
             <span>codebridge.corp@gmail.com</span>
@@ -1031,7 +1015,7 @@
   <div class="container">
     <div class="foot-inner">
       <a href="#" class="foot-logo">
-        <div class="logo-box">⚡</div>
+        <div class="logo-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 15h20"/><path d="M4 15Q12 3 20 15"/><path d="M8 15v-4.5M12 15V9M16 15v-4.5"/></svg></div>
         <span>CodeBridge</span>
       </a>
       <p class="foot-copy" id="copy"></p>
