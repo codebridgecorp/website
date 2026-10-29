@@ -34,10 +34,10 @@
       --yellow:    #FBBF24;
       --green:     #34D399;
       /* hero blobs */
-      --blob-1:    #4D84FF;
-      --blob-2:    #7DD3FC;   /* sky */
-      --blob-3:    #B9B0F7;   /* lavender */
-      --blob-opacity: .38;
+      --blob-1:    #4D84FF;   /* accent blue */
+      --blob-2:    #7FA8FF;   /* light blue */
+      --blob-opacity:  .13;
+      --grain-opacity: .07;
       /* light "client website" inside the service browser mockup */
       --mk-paper:  #F8FAFC;
       --mk-white:  #FFFFFF;
@@ -137,21 +137,29 @@
       display: flex; align-items: center; justify-content: center;
       text-align: center; padding: 140px 24px 100px; overflow: hidden;
     }
-    /* slow color blobs (transform-only animation, blur is rasterized once) */
+    /* soft light from the top edges; the center stays dark so the copy reads clearly.
+       Transform-only animation (blur is rasterized once). */
     .hero-bg { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
     .blob {
       position: absolute; border-radius: 50%; aspect-ratio: 1;
-      filter: blur(90px); opacity: var(--blob-opacity); will-change: transform;
+      filter: blur(80px); opacity: var(--blob-opacity); will-change: transform;
     }
-    .blob.b1 { width: 46vmax; background: var(--blob-1); top: -18%; left: -10%; animation: blob1 26s ease-in-out infinite alternate; }
-    .blob.b2 { width: 38vmax; background: var(--blob-2); top: 4%;  right: -14%; animation: blob2 32s ease-in-out infinite alternate; }
-    .blob.b3 { width: 40vmax; background: var(--blob-3); bottom: -26%; left: 26%; animation: blob3 29s ease-in-out infinite alternate; }
-    @keyframes blob1 { to { transform: translate3d(18vw, 14vh, 0) scale(1.15); } }
-    @keyframes blob2 { to { transform: translate3d(-22vw, 18vh, 0) scale(.9); } }
-    @keyframes blob3 { to { transform: translate3d(-14vw, -20vh, 0) scale(1.1); } }
+    .blob.b1 { width: 30vmax; background: var(--blob-1); top: -11vmax; left: -8vmax; animation: blob1 28s ease-in-out infinite alternate; }
+    .blob.b2 { width: 26vmax; background: var(--blob-2); top: -8vmax; right: -7vmax; animation: blob2 34s ease-in-out infinite alternate; }
+    .blob.b3 { width: 34vmax; background: var(--blob-1); top: -26vmax; left: 50%; margin-left: -17vmax; animation: blob3 31s ease-in-out infinite alternate; }
+    @keyframes blob1 { to { transform: translate3d(7vw, 5vh, 0) scale(1.08); } }
+    @keyframes blob2 { to { transform: translate3d(-6vw, 6vh, 0) scale(.94); } }
+    @keyframes blob3 { to { transform: translate3d(4vw, 4vh, 0) scale(1.06); } }
+    /* keep the area behind the copy dark */
+    .hero-shade { position: absolute; inset: 0; background: radial-gradient(ellipse 50% 42% at 50% 58%, color-mix(in srgb, var(--bg) 85%, transparent), transparent 75%); }
+    /* very light grain so the soft gradients don't band */
+    .hero-grain {
+      position: absolute; inset: 0; opacity: var(--grain-opacity);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
     /* fade into the next section's background */
     .hero-bg::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 40%; background: linear-gradient(to bottom, transparent, var(--bg)); }
-    @media (max-width: 768px) { .blob { filter: blur(60px); } }
+    @media (max-width: 768px) { .blob { filter: blur(56px); } }
     @media (prefers-reduced-motion: reduce) { .hero-bg .blob { animation: none; } }
     .hero-content { position: relative; z-index: 1; max-width: 840px; }
     .hero-title {
@@ -621,7 +629,7 @@
 
 <!-- HERO -->
 <section id="hero">
-  <div class="hero-bg" aria-hidden="true"><span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span></div>
+  <div class="hero-bg" aria-hidden="true"><span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span><span class="hero-shade"></span><span class="hero-grain"></span></div>
   <div class="hero-content">
     <h1 class="hero-title">
       기획부터 디자인,<br>
