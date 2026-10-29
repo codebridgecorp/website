@@ -19,7 +19,9 @@
       --text:      #F1F5F9;   /* headings */
       --dim:       #A3AEC2;   /* body text */
       --muted:     #6B778C;   /* secondary text */
-      --accent:    #4D84FF;   /* the one point color */
+      --accent:    #4D84FF;   /* the one point color: text, icons, tags */
+      --accent-strong:       #2F6BFF;   /* button fill (white text 4.5:1) */
+      --accent-strong-hover: #2259E6;
       --on-accent: #FFFFFF;   /* text/icons on an accent fill */
       /* surfaces & effects */
       --nav-bg:    rgba(11,15,23,.88);
@@ -111,9 +113,10 @@
       font-weight: 500; transition: color .2s;
     }
     .nav-links a:hover { color: var(--text); }
+    .nav-links a.nav-cta:hover { background: var(--accent-strong-hover); }
     .nav-cta {
       padding: 8px 20px !important;
-      background: var(--accent);
+      background: var(--accent-strong); transition: background .2s !important;
       color: var(--on-accent) !important; border-radius: 8px; font-weight: 700 !important;
     }
     .hamburger {
@@ -169,12 +172,12 @@
     }
     .hero-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
     .btn-p {
-      padding: 14px 32px; background: var(--accent);
+      padding: 14px 32px; background: var(--accent-strong);
       color: var(--on-accent); font-weight: 700; font-size: 15px; border-radius: 10px;
       text-decoration: none; border: none; cursor: pointer;
       display: inline-flex; align-items: center; gap: 8px; transition: all .3s;
     }
-    .btn-p:hover { background: color-mix(in srgb, var(--accent) 88%, var(--text)); transform: translateY(-2px); }
+    .btn-p:hover { background: var(--accent-strong-hover); transform: translateY(-2px); }
     .btn-s {
       padding: 14px 32px; background: transparent; color: var(--text); font-weight: 600;
       font-size: 15px; border-radius: 10px; text-decoration: none;
@@ -248,10 +251,7 @@
     .sec-head { text-align: center; margin-bottom: 64px; }
     #ai-tech .sec-head { margin-bottom: 40px; }
     .sec-head p { color: var(--dim); font-size: 17px; margin-top: 16px; max-width: 540px; margin-left: auto; margin-right: auto; }
-    .stack-groups { display: grid; gap: 14px; max-width: 860px; margin: 0 auto; }
-    .stack-group { display: grid; grid-template-columns: 112px 1fr; align-items: center; gap: 18px; }
-    .stack-label { font-size: 12px; font-weight: 700; color: var(--dim); text-align: right; }
-    .stack-badges { display: flex; flex-wrap: wrap; gap: 8px; }
+    .stack-badges { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; max-width: 980px; margin: 0 auto; }
     .s-badge {
       padding: 7px 15px; border-radius: 7px; font-size: 13px; font-weight: 500;
       color: var(--dim); background: color-mix(in srgb, var(--text) 4%, transparent); border: 1px solid var(--border);
@@ -587,10 +587,7 @@
       .foot-inner { justify-content: center; text-align: center; flex-direction: column; }
     }
     @media (max-width: 600px) {
-      .stack-groups { gap: 18px; }
-      .stack-group { grid-template-columns: 1fr; gap: 8px; }
-      .stack-label { text-align: left; }
-      .stack-badges { gap: 6px; }
+      .stack-badges { gap: 8px; }
       .stack-badges .s-badge { padding: 6px 12px; font-size: 12.5px; }
     }
     @media (max-width: 480px) {
@@ -809,35 +806,35 @@
       <h2 class="section-title">검증된 기술로<br><span class="hl">탄탄하게 만듭니다</span></h2>
       <p>반복 작업에는 AI 도구를 활용해 시간을 아끼고, 그만큼 디자인 디테일과 품질 점검에 더 집중합니다.</p>
     </div>
-    <div class="stack-groups fu">
-      <div class="stack-group">
-        <span class="stack-label">디자인</span>
-        <div class="stack-badges"><span class="s-badge">Figma</span><span class="s-badge">Photoshop</span><span class="s-badge">Illustrator</span></div>
-      </div>
-      <div class="stack-group">
-        <span class="stack-label">프론트엔드</span>
-        <div class="stack-badges"><span class="s-badge">JavaScript</span><span class="s-badge">TypeScript</span><span class="s-badge">Next.js</span></div>
-      </div>
-      <div class="stack-group">
-        <span class="stack-label">앱</span>
-        <div class="stack-badges"><span class="s-badge">React Native</span><span class="s-badge">Flutter</span><span class="s-badge">Kotlin</span></div>
-      </div>
-      <div class="stack-group">
-        <span class="stack-label">백엔드</span>
-        <div class="stack-badges"><span class="s-badge">Java</span><span class="s-badge">Spring Boot</span><span class="s-badge">Node.js</span><span class="s-badge">PHP</span><span class="s-badge">Laravel</span><span class="s-badge">CodeIgniter</span></div>
-      </div>
-      <div class="stack-group">
-        <span class="stack-label">데이터베이스</span>
-        <div class="stack-badges"><span class="s-badge">MySQL</span><span class="s-badge">MariaDB</span><span class="s-badge">Redis</span><span class="s-badge">Supabase</span><span class="s-badge">Firebase</span></div>
-      </div>
-      <div class="stack-group">
-        <span class="stack-label">인프라</span>
-        <div class="stack-badges"><span class="s-badge">AWS</span><span class="s-badge">Docker</span><span class="s-badge">Vercel</span><span class="s-badge">GitHub</span></div>
-      </div>
-      <div class="stack-group">
-        <span class="stack-label">AI</span>
-        <div class="stack-badges"><span class="s-badge">OpenAI API</span><span class="s-badge">Claude API</span><span class="s-badge">Gemini API</span></div>
-      </div>
+    <!-- 순서: 디자인 → 프론트엔드 → 앱 → 백엔드 → 데이터베이스 → 인프라 → AI -->
+    <div class="stack-badges fu">
+      <span class="s-badge">Figma</span>
+      <span class="s-badge">Photoshop</span>
+      <span class="s-badge">Illustrator</span>
+      <span class="s-badge">JavaScript</span>
+      <span class="s-badge">TypeScript</span>
+      <span class="s-badge">Next.js</span>
+      <span class="s-badge">React Native</span>
+      <span class="s-badge">Flutter</span>
+      <span class="s-badge">Kotlin</span>
+      <span class="s-badge">Java</span>
+      <span class="s-badge">Spring Boot</span>
+      <span class="s-badge">Node.js</span>
+      <span class="s-badge">PHP</span>
+      <span class="s-badge">Laravel</span>
+      <span class="s-badge">CodeIgniter</span>
+      <span class="s-badge">MySQL</span>
+      <span class="s-badge">MariaDB</span>
+      <span class="s-badge">Redis</span>
+      <span class="s-badge">Supabase</span>
+      <span class="s-badge">Firebase</span>
+      <span class="s-badge">AWS</span>
+      <span class="s-badge">Docker</span>
+      <span class="s-badge">Vercel</span>
+      <span class="s-badge">GitHub</span>
+      <span class="s-badge">OpenAI API</span>
+      <span class="s-badge">Claude API</span>
+      <span class="s-badge">Gemini API</span>
     </div>
   </div>
 </section>
